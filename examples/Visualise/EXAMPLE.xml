@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<test xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" attr1="a" attr2="b">
+  <names>
+    <name team="0">Sun Apr 03 14:53:20 CEST 2005</name>
+    <name team="1">Jürgen</name>
+    <name team="1">Michel</name>
+    <name team="1">Raphi</name>
+    <name team="2">Kathrin <b>Fiedler</b> MBA</name>
+    <name team="5">egon</name>
+  </names>
+  <colors>
+    <blue taint="true">Yeah</blue>
+    <red taint="true"/>
+    <green taint="true"/>
+  </colors>
+  <hallo>Hallo1</hallo>
+  <soap:hallo>Hallo2</soap:hallo>
+</test>

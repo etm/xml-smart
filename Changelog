@@ -1,0 +1,195 @@
+0.1.12 "Oh my dear, a wall is missing in my flat and it's getting cold"
+	* XML::SMART::DOM::save_unformated => defaults to false
+
+0.1.11 "name has to be selected"
+  * Made usage in threads more robust (examples/concurrent.rb)
+	  (namespace related bug? gone!)
+	* Made examples work when smart.so is not yet installed
+	* Fixed documentation generation the ugly way (ifdefs)
+	* Addes documentation comments all over the code
+	* GEM creation is now supported by Rakefile
+	* XML::SMART::QNAME#to_s returns "prefix:name" instead of "name" only
+	* XML::SMART::QNAME#inspect works the same for pull and dom
+	* XML::Smart::Pull::AttributeSet includes Enumeration
+	* 1.8.7 supported (rb_io_t works slightly different)
+
+0.1.10 "christmas is all around you"
+	* Adds XML::Smart::Dom::NamespaceSet#length
+	* Fixes a bug XML::Smart::Dom::NamespaceSet#[]= that lead to segfaults for
+		subsequent namespace setting
+	* Fixes a bug XML::Smart::Dom#find and XML::Smart::Dom::Element#find
+		-> ruby 1.8.* segfaults SOMETIMES (heisenbug :-) when rb_hash_foreach is
+		   called for empty hashes
+	* code cleanup and ifdefs to support > 1.8.6 (including 1.9.0)
+
+0.1.9 "signal weaving"
+  * XML::Smart::Dom::NodeSet#delete_if! returns now true when deleting a node
+	* Change Handlers (examples/signals.rb)
+    -> XML::Smart::Dom#on_change - supply a block that is called when a
+		   document changes
+    -> XML::Smart::Dom#change_handlers - an array that holds the list of
+			 change handlers (add, change, delete, ... them)
+	  -> 2 parameters are sent to your change handlers: type, node		 
+		   type is one of XML::Smart::Dom::SIGNAL_ADD,
+			 XML::Smart::Dom::SIGNAL_CHANGE, XML::Smart::Dom::SIGNAL_DELETE
+	* Adds XML::Smart::Dom::Other which contains #text, #to_s, #path
+	  -> returned when unknown node type
+	* Adds XML::Smart::Dom#namespaces[=] which adds global namespace support 
+	  -> its a hash
+		-> no more need to add namespaces to every #find
+		-> examples/namespace_find.rb
+	* Loads of bugfixes, which I can no longer remember :-)
+	  -> they had mostly to do with namespaces (e.g. handle xml namespace)
+
+0.1.8 "Documentation is like sex: when it is good, it is very, very good; and
+       when it is bad, it is better than nothing."
+  * rake is now the only way to go     
+  * Change qname.c to work correct for namespaces, inspired by Jonathan
+    Paisley
+  * Added the ability for append_child to move, copy existing nodes (from the same
+    or any other document)
+    Added constants:
+      XML::Smart::DOM::Element::MOVE (default for same document)
+      XML::Smart::DOM::Element::COPY (default for different document)
+  * API BROKEN!!!!:    
+    XML::Smart::Dom::Element#add        (renamed from append_child)
+    XML::Smart::Dom::Element#add_before (renamed from insert_sibling_before)
+    XML::Smart::Dom::Element#add_after  (renamed from insert_sibling_after)
+    XML::Smart::Dom::Element#replace_by (NEW)
+    -> add has now the ability to use other nodes (from same or other DOM's)
+       as input
+    -> #add_before, #add_after are now working, same parameters as with #add
+      are possible
+    -> examples/add_children.rb, examples/add_elements.rb  
+  * #add, #add_before and #add_after are able to ::COPY/::MOVE the results of
+    xpath searches (only the elements)
+    -> example/move_children.rb
+  * XML::Smart::Dom#root= is possible (simple replace_by, for root only)
+  * TODO: Documentation is not available at all yet, copy over the pieces from
+    Emmanuel
+  * Changed XML::Smart::Dom::AttributeSet#has_key? to 
+            XML::Smart::Dom::AttributeSet#has_attr?
+  * Changed XML::Smart::Dom::AttributeSet#get to 
+            XML::Smart::Dom::AttributeSet#get_attr
+  * Added XML::Smart::Dom::AttributeSet#add
+  * Added XML::Smart#new (same as #string), inspired by Ruediger Sonderfeld
+      
+0.1.7 "Horseman break things" Features + Breaking the API
+  * added support for numbers, booleans and strings as return value from an
+    xpath
+  * extconf.rb cleanup
+  * examples/count.rb
+  * WARNING: XML::Simple::DOM::NodeSet#clear renamed to #delete_all!  
+    This can break your application, but the name clear was no good idea at
+    all because it behaves very different from Array#clear
+  * WARNING: removed #inspect from rbxs_dom.c, rbxs_pull.c - so #inspect 
+    behaves no longer like #to_s, at least as long as I can find
+    something more useful
+  * WARNING: remoded XML::Simple::DOM::AttributeSet#delete. This may break
+    your program
+  * Added:
+      XML::Simple::DOM::NodeSet#delete_if!
+      XML::Simple::DOM::NodeSet#delete_at!
+      XML::Simple::DOM::NodeSet#nitems
+    When deleting elements, the entries in the NodeSet will be set to nil.
+    #nitems works according to Array#nitems.Nodesets have now Enumerable
+    mixed in.
+  * Added:  
+      XML::Simple::DOM::AttributeSet#each (node.attributes.each { |n| })
+    Nodesets have now Enumerable mixed in.
+  * Renamed XML::Simple::Dom::Node to XML::Simple::Dom::Element and added:
+      XML::Simple::DOM::Element#path   (uniquely identify the node)
+      XML::Simple::DOM::Element#empty? (no children)
+      XML::Simple::DOM::Element#mixed? (element and text nodes as children)
+  * Added:
+      XML::Simple::DOM::Attribute#path    (uniquely identify the node) 
+      XML::Simple::DOM::Attribute#element (associated element)
+  * Added XML::Simple::DOM::Text, so you have to check the #class. It has:
+      XML::Simple::DOM::Text#to_s
+      XML::Simple::DOM::Text#to_i
+      XML::Simple::DOM::Text#to_f
+      XML::Simple::DOM::Text#text
+      XML::Simple::DOM::Text#text=
+      XML::Simple::DOM::Text#parent
+      XML::Simple::DOM::Text#path
+  * Added XML::Simple::DOM#find so that doc.find("*") selects the root not,
+    doc.root.find("*") select all elements beneath root. This is standard
+    behaviour. 
+  * Examples: Cleanup and cool new stuff.
+      LOOK at examples/Visualise
+  * Rename to XML::Smart    
+      
+0.1.6 "Investigating the not so obvious" 
+  * added examples/replace.rb
+  * added rb_gc_start() when a new document is parsed,
+    example/replace.rb freezes after 600 parses, if this is not done.
+    I can only assume, that there is an internal limit in libxml. ruby starts
+    gc'ing when about 7 MB of memory are allocated.
+    Investigiating this further is maybe necessary, cause I don't understand
+    the effect fully.
+  * added XML::Simple::DOM::Attribute#to_i    
+  * changed behaviour of XML::Simple::file, the string that is used for 
+    creating te document is no longer the name of the root element, but free
+    form
+    OLD: XML::Simple.file("test.xml",test) resulting in 
+      <?xml version="1.0"?><test/>
+    NEW: XML::Simple.file("test.xml","<test/>") resulting in
+      <?xml version="1.0"?><test/>
+    Drawback: you can initialize documents that are not wellformed, but i
+    think the new way is much more convenient
+  * changed examples/create.rb
+  * added XML::Simple::DOM::Node#to_f
+  * added XML::Simple::DOM::Node#children?
+  * added XML::Simple::DOM::Attribute#to_f
+  * added XML::Simple::DOM::Attribute#has_key?
+  * removed XML::Simple::DOM::Attribute#at
+  * changed XML::Simple::DOM::Node#inspect - behaves like expected now
+  * added XML::Simple::DOM::Node#dump - output a Nodes XML representation
+  * all #to_i behave like expected (with base as optional parameter)
+
+0.1.5 "All work and no play ..." Features
+  * XML::Simple::Dom::Node#parent
+  * XML::Simple::Dom::Node#to_i
+  * XML::Simple::Dom#save_as
+  * XML::Simple#string
+  * improved locking
+  * started testing in semi-production environment
+  * cleanup and reorganisation
+  * examples/string.rb
+
+0.1.4 "Pull Perfection" Bugfixes + Features
+  * #append_child and the other functions now need only 1 paramter (thanks to
+    Emmanuel Touzery)
+  * domattributeset.* and pullattributeset.* to keep things logical
+  * pullattribute as specialized returntype when accessing attributes via pull
+  * small changes to nodes.c and attributes.c to remove a bug (to enthusiastic
+    xmlFree)
+  * additional cleanup and renaming
+  * added Christian Neukirchen to AUTHORS
+
+0.1.3 "Teamwork" - Bugfixes + Features
+  * Merged patch that adds XML::Simple::Node#name, contributed by 
+    <emmanuel dot touzery at wanadoo dot fr>
+  * Restructuring of the code, rbxs_base.* was renamed to rbxs_do.*, the
+    skeletons for the constructors and the module initialisation moved to
+    rbxs.c, to improve the design    
+  Together with Christian Neukirchen: <chneukirchen at gmail dot com>
+  * Added XML::Simple::QName, XML::Simple::Node#name, returns a QName object,
+    that has #name, #prefix, and #namespace.
+  * Added the first implementation of a pull parser, by borrowing ideas and
+    code from chris' ruby/dl implementation. XML::Simple.pull(File)
+  * Added examples/pull.rb for first demonstration
+  
+0.1.2 "Session with Klaus" - Bugfixes + Features
+  * rbxs_nodeset.c - each now works as expected
+  * rbxs_base.c - changed open to (name,root[,encoding]), which creates a
+                  file named name unless File.exists?
+  * examples/create.rb - added
+                  
+0.1.1 "The morning after" - Bugfixes
+  * Fixed memleaks in attributeset.c
+  * Added examples/xpath_attrs.rb
+  * Changed example names and added comments
+
+0.1.0 "First Strike"
+  * Basic Features
