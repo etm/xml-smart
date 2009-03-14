@@ -1,3 +1,22 @@
+Known Bugs
+
+* I have to deal with dup's, clone's and new's for XML::Smart::DOM::*
+  
+  require 'xml/smart'
+  require 'date'
+
+  xmldoc = XML::Smart.open('crasher.xml')
+  xpath = '/eveapi/currentTime/text()'
+  text_str = xmldoc.root.find(xpath)[0]
+  puts DateTime.parse(text_str)
+  # or text_str.dup
+
+  ########################
+  <?xml version='1.0' encoding='UTF-8'?>
+  <eveapi version="2">
+    <currentTime>2008-10-10 02:40:49</currentTime>
+  </eveapi>
+
 Todo + Ideas:
 
 * add apply_style to dom (apply xslts) - keep in touch with Ken Wronkiewicz <wh at wirewd dot com> 

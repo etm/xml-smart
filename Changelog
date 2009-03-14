@@ -1,5 +1,9 @@
 0.1.12 "Oh my dear, a wall is missing in my flat and it's getting cold"
 	* XML::SMART::DOM::save_unformated => defaults to false
+	* XML::SMART::DOM::#xinclude!
+	* XML::SMART::DOM::ELEMENT::#xinclude!
+	* XML::SMART::DOM::#validate_against(XML::SMART.open("some_file.rng"))
+	  -> will validate against XML Schema if ever libxml supports it :-)
 
 0.1.11 "name has to be selected"
   * Made usage in threads more robust (examples/concurrent.rb)
