@@ -213,7 +213,7 @@ VALUE rbxs_qname_namespace(VALUE self)
   switch (prbxs_qname->type) {
     case RBXS_PARSER_TYPE_DOM:
       Data_Get_Struct(prbxs_qname->obj, rbxs_domelement, prbxs_domelement);
-      if (prbxs_domelement->node->ns != NULL && prbxs_domelement->node->ns->prefix != NULL)
+      if (prbxs_domelement->node->ns != NULL && prbxs_domelement->node->ns->href != NULL)
         return(rb_str_new2((char *)prbxs_domelement->node->ns->href));
       else  
         return(Qnil);
