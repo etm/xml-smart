@@ -367,7 +367,6 @@ VALUE rbxs_dom_namespaces_get(VALUE self)
 {
   rbxs_dom *prbxs_dom;
   Data_Get_Struct(self, rbxs_dom, prbxs_dom);
-  rb_ary_push(prbxs_dom->changeHandlers,rb_block_proc());
   return(prbxs_dom->namespaces);
 }
 /*

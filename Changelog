@@ -1,4 +1,7 @@
-0.1.13 "I'm working on a RIDDL"
+0.1.12.2 "I'm working on a RIDDL immernoch"
+	* XML::SMART::DOM#namespaces return namespaces correctly
+
+0.1.12.1 "I'm working on a RIDDL"
 	* XML::SMART::QNAME#namespace returns value for default namespace
 
 0.1.12 "Oh my dear, a wall is missing in my flat and it's getting cold"
