@@ -85,6 +85,14 @@ VALUE rbxs_dom_to_s(VALUE self)
 /*
  *  Documentation
  */
+VALUE rbxs_dom_dup(VALUE self)
+{
+  return rbxs_dom_string(rbxs_dom_to_s(self));
+}
+
+/*
+ *  Documentation
+ */
 VALUE rbxs_dom_root_set(VALUE self, VALUE element)
 {
   rbxs_dom *prbxs_dom;
@@ -609,6 +617,8 @@ void init_rbxs_dom( void ) {
   rb_define_const(cSmartDom, "SIGNAL_DELETE", INT2NUM(RBXS_DOM_SIGNAL_DELETE));
   
   rb_define_method(cSmartDom, "inspect",          rbxs_dom_inspect,              0);
+  rb_define_method(cSmartDom, "dup",              rbxs_dom_dup,                  0);
+  rb_define_method(cSmartDom, "clone",            rbxs_dom_dup,                  0);
   rb_define_method(cSmartDom, "to_s",             rbxs_dom_to_s,                 0);
   rb_define_method(cSmartDom, "root",             rbxs_dom_root,                 0);
   rb_define_method(cSmartDom, "root=",            rbxs_dom_root_set,             1);

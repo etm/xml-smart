@@ -43,7 +43,7 @@
 #include <libxml/xmlsave.h>
 #include <libxml/xinclude.h>
 
-#define RBXS_VERSION  "0.1.12.1"
+#define RBXS_VERSION  "0.1.14"
 
 #define RBXS_PARSER_TYPE_DOM    0
 #define RBXS_PARSER_TYPE_READER 1
