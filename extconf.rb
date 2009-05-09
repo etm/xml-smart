@@ -1,5 +1,6 @@
 require 'mkmf'
 require 'rbconfig'
+require 'pp'
 
 PKG_NAME = 'xml/smart'
 
