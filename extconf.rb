@@ -7,7 +7,7 @@ PKG_NAME = 'xml/smart'
 include Config
 
 unless File.exists?('extconf.h')
-  $CFLAGS   = '-g -Wall ' + $CFLAGS
+  $CFLAGS  = '-g -Wall ' + $CFLAGS
   $LIBPATH.push(Config::CONFIG['libdir'])
   unless have_library("z", "inflate")
     puts "Error: zlib is needed"
@@ -40,5 +40,5 @@ unless File.exists?('extconf.h')
     $CFLAGS << ' -DUSE_EXSLT'
   end
   create_header()
-  create_makefile(PKG_NAME,"ext")
+  create_makefile(PKG_NAME,".")
 end

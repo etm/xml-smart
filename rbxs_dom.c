@@ -1,6 +1,7 @@
 #include "rbxs_dom.h"
 #include "rbxs_domelement.h"
 #include "rbxs_domnodeset.h"
+#include "XSDtoRNG.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -8,9 +9,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-const char *query_foo = "
-#include "query_foo.txt"
-";
+const char XSDtoRNG[] = {
+#include "XSDtoRNG.xsl"
+};
 
 /* -- */
 // ***********************************************************************************

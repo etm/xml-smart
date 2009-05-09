@@ -29,6 +29,11 @@ desc "Compiling library"
 task :compile => :config do
   system "make"
 end
+  
+desc "Translating XSDtoRNG"  
+task :xxd do
+  system "xxd -i XSDtoRNG.xsl > XSDtoRNG.h"
+end
 
 desc "Installing library"
 task :install => [:compile,:doc] do
@@ -41,8 +46,7 @@ task :clean do
   if File.exists?(".git")
     Dir.glob("**/*").collect{ |i| i unless i=~/^\.git/ || i=~/^rdoc/ || i=~/^extconf/ || i=~/^Makefile/ }.compact.each do |i|
       if !PKG_FILES.include?(i)
-        p i
-        #rm_r i if File.exists?(i) 
+        rm_r i if File.exists?(i) 
       end
     end
   else
@@ -53,8 +57,7 @@ task :distclean do
   if File.exists?(".git")
     Dir.glob("**/*").collect{ |i| i unless i=~/^\.git/ }.compact.each do |i|
       if !PKG_FILES.include?(i)
-        p i
-        #rm_r i if File.exists?(i) 
+        rm_r i if File.exists?(i) 
       end
     end
   else
