@@ -8,6 +8,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+const char *query_foo = "
+#include "query_foo.txt"
+";
+
 /* -- */
 // ***********************************************************************************
 // GC

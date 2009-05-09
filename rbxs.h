@@ -17,8 +17,6 @@
 #define RHASH_EMPTY_P(h) (RHASH_SIZE(h) == 0)
 #endif
 
-#define class classx
-
 #ifdef HAVE_RB_IO_T
 #define RB_IO_T rb_io_t
 #if (RUBY_VERSION_MAJOR == 1 &&  RUBY_VERSION_MINOR == 8 && RUBY_VERSION_TEENY < 7)

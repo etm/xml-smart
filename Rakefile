@@ -53,6 +53,7 @@ task :distclean do
   if File.exists?(".git")
     Dir.glob("**/*").collect{ |i| i unless i=~/^\.git/ }.compact.each do |i|
       if !PKG_FILES.include?(i)
+        p i
         #rm_r i if File.exists?(i) 
       end
     end
@@ -71,7 +72,7 @@ spec = Gem::Specification.new do |s|
   s.summary = 'easy to use and stable libxml2 binding'
   s.files = PKG_FILES
   s.test_files = FileList["{test}/*_test.rb"].to_a
-  s.require_path = ['.']
+  s.require_path = '.'
   s.has_rdoc = true
   s.extensions = 'extconf.rb'
   s.autorequire = 'smart'
