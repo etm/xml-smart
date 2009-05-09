@@ -5,7 +5,7 @@ require 'rake/testtask'
 require 'rake/gempackagetask'
 require 'rdoc/rdoc'
 
-temp = `git ls-files ext`.split(/\r?\n/).collect{ |i| i unless i=~/^\.git/ }.compact
+temp = `git ls-files`.split(/\r?\n/).collect{ |i| i unless i=~/^\.git/ }.compact
 temp.each do |f|
   t = File.dirname(f)
   temp << t unless t == '.'
@@ -13,7 +13,7 @@ end
 
 PKG_FILE    = 'ruby-xml-smart'
 PKG_FILES   = temp
-PKG_VERSION = File.read('ext/rbxs.h').to_s.match(/RBXS_VERSION\s+"([^"]+)"/)[1]
+PKG_VERSION = File.read('rbxs.h').to_s.match(/RBXS_VERSION\s+"([^"]+)"/)[1]
 PKG_CURRENT = PKG_FILE + "-" + PKG_VERSION
 
 task :default => [:config, :compile]
@@ -71,7 +71,7 @@ spec = Gem::Specification.new do |s|
   s.summary = 'easy to use and stable libxml2 binding'
   s.files = PKG_FILES
   s.test_files = FileList["{test}/*_test.rb"].to_a
-  s.require_path = ['.','lib']
+  s.require_path = ['.']
   s.has_rdoc = true
   s.extensions = 'extconf.rb'
   s.autorequire = 'smart'
