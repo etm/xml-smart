@@ -7,6 +7,7 @@ PKG_NAME = 'xml/smart'
 include Config
 
 unless File.exists?('extconf.h')
+  $CFLAGS   = '-g -Wall ' + $CFLAGS
   $LIBPATH.push(Config::CONFIG['libdir'])
   unless have_library("z", "inflate")
     puts "Error: zlib is needed"
@@ -24,7 +25,20 @@ unless File.exists?('extconf.h')
   end
   $LDFLAGS << ' ' + `xml2-config --libs`.chomp
   $CFLAGS  << ' ' + `xml2-config --cflags`.chomp
-  $CFLAGS   = '-g -Wall ' + $CFLAGS
+  unless have_library("xslt", "xsltParseStylesheetFile")
+    puts "Error: libxslt is needed"
+    puts "  Install libxslt library or try one of the following options to extconf.rb:"
+    puts "    --with-xslt-dir=/path/to/libxslt"
+    puts "    --with-xslt-lib=/path/to/libxslt/lib"
+    puts "    --with-xslt-include=/path/to/libxslt/include"
+    exit 1
+  end
+  $LDFLAGS << ' ' + `xslt-config --libs`.chomp
+  $CFLAGS  << ' ' + `xslt-config --cflags`.chomp
+  if enable_config("exslt", true)
+    have_library "exslt", "exsltRegisterAll"
+    $CFLAGS << ' -DUSE_EXSLT'
+  end
   create_header()
   create_makefile(PKG_NAME,".")
 end
