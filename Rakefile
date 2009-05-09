@@ -5,7 +5,7 @@ require 'rake/testtask'
 require 'rake/gempackagetask'
 require 'rdoc/rdoc'
 
-temp = `git ls-files`.split(/\r?\n/).collect{ |i| i unless i=~/^\.git/ }.compact
+temp = `git ls-files ext`.split(/\r?\n/).collect{ |i| i unless i=~/^\.git/ }.compact
 temp.each do |f|
   t = File.dirname(f)
   temp << t unless t == '.'
@@ -13,7 +13,7 @@ end
 
 PKG_FILE    = 'ruby-xml-smart'
 PKG_FILES   = temp
-PKG_VERSION = File.read('rbxs.h').to_s.match(/RBXS_VERSION\s+"([^"]+)"/)[1]
+PKG_VERSION = File.read('ext/rbxs.h').to_s.match(/RBXS_VERSION\s+"([^"]+)"/)[1]
 PKG_CURRENT = PKG_FILE + "-" + PKG_VERSION
 
 task :default => [:config, :compile]
@@ -41,7 +41,8 @@ task :clean do
   if File.exists?(".git")
     Dir.glob("**/*").collect{ |i| i unless i=~/^\.git/ || i=~/^rdoc/ || i=~/^extconf/ || i=~/^Makefile/ }.compact.each do |i|
       if !PKG_FILES.include?(i)
-        rm_r i if File.exists?(i) 
+        p i
+        #rm_r i if File.exists?(i) 
       end
     end
   else
@@ -52,7 +53,7 @@ task :distclean do
   if File.exists?(".git")
     Dir.glob("**/*").collect{ |i| i unless i=~/^\.git/ }.compact.each do |i|
       if !PKG_FILES.include?(i)
-        rm_r i if File.exists?(i) 
+        #rm_r i if File.exists?(i) 
       end
     end
   else
