@@ -264,13 +264,13 @@ void init_rbxs_domnamespaceset(void) {
   cSmartDomNamespaceSet = rb_define_class_under( cSmartDom, "NamespaceSet", rb_cObject );
   rb_include_module(cSmartDomNamespaceSet, rb_mEnumerable);
 
-  rb_define_method(cSmartDomNamespaceSet, "has_ns?",  rbxs_domnamespaceset_include,   1);
-  rb_define_method(cSmartDomNamespaceSet, "get_ns",   rbxs_domnamespaceset_get_ns,    1);
-  rb_define_method(cSmartDomNamespaceSet, "include?", rbxs_domnamespaceset_include,   1);
-  rb_define_method(cSmartDomNamespaceSet, "[]",       rbxs_domnamespaceset_get,       1);
-  rb_define_method(cSmartDomNamespaceSet, "[]=",      rbxs_domnamespaceset_set,       2);
-  rb_define_method(cSmartDomNamespaceSet, "add",      rbxs_domnamespaceset_set,       2);
-  rb_define_method(cSmartDomNamespaceSet, "length",   rbxs_domnamespaceset_length,    0);
-  rb_define_method(cSmartDomNamespaceSet, "each",     rbxs_domnamespaceset_each,      0);
-  rb_define_method(cSmartDomNamespaceSet, "find",     rbxs_domnamespaceset_find,      1);
+  rb_define_method(cSmartDomNamespaceSet, "has_ns?",  (VALUE(*)(ANYARGS))rbxs_domnamespaceset_include,   1);
+  rb_define_method(cSmartDomNamespaceSet, "get_ns",   (VALUE(*)(ANYARGS))rbxs_domnamespaceset_get_ns,    1);
+  rb_define_method(cSmartDomNamespaceSet, "include?", (VALUE(*)(ANYARGS))rbxs_domnamespaceset_include,   1);
+  rb_define_method(cSmartDomNamespaceSet, "[]",       (VALUE(*)(ANYARGS))rbxs_domnamespaceset_get,       1);
+  rb_define_method(cSmartDomNamespaceSet, "[]=",      (VALUE(*)(ANYARGS))rbxs_domnamespaceset_set,       2);
+  rb_define_method(cSmartDomNamespaceSet, "add",      (VALUE(*)(ANYARGS))rbxs_domnamespaceset_set,       2);
+  rb_define_method(cSmartDomNamespaceSet, "length",   (VALUE(*)(ANYARGS))rbxs_domnamespaceset_length,    0);
+  rb_define_method(cSmartDomNamespaceSet, "each",     (VALUE(*)(ANYARGS))rbxs_domnamespaceset_each,      0);
+  rb_define_method(cSmartDomNamespaceSet, "find",     (VALUE(*)(ANYARGS))rbxs_domnamespaceset_find,      1);
 }

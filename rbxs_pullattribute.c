@@ -119,6 +119,6 @@ VALUE cSmartPullAttribute;
 void init_rbxs_pullattribute(void) {
   cSmartPullAttribute = rb_define_class_under( cSmartPullAttributeSet, "Attribute", rb_cObject );
 
-  rb_define_method(cSmartPullAttribute, "name",  rbxs_pullattribute_name,  0);
-  rb_define_method(cSmartPullAttribute, "value", rbxs_pullattribute_value, 0);
+  rb_define_method(cSmartPullAttribute, "name",  (VALUE(*)(ANYARGS))rbxs_pullattribute_name,  0);
+  rb_define_method(cSmartPullAttribute, "value", (VALUE(*)(ANYARGS))rbxs_pullattribute_value, 0);
 }

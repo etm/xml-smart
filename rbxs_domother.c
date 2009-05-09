@@ -113,9 +113,9 @@ VALUE cSmartDomOther;
 void init_rbxs_domother(void) {
   cSmartDomOther = rb_define_class_under( cSmartDom, "Other", rb_cObject );
 
-  rb_define_method(cSmartDomOther, "inspect", rbxs_domother_inspect,   0);
-  rb_define_method(cSmartDomOther, "to_s",    rbxs_domother_text_get,  0);
-  rb_define_method(cSmartDomOther, "text",    rbxs_domother_text_get,  0);
-  rb_define_method(cSmartDomOther, "parent",  rbxs_domother_parent,    0);
-  rb_define_method(cSmartDomOther, "path",    rbxs_domother_path,      0);
+  rb_define_method(cSmartDomOther, "inspect", (VALUE(*)(ANYARGS))rbxs_domother_inspect,   0);
+  rb_define_method(cSmartDomOther, "to_s",    (VALUE(*)(ANYARGS))rbxs_domother_text_get,  0);
+  rb_define_method(cSmartDomOther, "text",    (VALUE(*)(ANYARGS))rbxs_domother_text_get,  0);
+  rb_define_method(cSmartDomOther, "parent",  (VALUE(*)(ANYARGS))rbxs_domother_parent,    0);
+  rb_define_method(cSmartDomOther, "path",    (VALUE(*)(ANYARGS))rbxs_domother_path,      0);
 }

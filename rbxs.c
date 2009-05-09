@@ -113,12 +113,12 @@ void Init_smart( void ) {
   rb_define_const(cSmart, "LIBXML_VERSION", rb_str_new2(LIBXML_DOTTED_VERSION));
   rb_define_const(cSmart, "VERSION", rb_str_new2(RBXS_VERSION));
 
-  rb_define_singleton_method(cSmart, "modify", rbxs_main_modify, -1);
-  rb_define_singleton_method(cSmart, "open!",  rbxs_main_open_b,  2);
-  rb_define_singleton_method(cSmart, "open",   rbxs_main_open,    1);
-  rb_define_singleton_method(cSmart, "new",    rbxs_main_string,  1);
-  rb_define_singleton_method(cSmart, "string", rbxs_main_string,  1);
-  rb_define_singleton_method(cSmart, "pull",   rbxs_main_pull,    1);
+  rb_define_singleton_method(cSmart, "modify", (VALUE(*)(ANYARGS))rbxs_main_modify, -1);
+  rb_define_singleton_method(cSmart, "open!",  (VALUE(*)(ANYARGS))rbxs_main_open_b,  2);
+  rb_define_singleton_method(cSmart, "open",   (VALUE(*)(ANYARGS))rbxs_main_open,    1);
+  rb_define_singleton_method(cSmart, "new",    (VALUE(*)(ANYARGS))rbxs_main_string,  1);
+  rb_define_singleton_method(cSmart, "string", (VALUE(*)(ANYARGS))rbxs_main_string,  1);
+  rb_define_singleton_method(cSmart, "pull",   (VALUE(*)(ANYARGS))rbxs_main_pull,    1);
   
   init_rbxs_qname();
   init_rbxs_dom();

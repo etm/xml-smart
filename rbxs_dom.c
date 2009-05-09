@@ -307,10 +307,10 @@ VALUE rbxs_dom_find(int argc, VALUE *argv, VALUE self)
   if (argc == 2) {
     Check_Type(argv[1], T_HASH);
     if (!RHASH_EMPTY_P(argv[1]))
-      rb_hash_foreach(argv[1], nslist_each, (st_data_t)ctxt);
+      rb_hash_foreach(argv[1], (int(*)(ANYARGS))nslist_each, (st_data_t)ctxt);
   }
   if (!RHASH_EMPTY_P(prbxs_dom->namespaces))
-    rb_hash_foreach(prbxs_dom->namespaces, nslist_each, (st_data_t)ctxt);
+    rb_hash_foreach(prbxs_dom->namespaces, (int(*)(ANYARGS))nslist_each, (st_data_t)ctxt);
 
   obj = xmlXPathEvalExpression((unsigned char *)StringValuePtr(argv[0]), ctxt);
   ctxt->node = NULL;
@@ -386,7 +386,7 @@ VALUE rbxs_dom_namespaces_set(VALUE self, VALUE ns)
   Data_Get_Struct(self, rbxs_dom, prbxs_dom);
   Check_Type(ns, T_HASH);
   if (!RHASH_EMPTY_P(ns))
-    rb_hash_foreach(ns, nslistset_each, Qnil);
+    rb_hash_foreach(ns, (int(*)(ANYARGS))nslistset_each, Qnil);
   prbxs_dom->namespaces = ns;
   return(Qnil);
 }
@@ -616,22 +616,22 @@ void init_rbxs_dom( void ) {
   rb_define_const(cSmartDom, "SIGNAL_CHANGE", INT2NUM(RBXS_DOM_SIGNAL_CHANGE));
   rb_define_const(cSmartDom, "SIGNAL_DELETE", INT2NUM(RBXS_DOM_SIGNAL_DELETE));
   
-  rb_define_method(cSmartDom, "inspect",          rbxs_dom_inspect,              0);
-  rb_define_method(cSmartDom, "dup",              rbxs_dom_dup,                  0);
-  rb_define_method(cSmartDom, "clone",            rbxs_dom_dup,                  0);
-  rb_define_method(cSmartDom, "to_s",             rbxs_dom_to_s,                 0);
-  rb_define_method(cSmartDom, "root",             rbxs_dom_root,                 0);
-  rb_define_method(cSmartDom, "root=",            rbxs_dom_root_set,             1);
-  rb_define_method(cSmartDom, "find",             rbxs_dom_find,                -1);
-  rb_define_method(cSmartDom, "on_change",        rbxs_dom_change_handler_set,   0);
-  rb_define_method(cSmartDom, "change_handlers",  rbxs_dom_change_handlers,      0);
-  rb_define_method(cSmartDom, "save_as",          rbxs_dom_save_as,              1);
-  rb_define_method(cSmartDom, "namespaces=",      rbxs_dom_namespaces_set,       1);
-  rb_define_method(cSmartDom, "namespaces",       rbxs_dom_namespaces_get,       0);
-  rb_define_method(cSmartDom, "encode_entities=", rbxs_dom_encode_entities_set,  1);
-  rb_define_method(cSmartDom, "encode_entities?", rbxs_dom_encode_entities_q,    0);
-  rb_define_method(cSmartDom, "save_unformated=", rbxs_dom_save_unformated_set,  1);
-  rb_define_method(cSmartDom, "save_unformated?", rbxs_dom_save_unformated_q,    0);
-  rb_define_method(cSmartDom, "xinclude!",        rbxs_dom_xinclude,             0);
-  rb_define_method(cSmartDom, "validate_against", rbxs_dom_validate_relaxng,     1);
+  rb_define_method(cSmartDom, "inspect",          (VALUE(*)(ANYARGS))rbxs_dom_inspect,              0);
+  rb_define_method(cSmartDom, "dup",              (VALUE(*)(ANYARGS))rbxs_dom_dup,                  0);
+  rb_define_method(cSmartDom, "clone",            (VALUE(*)(ANYARGS))rbxs_dom_dup,                  0);
+  rb_define_method(cSmartDom, "to_s",             (VALUE(*)(ANYARGS))rbxs_dom_to_s,                 0);
+  rb_define_method(cSmartDom, "root",             (VALUE(*)(ANYARGS))rbxs_dom_root,                 0);
+  rb_define_method(cSmartDom, "root=",            (VALUE(*)(ANYARGS))rbxs_dom_root_set,             1);
+  rb_define_method(cSmartDom, "find",             (VALUE(*)(ANYARGS))rbxs_dom_find,                -1);
+  rb_define_method(cSmartDom, "on_change",        (VALUE(*)(ANYARGS))rbxs_dom_change_handler_set,   0);
+  rb_define_method(cSmartDom, "change_handlers",  (VALUE(*)(ANYARGS))rbxs_dom_change_handlers,      0);
+  rb_define_method(cSmartDom, "save_as",          (VALUE(*)(ANYARGS))rbxs_dom_save_as,              1);
+  rb_define_method(cSmartDom, "namespaces=",      (VALUE(*)(ANYARGS))rbxs_dom_namespaces_set,       1);
+  rb_define_method(cSmartDom, "namespaces",       (VALUE(*)(ANYARGS))rbxs_dom_namespaces_get,       0);
+  rb_define_method(cSmartDom, "encode_entities=", (VALUE(*)(ANYARGS))rbxs_dom_encode_entities_set,  1);
+  rb_define_method(cSmartDom, "encode_entities?", (VALUE(*)(ANYARGS))rbxs_dom_encode_entities_q,    0);
+  rb_define_method(cSmartDom, "save_unformated=", (VALUE(*)(ANYARGS))rbxs_dom_save_unformated_set,  1);
+  rb_define_method(cSmartDom, "save_unformated?", (VALUE(*)(ANYARGS))rbxs_dom_save_unformated_q,    0);
+  rb_define_method(cSmartDom, "xinclude!",        (VALUE(*)(ANYARGS))rbxs_dom_xinclude,             0);
+  rb_define_method(cSmartDom, "validate_against", (VALUE(*)(ANYARGS))rbxs_dom_validate_relaxng,     1);
 }

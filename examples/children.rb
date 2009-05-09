@@ -1,7 +1,10 @@
 #!/usr/bin/ruby
 require "#{File.dirname($0)}/../smart"
 
-doc = XML::Smart.open(File.dirname($0) + "/EXAMPLE.xml")
+ac = XML::Smart.open(File.dirname($0) + "/EXAMPLE.xml")
+doc = ac.dup
+
+
 node = doc.find("/test/names").first
 
 $stdout.sync = true

@@ -172,11 +172,11 @@ void init_rbxs_domattributeset(void) {
   cSmartDomAttributeSet = rb_define_class_under( cSmartDom, "AttributeSet", rb_cObject );
   rb_include_module(cSmartDomAttributeSet, rb_mEnumerable);
 
-  rb_define_method(cSmartDomAttributeSet, "has_attr?", rbxs_domattributeset_include,       1);
-  rb_define_method(cSmartDomAttributeSet, "get_attr",  rbxs_domattributeset_get_attr,      1);
-  rb_define_method(cSmartDomAttributeSet, "include?",  rbxs_domattributeset_include,       1);
-  rb_define_method(cSmartDomAttributeSet, "[]",        rbxs_domattributeset_get,           1);
-  rb_define_method(cSmartDomAttributeSet, "[]=",       rbxs_domattributeset_set,           2);
-  rb_define_method(cSmartDomAttributeSet, "add",       rbxs_domattributeset_set,           2);
-  rb_define_method(cSmartDomAttributeSet, "each",      rbxs_domattributeset_each,          0);
+  rb_define_method(cSmartDomAttributeSet, "has_attr?", (VALUE(*)(ANYARGS))rbxs_domattributeset_include,       1);
+  rb_define_method(cSmartDomAttributeSet, "get_attr",  (VALUE(*)(ANYARGS))rbxs_domattributeset_get_attr,      1);
+  rb_define_method(cSmartDomAttributeSet, "include?",  (VALUE(*)(ANYARGS))rbxs_domattributeset_include,       1);
+  rb_define_method(cSmartDomAttributeSet, "[]",        (VALUE(*)(ANYARGS))rbxs_domattributeset_get,           1);
+  rb_define_method(cSmartDomAttributeSet, "[]=",       (VALUE(*)(ANYARGS))rbxs_domattributeset_set,           2);
+  rb_define_method(cSmartDomAttributeSet, "add",       (VALUE(*)(ANYARGS))rbxs_domattributeset_set,           2);
+  rb_define_method(cSmartDomAttributeSet, "each",      (VALUE(*)(ANYARGS))rbxs_domattributeset_each,          0);
 }

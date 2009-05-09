@@ -146,11 +146,11 @@ void init_rbxs_pullattributeset(void) {
   cSmartPullAttributeSet = rb_define_class_under( cSmartPull, "AttributeSet", rb_cObject );
   rb_include_module(cSmartPullAttributeSet, rb_mEnumerable);
 
-  rb_define_method(cSmartPullAttributeSet, "length",   rbxs_pullattributeset_length,  0);
-  rb_define_method(cSmartPullAttributeSet, "empty?",   rbxs_pullattributeset_empty,   0);
-  rb_define_method(cSmartPullAttributeSet, "each",     rbxs_pullattributeset_each,    0);
-  rb_define_method(cSmartPullAttributeSet, "[]",       rbxs_pullattributeset_get,     1);
-  rb_define_method(cSmartPullAttributeSet, "first",    rbxs_pullattributeset_first,   0);
-  rb_define_method(cSmartPullAttributeSet, "last",     rbxs_pullattributeset_last,    0);
-  rb_define_method(cSmartPullAttributeSet, "include?", rbxs_pullattributeset_include, 1);
+  rb_define_method(cSmartPullAttributeSet, "length",   (VALUE(*)(ANYARGS))rbxs_pullattributeset_length,  0);
+  rb_define_method(cSmartPullAttributeSet, "empty?",   (VALUE(*)(ANYARGS))rbxs_pullattributeset_empty,   0);
+  rb_define_method(cSmartPullAttributeSet, "each",     (VALUE(*)(ANYARGS))rbxs_pullattributeset_each,    0);
+  rb_define_method(cSmartPullAttributeSet, "[]",       (VALUE(*)(ANYARGS))rbxs_pullattributeset_get,     1);
+  rb_define_method(cSmartPullAttributeSet, "first",    (VALUE(*)(ANYARGS))rbxs_pullattributeset_first,   0);
+  rb_define_method(cSmartPullAttributeSet, "last",     (VALUE(*)(ANYARGS))rbxs_pullattributeset_last,    0);
+  rb_define_method(cSmartPullAttributeSet, "include?", (VALUE(*)(ANYARGS))rbxs_pullattributeset_include, 1);
 }

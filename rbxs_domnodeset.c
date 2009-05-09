@@ -270,15 +270,15 @@ void init_rbxs_domnodeset(void) {
   cSmartDomNodeSet = rb_define_class_under( cSmartDom, "NodeSet", rb_cObject );
   rb_include_module(cSmartDomNodeSet, rb_mEnumerable);
 
-  rb_define_method(cSmartDomNodeSet, "length",      rbxs_domnodeset_length,     0);
-  rb_define_method(cSmartDomNodeSet, "nitems",      rbxs_domnodeset_nitems,     0);
-  rb_define_method(cSmartDomNodeSet, "empty?",      rbxs_domnodeset_empty_q,    0);
-  rb_define_method(cSmartDomNodeSet, "[]",          rbxs_domnodeset_get,        1);
-  rb_define_method(cSmartDomNodeSet, "at",          rbxs_domnodeset_get,        1);
-  rb_define_method(cSmartDomNodeSet, "first",       rbxs_domnodeset_first,      0);
-  rb_define_method(cSmartDomNodeSet, "last",        rbxs_domnodeset_last,       0);
-  rb_define_method(cSmartDomNodeSet, "delete_all!", rbxs_domnodeset_delete_all, 0);
-  rb_define_method(cSmartDomNodeSet, "delete_if!",  rbxs_domnodeset_delete_if,  0);
-  rb_define_method(cSmartDomNodeSet, "delete_at!",  rbxs_domnodeset_delete_at,  1);
-  rb_define_method(cSmartDomNodeSet, "each",        rbxs_domnodeset_each,       0);
+  rb_define_method(cSmartDomNodeSet, "length",      (VALUE(*)(ANYARGS))rbxs_domnodeset_length,     0);
+  rb_define_method(cSmartDomNodeSet, "nitems",      (VALUE(*)(ANYARGS))rbxs_domnodeset_nitems,     0);
+  rb_define_method(cSmartDomNodeSet, "empty?",      (VALUE(*)(ANYARGS))rbxs_domnodeset_empty_q,    0);
+  rb_define_method(cSmartDomNodeSet, "[]",          (VALUE(*)(ANYARGS))rbxs_domnodeset_get,        1);
+  rb_define_method(cSmartDomNodeSet, "at",          (VALUE(*)(ANYARGS))rbxs_domnodeset_get,        1);
+  rb_define_method(cSmartDomNodeSet, "first",       (VALUE(*)(ANYARGS))rbxs_domnodeset_first,      0);
+  rb_define_method(cSmartDomNodeSet, "last",        (VALUE(*)(ANYARGS))rbxs_domnodeset_last,       0);
+  rb_define_method(cSmartDomNodeSet, "delete_all!", (VALUE(*)(ANYARGS))rbxs_domnodeset_delete_all, 0);
+  rb_define_method(cSmartDomNodeSet, "delete_if!",  (VALUE(*)(ANYARGS))rbxs_domnodeset_delete_if,  0);
+  rb_define_method(cSmartDomNodeSet, "delete_at!",  (VALUE(*)(ANYARGS))rbxs_domnodeset_delete_at,  1);
+  rb_define_method(cSmartDomNodeSet, "each",        (VALUE(*)(ANYARGS))rbxs_domnodeset_each,       0);
 }

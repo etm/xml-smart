@@ -120,8 +120,8 @@ VALUE cSmartDomNamespace;
 void init_rbxs_domnamespace(void) {
   cSmartDomNamespace = rb_define_class_under( cSmartDom, "Namespace", rb_cObject );
 
-  rb_define_method(cSmartDomNamespace, "inspect",   rbxs_domnamespace_inspect, 0);
-  rb_define_method(cSmartDomNamespace, "to_s",      rbxs_domnamespace_to_s,    0);
-  rb_define_method(cSmartDomNamespace, "prefix",    rbxs_domnamespace_prefix,  0);
-  rb_define_method(cSmartDomNamespace, "href",      rbxs_domnamespace_href,    0);
+  rb_define_method(cSmartDomNamespace, "inspect", (VALUE(*)(ANYARGS))rbxs_domnamespace_inspect, 0);
+  rb_define_method(cSmartDomNamespace, "to_s",    (VALUE(*)(ANYARGS))rbxs_domnamespace_to_s,    0);
+  rb_define_method(cSmartDomNamespace, "prefix",  (VALUE(*)(ANYARGS))rbxs_domnamespace_prefix,  0);
+  rb_define_method(cSmartDomNamespace, "href",    (VALUE(*)(ANYARGS))rbxs_domnamespace_href,    0);
 }

@@ -177,13 +177,13 @@ VALUE cSmartDomAttribute;
 void init_rbxs_domattribute(void) {
   cSmartDomAttribute = rb_define_class_under( cSmartDom, "Attribute", rb_cObject );
 
-  rb_define_method(cSmartDomAttribute, "inspect", rbxs_domattribute_inspect,    0);
-  rb_define_method(cSmartDomAttribute, "to_s",    rbxs_domattribute_value_get,  0);
-  rb_define_method(cSmartDomAttribute, "to_i",    rbxs_domattribute_to_i,      -1);
-  rb_define_method(cSmartDomAttribute, "to_f",    rbxs_domattribute_to_f,       0);
-  rb_define_method(cSmartDomAttribute, "name",    rbxs_domattribute_name_get,   0);
-  rb_define_method(cSmartDomAttribute, "path",    rbxs_domattribute_path,       0);
-  rb_define_method(cSmartDomAttribute, "value",   rbxs_domattribute_value_get,  0);
-  rb_define_method(cSmartDomAttribute, "value=",  rbxs_domattribute_value_set,  1);
-  rb_define_method(cSmartDomAttribute, "element", rbxs_domattribute_element,    0);
+  rb_define_method(cSmartDomAttribute, "inspect", (VALUE(*)(ANYARGS))rbxs_domattribute_inspect,    0);
+  rb_define_method(cSmartDomAttribute, "to_s",    (VALUE(*)(ANYARGS))rbxs_domattribute_value_get,  0);
+  rb_define_method(cSmartDomAttribute, "to_i",    (VALUE(*)(ANYARGS))rbxs_domattribute_to_i,      -1);
+  rb_define_method(cSmartDomAttribute, "to_f",    (VALUE(*)(ANYARGS))rbxs_domattribute_to_f,       0);
+  rb_define_method(cSmartDomAttribute, "name",    (VALUE(*)(ANYARGS))rbxs_domattribute_name_get,   0);
+  rb_define_method(cSmartDomAttribute, "path",    (VALUE(*)(ANYARGS))rbxs_domattribute_path,       0);
+  rb_define_method(cSmartDomAttribute, "value",   (VALUE(*)(ANYARGS))rbxs_domattribute_value_get,  0);
+  rb_define_method(cSmartDomAttribute, "value=",  (VALUE(*)(ANYARGS))rbxs_domattribute_value_set,  1);
+  rb_define_method(cSmartDomAttribute, "element", (VALUE(*)(ANYARGS))rbxs_domattribute_element,    0);
 }

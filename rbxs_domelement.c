@@ -105,10 +105,10 @@ VALUE rbxs_domelement_find(int argc, VALUE *argv, VALUE self)
   if (argc == 2) {
     Check_Type(argv[1], T_HASH);
     if (!RHASH_EMPTY_P(argv[1]))
-      rb_hash_foreach(argv[1], nslist_each, (st_data_t)ctxt);
+      rb_hash_foreach(argv[1], (int(*)(ANYARGS))nslist_each, (st_data_t)ctxt);
   }
   if (!RHASH_EMPTY_P(prbxs_dom->namespaces))
-    rb_hash_foreach(prbxs_dom->namespaces, nslist_each, (st_data_t)ctxt);
+    rb_hash_foreach(prbxs_dom->namespaces, (int(*)(ANYARGS))nslist_each, (st_data_t)ctxt);
   
   obj = xmlXPathEvalExpression((unsigned char *)StringValuePtr(argv[0]), ctxt);
   if(obj == NULL) {
@@ -479,7 +479,7 @@ static VALUE rbxs_domelement_add_worker(int argc, VALUE *argv, VALUE self, int w
       if (new_domelement == NULL)
         rb_raise(rb_eRuntimeError, "Couldn't add element");
       if (!RHASH_EMPTY_P(attributes))
-        rb_hash_foreach(attributes, addAttributes_each, (st_data_t)new_domelement);
+        rb_hash_foreach(attributes, (int(*)(ANYARGS))addAttributes_each, (st_data_t)new_domelement);
       ret = rbxs_domelement_new(cSmartDomElement,prbxs_domelement->doc,new_domelement);
       rbxs_dom_change_handlers_execute(prbxs_dom,RBXS_DOM_SIGNAL_ADD,ret);
       return(ret);
@@ -651,29 +651,29 @@ void init_rbxs_domelement(void) {
   rb_define_const(cSmartDomElement, "MOVE", INT2NUM(0));
   rb_define_const(cSmartDomElement, "COPY", INT2NUM(1));
 
-  rb_define_method(cSmartDomElement, "dump",            rbxs_domelement_dump,              0);
-  rb_define_method(cSmartDomElement, "inspect",         rbxs_domelement_inspect,           0);
-  rb_define_method(cSmartDomElement, "find",            rbxs_domelement_find,             -1);
-  rb_define_method(cSmartDomElement, "to_s",            rbxs_domelement_text_get,          0);
-  rb_define_method(cSmartDomElement, "to_i",            rbxs_domelement_to_i,             -1);
-  rb_define_method(cSmartDomElement, "to_f",            rbxs_domelement_to_f,              0);
-  rb_define_method(cSmartDomElement, "name",            rbxs_domelement_name,              0);
-  rb_define_method(cSmartDomElement, "text",            rbxs_domelement_text_get,          0);
-  rb_define_method(cSmartDomElement, "text=",           rbxs_domelement_text_set,          1);
-  rb_define_method(cSmartDomElement, "children",        rbxs_domelement_children,          0);
-  rb_define_method(cSmartDomElement, "children?",       rbxs_domelement_children_q,        0);
-  rb_define_method(cSmartDomElement, "empty?",          rbxs_domelement_children_empty_q,  0);
-  rb_define_method(cSmartDomElement, "mixed?",          rbxs_domelement_children_mixed_q,  0);
-  rb_define_method(cSmartDomElement, "parent",          rbxs_domelement_parent,            0);
-  rb_define_method(cSmartDomElement, "path",            rbxs_domelement_path,              0);
-  rb_define_method(cSmartDomElement, "attributes",      rbxs_domelement_attributes,        0);
-  rb_define_method(cSmartDomElement, "add",             rbxs_domelement_add,              -1);
-  rb_define_method(cSmartDomElement, "add_before",      rbxs_domelement_add_before,       -1);
-  rb_define_method(cSmartDomElement, "add_after",       rbxs_domelement_add_after,        -1);
-  rb_define_method(cSmartDomElement, "replace_by",      rbxs_domelement_replace_by,        1);
-  rb_define_method(cSmartDomElement, "namespaces",      rbxs_domelement_namespaces,        0);
-  rb_define_method(cSmartDomElement, "namespace",       rbxs_domelement_namespace,         0);
-  rb_define_method(cSmartDomElement, "namespace?",      rbxs_domelement_namespace_q,       0);
-  rb_define_method(cSmartDomElement, "namespace=",      rbxs_domelement_namespace_set,     1);
-  rb_define_method(cSmartDomElement, "xinclude!",       rbxs_domelement_xinclude,          0);
+  rb_define_method(cSmartDomElement, "dump",            (VALUE(*)(ANYARGS))rbxs_domelement_dump,              0);
+  rb_define_method(cSmartDomElement, "inspect",         (VALUE(*)(ANYARGS))rbxs_domelement_inspect,           0);
+  rb_define_method(cSmartDomElement, "find",            (VALUE(*)(ANYARGS))rbxs_domelement_find,             -1);
+  rb_define_method(cSmartDomElement, "to_s",            (VALUE(*)(ANYARGS))rbxs_domelement_text_get,          0);
+  rb_define_method(cSmartDomElement, "to_i",            (VALUE(*)(ANYARGS))rbxs_domelement_to_i,             -1);
+  rb_define_method(cSmartDomElement, "to_f",            (VALUE(*)(ANYARGS))rbxs_domelement_to_f,              0);
+  rb_define_method(cSmartDomElement, "name",            (VALUE(*)(ANYARGS))rbxs_domelement_name,              0);
+  rb_define_method(cSmartDomElement, "text",            (VALUE(*)(ANYARGS))rbxs_domelement_text_get,          0);
+  rb_define_method(cSmartDomElement, "text=",           (VALUE(*)(ANYARGS))rbxs_domelement_text_set,          1);
+  rb_define_method(cSmartDomElement, "children",        (VALUE(*)(ANYARGS))rbxs_domelement_children,          0);
+  rb_define_method(cSmartDomElement, "children?",       (VALUE(*)(ANYARGS))rbxs_domelement_children_q,        0);
+  rb_define_method(cSmartDomElement, "empty?",          (VALUE(*)(ANYARGS))rbxs_domelement_children_empty_q,  0);
+  rb_define_method(cSmartDomElement, "mixed?",          (VALUE(*)(ANYARGS))rbxs_domelement_children_mixed_q,  0);
+  rb_define_method(cSmartDomElement, "parent",          (VALUE(*)(ANYARGS))rbxs_domelement_parent,            0);
+  rb_define_method(cSmartDomElement, "path",            (VALUE(*)(ANYARGS))rbxs_domelement_path,              0);
+  rb_define_method(cSmartDomElement, "attributes",      (VALUE(*)(ANYARGS))rbxs_domelement_attributes,        0);
+  rb_define_method(cSmartDomElement, "add",             (VALUE(*)(ANYARGS))rbxs_domelement_add,              -1);
+  rb_define_method(cSmartDomElement, "add_before",      (VALUE(*)(ANYARGS))rbxs_domelement_add_before,       -1);
+  rb_define_method(cSmartDomElement, "add_after",       (VALUE(*)(ANYARGS))rbxs_domelement_add_after,        -1);
+  rb_define_method(cSmartDomElement, "replace_by",      (VALUE(*)(ANYARGS))rbxs_domelement_replace_by,        1);
+  rb_define_method(cSmartDomElement, "namespaces",      (VALUE(*)(ANYARGS))rbxs_domelement_namespaces,        0);
+  rb_define_method(cSmartDomElement, "namespace",       (VALUE(*)(ANYARGS))rbxs_domelement_namespace,         0);
+  rb_define_method(cSmartDomElement, "namespace?",      (VALUE(*)(ANYARGS))rbxs_domelement_namespace_q,       0);
+  rb_define_method(cSmartDomElement, "namespace=",      (VALUE(*)(ANYARGS))rbxs_domelement_namespace_set,     1);
+  rb_define_method(cSmartDomElement, "xinclude!",       (VALUE(*)(ANYARGS))rbxs_domelement_xinclude,          0);
 }

@@ -229,16 +229,16 @@ void init_rbxs_pull(void) {
   type2symbol[XML_READER_TYPE_END_ENTITY]             = rb_intern("end_entity");
   type2symbol[XML_READER_TYPE_XML_DECLARATION]        = rb_intern("xml_declaration");
   
-  rb_define_method(cSmartPull, "to_s",       rbxs_pull_value,      0);
-  rb_define_method(cSmartPull, "next",       rbxs_pull_next,       0);
-  rb_define_method(cSmartPull, "name",       rbxs_pull_name,       0);
+  rb_define_method(cSmartPull, "to_s",       (VALUE(*)(ANYARGS))rbxs_pull_value,      0);
+  rb_define_method(cSmartPull, "next",       (VALUE(*)(ANYARGS))rbxs_pull_next,       0);
+  rb_define_method(cSmartPull, "name",       (VALUE(*)(ANYARGS))rbxs_pull_name,       0);
 
-  rb_define_method(cSmartPull, "base",       rbxs_pull_base,       0);
-  rb_define_method(cSmartPull, "depth",      rbxs_pull_depth,      0);
-  rb_define_method(cSmartPull, "attributes", rbxs_pull_attributes, 0);
-  rb_define_method(cSmartPull, "value?",     rbxs_pull_valuep,     0);
-  rb_define_method(cSmartPull, "value",      rbxs_pull_value,      0);
-  rb_define_method(cSmartPull, "empty?",     rbxs_pull_emptyp,     0);
-  rb_define_method(cSmartPull, "lang",       rbxs_pull_xml_lang,   0);
-  rb_define_method(cSmartPull, "node_type",  rbxs_pull_node_type,  0);
+  rb_define_method(cSmartPull, "base",       (VALUE(*)(ANYARGS))rbxs_pull_base,       0);
+  rb_define_method(cSmartPull, "depth",      (VALUE(*)(ANYARGS))rbxs_pull_depth,      0);
+  rb_define_method(cSmartPull, "attributes", (VALUE(*)(ANYARGS))rbxs_pull_attributes, 0);
+  rb_define_method(cSmartPull, "value?",     (VALUE(*)(ANYARGS))rbxs_pull_valuep,     0);
+  rb_define_method(cSmartPull, "value",      (VALUE(*)(ANYARGS))rbxs_pull_value,      0);
+  rb_define_method(cSmartPull, "empty?",     (VALUE(*)(ANYARGS))rbxs_pull_emptyp,     0);
+  rb_define_method(cSmartPull, "lang",       (VALUE(*)(ANYARGS))rbxs_pull_xml_lang,   0);
+  rb_define_method(cSmartPull, "node_type",  (VALUE(*)(ANYARGS))rbxs_pull_node_type,  0);
 }

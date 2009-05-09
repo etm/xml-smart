@@ -258,10 +258,10 @@ VALUE cSmartQName;
 void init_rbxs_qname(void) {
   cSmartQName = rb_define_class_under( cSmart, "QName", rb_cObject );
 
-  rb_define_method(cSmartQName, "inspect",   rbxs_qname_inspect,  0);
-  rb_define_method(cSmartQName, "to_s",      rbxs_qname_to_s,     0);
-  rb_define_method(cSmartQName, "==",        rbxs_qname_streq,    1);
-  rb_define_method(cSmartQName, "name",      rbxs_qname_name,     0);
-  rb_define_method(cSmartQName, "prefix",    rbxs_qname_prefix,   0);
-  rb_define_method(cSmartQName, "namespace", rbxs_qname_namespace,0);
+  rb_define_method(cSmartQName, "inspect",   (VALUE(*)(ANYARGS))rbxs_qname_inspect,  0);
+  rb_define_method(cSmartQName, "to_s",      (VALUE(*)(ANYARGS))rbxs_qname_to_s,     0);
+  rb_define_method(cSmartQName, "==",        (VALUE(*)(ANYARGS))rbxs_qname_streq,    1);
+  rb_define_method(cSmartQName, "name",      (VALUE(*)(ANYARGS))rbxs_qname_name,     0);
+  rb_define_method(cSmartQName, "prefix",    (VALUE(*)(ANYARGS))rbxs_qname_prefix,   0);
+  rb_define_method(cSmartQName, "namespace", (VALUE(*)(ANYARGS))rbxs_qname_namespace,0);
 }
