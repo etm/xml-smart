@@ -9,10 +9,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-const char XSDtoRNG[] = {
-#include "XSDtoRNG.xsl"
-};
-
 /* -- */
 // ***********************************************************************************
 // GC
