@@ -21,5 +21,6 @@ Todo + Ideas:
 
 * add apply_style to dom (apply xslts) - keep in touch with Ken Wronkiewicz <wh at wirewd dot com> 
   who is interessted in this (I don't like the API's from Gregoire Lejeune but they are usable)
+  (DONE)
 * create detailed documention, not only examples
 * create unit test
