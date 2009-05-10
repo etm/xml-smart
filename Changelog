@@ -1,7 +1,16 @@
-0.2 "Skippin the bad thing, still working on a RIDDL"
-	* XML::Smart::DOM#dup
-	* Included XSDtoRNG to overcome libxml schema deficits
-	* added libxslt as dependency
+0.2 "libxml-ruby does it, so we do it too, version bump!!11!!"
+	* !!!!WARNING!!!! added libxslt as dependency
+	* XML::Smart::DOM#dup (other dups still segfault :-)
+	* XML::Smart::DOM#transform_with(XML::SMART.open("some_file.xsl"))
+	  -> Very simplic, will support parameters if there is need for
+	* XML::SMART::DOM::ELEMENT#to_doc will yield a new document with
+		the element as root
+	* Included XSDtoRNG to overcome libxml XSD schema part 1 deficits
+	  -> XSDtoRNG maintainer: 1st class hero, keep improving it
+	* XML::SMART::DOM#validate_against(XML::SMART.open("some_file.xsd"))
+		-> so its working without libxml supporting it :-)
+		-> what a pitty that libxml cannot apply the same trick internally,
+		   cause there is a dependency on xslt 
 
 0.1.12.2 "I'm working on a RIDDL immernoch"
 	* XML::SMART::DOM#namespaces return namespaces correctly

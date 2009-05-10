@@ -2,7 +2,7 @@
 require "#{File.dirname($0)}/../smart"
 
 stime = Time.now.to_f
-nums = 100000
+nums = 1000
 # Watch the power
 nums.times do
   doc = XML::Smart.open(File.dirname($0) + "/HELLO.xml")

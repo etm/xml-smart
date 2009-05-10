@@ -1,3 +1,4 @@
+/*{{{*/
 #include "rbxs_dom.h"
 #include "rbxs_domelement.h"
 #include "rbxs_domnodeset.h"
@@ -8,6 +9,9 @@
 #include <time.h>
 #include <fcntl.h>
 #include <unistd.h>
+
+#define RNG_NAMESPACE ((xmlChar *) "http://relaxng.org/ns/structure/1.0")
+#define XSD_NAMESPACE ((xmlChar *) "http://www.w3.org/2001/XMLSchema")
 
 /* -- */
 // ***********************************************************************************
@@ -222,25 +226,106 @@ VALUE rbxs_dom_root(VALUE self)
   else
     return(Qnil);
 }
+/*}}}*/
+
+/* -- */
+static xmlDocPtr transform(xmlDocPtr doc, xmlDocPtr style, xsltStylesheetPtr  sheetp) {
+  xmlNodePtr nodep = NULL;
+
+  xsltTransformContextPtr ctxt;
+  xmlDocPtr resultdocp;
+  int hasKeys = 0;
+
+  if (!sheetp) {
+    xmlFreeDoc(style);
+    rb_raise(rb_eRuntimeError, "Invalid Stylesheet");
+  }
+
+  nodep = xmlDocGetRootElement(sheetp->doc);  
+  if (nodep && (nodep = nodep->children)) {
+    while (nodep) {
+      if (nodep->type == XML_ELEMENT_NODE && xmlStrEqual(nodep->name, (xmlChar *)"key") && xmlStrEqual(nodep->ns->href, XSLT_NAMESPACE)) {
+        hasKeys = 1;
+        break;
+      }
+      nodep = nodep->next;
+    }
+  }
+
+  if (hasKeys == 1)
+    doc = xmlCopyDoc(doc, 1);
+
+  ctxt = xsltNewTransformContext(sheetp, doc);
+  resultdocp = xsltApplyStylesheetUser(sheetp, doc, NULL, NULL, NULL, ctxt);
+
+  xsltFreeTransformContext(ctxt);
+  if (hasKeys == 1)
+    xmlFreeDoc(doc);
+    
+  return(resultdocp);
+}
+/* ++ */
 
 /*
  *  Documentation
  */
-VALUE rbxs_dom_validate_relaxng(VALUE self, VALUE rdoc)
+VALUE rbxs_dom_validate_against(VALUE self, VALUE rdoc)
 {
 	xmlRelaxNGParserCtxtPtr parser;
 	xmlRelaxNGPtr           sptr;
 	xmlRelaxNGValidCtxtPtr  vptr;
 	int                     is_valid;
-  
+  int                     is_xsd = 0;
+  xmlNodePtr              nodep = NULL;
+
+  xmlDocPtr               doc;
+  xmlParserCtxtPtr        ctxt;
+  xmlDocPtr               style;
+  xsltStylesheetPtr       sheetp;
+
   rbxs_dom *prbxs_dom;
   rbxs_dom *prbxs_rdom;
 
   Data_Get_Struct(self, rbxs_dom, prbxs_dom);
-
+    
   if (rb_obj_is_kind_of(rdoc, cSmartDom)) {
     Data_Get_Struct(rdoc, rbxs_dom, prbxs_rdom);
-    parser = xmlRelaxNGNewDocParserCtxt(prbxs_rdom->doc);
+    doc = prbxs_rdom->doc;
+
+    nodep = xmlDocGetRootElement(doc);  
+    if (nodep) {
+      if (nodep->type == XML_ELEMENT_NODE && xmlStrEqual(nodep->name, (xmlChar *)"schema") && xmlStrEqual(nodep->ns->href, XSD_NAMESPACE)) {
+        is_xsd = 1;
+
+        ctxt = xmlCreateMemoryParserCtxt((const char *)XSDtoRNG_xsl,XSDtoRNG_xsl_len);
+        if (ctxt == NULL)
+          rb_sys_fail((const char *)XSDtoRNG_xsl);
+        if (xmlParseDocument(ctxt) == -1) {
+          xmlFreeDoc(ctxt->myDoc);
+          xmlFreeParserCtxt(ctxt);
+          rb_raise(rb_eRuntimeError, "XSDtoRNG didn't parse");
+        }
+        if (!ctxt->wellFormed) {
+          xmlFreeDoc(ctxt->myDoc);
+          xmlFreeParserCtxt(ctxt);
+          ctxt = NULL;
+          rb_raise(rb_eRuntimeError, "XSDtoRNG is not wellformed");
+        }
+        style = ctxt->myDoc;
+        xmlFreeParserCtxt(ctxt);
+        xmlNodeSetBase((xmlNodePtr) style, (xmlChar *)style->URL);
+        sheetp = xsltParseStylesheetDoc(style);
+        doc = transform(doc,style,sheetp);
+        xsltFreeStylesheet(sheetp);
+      }
+      else if (nodep->type == XML_ELEMENT_NODE && (xmlStrEqual(nodep->name, (xmlChar *)"element") || xmlStrEqual(nodep->name, (xmlChar *)"element")) && xmlStrEqual(nodep->ns->href, RNG_NAMESPACE)) {
+        // nothing to do :-)
+      } else {
+        rb_raise(rb_eRuntimeError, "Neither a XSD nor a RNG document");
+      }  
+    }
+
+    parser = xmlRelaxNGNewDocParserCtxt(doc);
 
     xmlRelaxNGSetParserErrors(parser,
       (xmlRelaxNGValidityErrorFunc) fprintf,
@@ -265,13 +350,15 @@ VALUE rbxs_dom_validate_relaxng(VALUE self, VALUE rdoc)
     xmlRelaxNGFree(sptr);
     xmlRelaxNGFreeValidCtxt(vptr);
 
+    if (is_xsd)
+      xmlFreeDoc(doc);
+
     if (is_valid == 0)
       return(Qtrue);
     return(Qfalse);
   } else
     rb_raise(rb_eArgError, "takes a XML::Smart document as argument");
 }
-
 
 /*
  *  Documentation
@@ -281,20 +368,12 @@ VALUE rbxs_dom_transform_with(VALUE self, VALUE xsldoc)
   rbxs_dom *prbxs_dom;
   rbxs_dom *prbxs_xsldom;
   
-  xmlDocPtr doc, style = NULL;
+  xmlDocPtr doc, resultdocp, style = NULL;
   xsltStylesheetPtr sheetp;
-  int prevSubstValue, prevExtDtdValue = 0;
-  xmlNodePtr nodep = NULL;
 
-  xsltTransformContextPtr ctxt;
-
-  xmlDocPtr newdocp;
-
-  int hasKeys = 0;
-
-  int sret = -1;
-  xmlChar *doc_txt_ptr;
   int doc_txt_len;
+  xmlChar *doc_txt_ptr;
+
   VALUE ret;
 
   Data_Get_Struct(self, rbxs_dom, prbxs_dom);
@@ -303,53 +382,22 @@ VALUE rbxs_dom_transform_with(VALUE self, VALUE xsldoc)
     doc = prbxs_dom->doc;
 
     Data_Get_Struct(xsldoc, rbxs_dom, prbxs_xsldom);
+
     style = xmlCopyDoc(prbxs_xsldom->doc, 1);
-    xmlNodeSetBase((xmlNodePtr) style, (xmlChar *)prbxs_xsldom->doc->URL);
-    prevSubstValue = xmlSubstituteEntitiesDefault(1);
-    prevExtDtdValue = xmlLoadExtDtdDefaultValue;
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-
+    xmlNodeSetBase((xmlNodePtr) style, (xmlChar *)style->URL);
     sheetp = xsltParseStylesheetDoc(style);
-    xmlSubstituteEntitiesDefault(prevSubstValue);
-    xmlLoadExtDtdDefaultValue = prevExtDtdValue;
+    resultdocp = transform(doc,style,sheetp);
 
-    if (!sheetp) {
-      xmlFreeDoc(style);
-      rb_raise(rb_eRuntimeError, "Invalid Stylesheet");
-    }
-
-    nodep = xmlDocGetRootElement(sheetp->doc);  
-    if (nodep && (nodep = nodep->children)) {
-      while (nodep) {
-        if (nodep->type == XML_ELEMENT_NODE && xmlStrEqual(nodep->name, (xmlChar *)"key") && xmlStrEqual(nodep->ns->href, XSLT_NAMESPACE)) {
-          hasKeys = 1;
-          break;
-        }
-        nodep = nodep->next;
-      }
-    }
-
-    if (hasKeys == 1)
-      doc = xmlCopyDoc(doc, 1);
-
-    ctxt = xsltNewTransformContext(sheetp, doc);
-    newdocp = xsltApplyStylesheetUser(sheetp, doc, NULL, NULL, NULL, ctxt);
-
-    xsltFreeTransformContext(ctxt);
-    if (hasKeys == 1)
-      xmlFreeDoc(doc);
-
-    sret = -1;
-    if (newdocp) {
-      sret = xsltSaveResultToString(&doc_txt_ptr, &doc_txt_len, newdocp, sheetp);
+    if (resultdocp) {
+      xsltSaveResultToString(&doc_txt_ptr, &doc_txt_len, resultdocp, sheetp);
       xsltFreeStylesheet(sheetp);
       if (doc_txt_ptr) {
         ret = rb_str_new((char *)doc_txt_ptr,doc_txt_len);
         xmlFree(doc_txt_ptr);
-        xmlFreeDoc(newdocp);
+        xmlFreeDoc(resultdocp);
         return(ret);
       }
-      xmlFreeDoc(newdocp);
+      xmlFreeDoc(resultdocp);
     } else {
       xsltFreeStylesheet(sheetp);
     }    
@@ -721,6 +769,6 @@ void init_rbxs_dom( void ) {
   rb_define_method(cSmartDom, "save_unformated=", (VALUE(*)(ANYARGS))rbxs_dom_save_unformated_set,  1);
   rb_define_method(cSmartDom, "save_unformated?", (VALUE(*)(ANYARGS))rbxs_dom_save_unformated_q,    0);
   rb_define_method(cSmartDom, "xinclude!",        (VALUE(*)(ANYARGS))rbxs_dom_xinclude,             0);
-  rb_define_method(cSmartDom, "validate_against", (VALUE(*)(ANYARGS))rbxs_dom_validate_relaxng,     1);
+  rb_define_method(cSmartDom, "validate_against", (VALUE(*)(ANYARGS))rbxs_dom_validate_against,     1);
   rb_define_method(cSmartDom, "transform_with",   (VALUE(*)(ANYARGS))rbxs_dom_transform_with,       1);
 }

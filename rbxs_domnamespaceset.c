@@ -3,7 +3,7 @@
 #include "rbxs_domnamespace.h"
 #include "rbxs_domnamespaceset.h"
 
-#define XML_XMLNS_NAMESPACE (unsigned char *) "http://www.w3.org/2000/xmlns/"
+#define XML_XMLNS_NAMESPACE ((xmlChar *) "http://www.w3.org/2000/xmlns/")
 
 /* -- */
 //***********************************************************************************

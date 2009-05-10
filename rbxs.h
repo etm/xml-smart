@@ -50,7 +50,7 @@
 #include <libxslt/xsltutils.h>
 #include <libxslt/imports.h>
 
-#define RBXS_VERSION  "0.1.14.1"
+#define RBXS_VERSION  "0.2.0"
 
 #define RBXS_PARSER_TYPE_DOM    0
 #define RBXS_PARSER_TYPE_READER 1

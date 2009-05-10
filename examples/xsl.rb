@@ -6,9 +6,9 @@ doc = XML::Smart.open(File.dirname($0) + "/XSL_BASE.xml")
 style = XML::Smart.open(File.dirname($0) + "/XSL_DOCUMENT.xml")
 
 stime = Time.now.to_f
-nums = 10000000
+nums = 1000000
 # Watch the power
 nums.times do
   doc.transform_with(style)
 end  
-puts "#{nums} validations done: #{Time.now.to_f - stime} seconds"
+puts "#{nums} transformations done: #{Time.now.to_f - stime} seconds"

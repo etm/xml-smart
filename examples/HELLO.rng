@@ -6,9 +6,4 @@
       </data>
     </element>
   </oneOrMore>  
-  <element name="include" ns="http://www.w3.org/2001/XInclude">
-    <attribute name="href">
-      <data type="anyURI"/>
-    </attribute>
-  </element> 
 </element>
