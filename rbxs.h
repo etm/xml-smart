@@ -43,6 +43,13 @@
 #include <libxml/xmlsave.h>
 #include <libxml/xinclude.h>
 
+#include <libxslt/extra.h>
+#include <libxslt/xslt.h>
+#include <libxslt/xsltInternals.h>
+#include <libxslt/transform.h>
+#include <libxslt/xsltutils.h>
+#include <libxslt/imports.h>
+
 #define RBXS_VERSION  "0.1.14.1"
 
 #define RBXS_PARSER_TYPE_DOM    0

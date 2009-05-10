@@ -71,7 +71,7 @@ spec = Gem::Specification.new do |s|
   s.author = "Jürgen Mangler"
   s.email = "juergen.mangler@univie.ac.at"
   s.homepage = "http://raa.ruby-lang.org/project/ruby-xml-smart/"
-  s.platform = Gem::Platform::CURRENT
+  s.platform = Gem::Platform::RUBY
   s.summary = 'easy to use and stable libxml2 binding'
   s.files = PKG_FILES
   s.test_files = FileList["{test}/*_test.rb"].to_a
@@ -81,6 +81,8 @@ spec = Gem::Specification.new do |s|
   s.autorequire = 'smart'
   s.rdoc_options  << '--charset=utf8' << '--line-numbers' << '--inline'
   s.extra_rdoc_files = ["README"]
+  s.rubyforge_project = 'ruby-xml-smart'
+  s.date = DateTime.now
   s.required_ruby_version = '>= 1.8.6'
 end
  

@@ -237,9 +237,9 @@ VALUE rbxs_dom_validate_relaxng(VALUE self, VALUE rdoc)
   rbxs_dom *prbxs_rdom;
 
   Data_Get_Struct(self, rbxs_dom, prbxs_dom);
-  Data_Get_Struct(rdoc, rbxs_dom, prbxs_rdom);
 
   if (rb_obj_is_kind_of(rdoc, cSmartDom)) {
+    Data_Get_Struct(rdoc, rbxs_dom, prbxs_rdom);
     parser = xmlRelaxNGNewDocParserCtxt(prbxs_rdom->doc);
 
     xmlRelaxNGSetParserErrors(parser,
@@ -269,7 +269,94 @@ VALUE rbxs_dom_validate_relaxng(VALUE self, VALUE rdoc)
       return(Qtrue);
     return(Qfalse);
   } else
-    rb_raise(rb_eArgError, "takes a dom document as argument");
+    rb_raise(rb_eArgError, "takes a XML::Smart document as argument");
+}
+
+
+/*
+ *  Documentation
+ */
+VALUE rbxs_dom_transform_with(VALUE self, VALUE xsldoc)
+{
+  rbxs_dom *prbxs_dom;
+  rbxs_dom *prbxs_xsldom;
+  
+  xmlDocPtr doc, style = NULL;
+  xsltStylesheetPtr sheetp;
+  int prevSubstValue, prevExtDtdValue = 0;
+  xmlNodePtr nodep = NULL;
+
+  xsltTransformContextPtr ctxt;
+
+  xmlDocPtr newdocp;
+
+  int hasKeys = 0;
+
+  int sret = -1;
+  xmlChar *doc_txt_ptr;
+  int doc_txt_len;
+  VALUE ret;
+
+  Data_Get_Struct(self, rbxs_dom, prbxs_dom);
+
+  if (rb_obj_is_kind_of(xsldoc, cSmartDom)) {
+    doc = prbxs_dom->doc;
+
+    Data_Get_Struct(xsldoc, rbxs_dom, prbxs_xsldom);
+    style = xmlCopyDoc(prbxs_xsldom->doc, 1);
+    xmlNodeSetBase((xmlNodePtr) style, (xmlChar *)prbxs_xsldom->doc->URL);
+    prevSubstValue = xmlSubstituteEntitiesDefault(1);
+    prevExtDtdValue = xmlLoadExtDtdDefaultValue;
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+
+    sheetp = xsltParseStylesheetDoc(style);
+    xmlSubstituteEntitiesDefault(prevSubstValue);
+    xmlLoadExtDtdDefaultValue = prevExtDtdValue;
+
+    if (!sheetp) {
+      xmlFreeDoc(style);
+      rb_raise(rb_eRuntimeError, "Invalid Stylesheet");
+    }
+
+    nodep = xmlDocGetRootElement(sheetp->doc);  
+    if (nodep && (nodep = nodep->children)) {
+      while (nodep) {
+        if (nodep->type == XML_ELEMENT_NODE && xmlStrEqual(nodep->name, (xmlChar *)"key") && xmlStrEqual(nodep->ns->href, XSLT_NAMESPACE)) {
+          hasKeys = 1;
+          break;
+        }
+        nodep = nodep->next;
+      }
+    }
+
+    if (hasKeys == 1)
+      doc = xmlCopyDoc(doc, 1);
+
+    ctxt = xsltNewTransformContext(sheetp, doc);
+    newdocp = xsltApplyStylesheetUser(sheetp, doc, NULL, NULL, NULL, ctxt);
+
+    xsltFreeTransformContext(ctxt);
+    if (hasKeys == 1)
+      xmlFreeDoc(doc);
+
+    sret = -1;
+    if (newdocp) {
+      sret = xsltSaveResultToString(&doc_txt_ptr, &doc_txt_len, newdocp, sheetp);
+      xsltFreeStylesheet(sheetp);
+      if (doc_txt_ptr) {
+        ret = rb_str_new((char *)doc_txt_ptr,doc_txt_len);
+        xmlFree(doc_txt_ptr);
+        xmlFreeDoc(newdocp);
+        return(ret);
+      }
+      xmlFreeDoc(newdocp);
+    } else {
+      xsltFreeStylesheet(sheetp);
+    }    
+
+    return(Qfalse);
+  } else
+    rb_raise(rb_eArgError, "takes a XML::Smart document as argument");
 }
 
 /*
@@ -635,4 +722,5 @@ void init_rbxs_dom( void ) {
   rb_define_method(cSmartDom, "save_unformated?", (VALUE(*)(ANYARGS))rbxs_dom_save_unformated_q,    0);
   rb_define_method(cSmartDom, "xinclude!",        (VALUE(*)(ANYARGS))rbxs_dom_xinclude,             0);
   rb_define_method(cSmartDom, "validate_against", (VALUE(*)(ANYARGS))rbxs_dom_validate_relaxng,     1);
+  rb_define_method(cSmartDom, "transform_with",   (VALUE(*)(ANYARGS))rbxs_dom_transform_with,       1);
 }

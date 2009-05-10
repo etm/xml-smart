@@ -1,5 +1,7 @@
-0.1.14 "Skippin the bad thing, still working on a RIDDL"
+0.2 "Skippin the bad thing, still working on a RIDDL"
 	* XML::Smart::DOM#dup
+	* Included XSDtoRNG to overcome libxml schema deficits
+	* added libxslt as dependency
 
 0.1.12.2 "I'm working on a RIDDL immernoch"
 	* XML::SMART::DOM#namespaces return namespaces correctly

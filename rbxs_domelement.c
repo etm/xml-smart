@@ -620,6 +620,11 @@ VALUE rbxs_domelement_namespace_set(VALUE self,VALUE nsobj)
   rb_raise(rb_eArgError, "Expecting XML::Smart::Dom::Namespace");
 }
 
+VALUE rbxs_domelement_to_doc(VALUE self)
+{
+  return rbxs_dom_string(rbxs_domelement_dump(self));
+}
+
 // ***********************************************************************************
 // Constructors
 // ***********************************************************************************
@@ -676,4 +681,5 @@ void init_rbxs_domelement(void) {
   rb_define_method(cSmartDomElement, "namespace?",      (VALUE(*)(ANYARGS))rbxs_domelement_namespace_q,       0);
   rb_define_method(cSmartDomElement, "namespace=",      (VALUE(*)(ANYARGS))rbxs_domelement_namespace_set,     1);
   rb_define_method(cSmartDomElement, "xinclude!",       (VALUE(*)(ANYARGS))rbxs_domelement_xinclude,          0);
+  rb_define_method(cSmartDomElement, "to_doc",          (VALUE(*)(ANYARGS))rbxs_domelement_to_doc,            0);
 }
