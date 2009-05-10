@@ -1,4 +1,4 @@
-0.2 "libxml-ruby does it, so we do it too, version bump!!11!!"
+0.2.0 "libxml-ruby does it, so we do it too, version bump!!11!!"
 	* !!!!WARNING!!!! added libxslt as dependency
 	* XML::Smart::DOM#dup (other dups still segfault :-)
 	* XML::Smart::DOM#transform_with(XML::SMART.open("some_file.xsl"))
