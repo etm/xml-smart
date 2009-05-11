@@ -318,7 +318,7 @@ VALUE rbxs_dom_validate_against(VALUE self, VALUE rdoc)
         doc = transform(doc,style,sheetp);
         xsltFreeStylesheet(sheetp);
       }
-      else if (nodep->type == XML_ELEMENT_NODE && (xmlStrEqual(nodep->name, (xmlChar *)"element") || xmlStrEqual(nodep->name, (xmlChar *)"element")) && xmlStrEqual(nodep->ns->href, RNG_NAMESPACE)) {
+      else if (nodep->type == XML_ELEMENT_NODE && (xmlStrEqual(nodep->name, (xmlChar *)"element") || xmlStrEqual(nodep->name, (xmlChar *)"grammar")) && xmlStrEqual(nodep->ns->href, RNG_NAMESPACE)) {
         // nothing to do :-)
       } else {
         rb_raise(rb_eRuntimeError, "Neither a XSD nor a RNG document");

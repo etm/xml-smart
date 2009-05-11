@@ -1,3 +1,6 @@
+0.2.1 "Grml"
+	* relaxng validation fix
+
 0.2.0 "libxml-ruby does it, so we do it too, version bump!!11!!"
 	* !!!!WARNING!!!! added libxslt as dependency
 	* XML::Smart::DOM#dup (other dups still segfault :-)
