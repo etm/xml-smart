@@ -498,11 +498,9 @@ static VALUE rbxs_domelement_add_worker(int argc, VALUE *argv, VALUE self, int w
       if (xmlXPathNodeSetIsEmpty(prbxs_cdomnodeset->nodeset)) return(Qnil);
       for (i = 0; i < prbxs_cdomnodeset->nodeset->nodeNr; i++) {
         if (prbxs_cdomnodeset->nodeset->nodeTab[i] == NULL) return (Qnil);
-        if (prbxs_cdomnodeset->nodeset->nodeTab[i]->type == XML_ELEMENT_NODE) {
-          Data_Get_Struct(prbxs_domelement->doc, rbxs_dom, prbxs_dom);
-          ret = moveOrCopyElement(prbxs_cdomnodeset->nodeset->nodeTab[i],argv[0],argc == 1 ? Qnil : argv[1],prbxs_domelement,where,0);
-          rbxs_dom_change_handlers_execute(prbxs_dom,RBXS_DOM_SIGNAL_ADD,ret);
-        }    
+        Data_Get_Struct(prbxs_domelement->doc, rbxs_dom, prbxs_dom);
+        ret = moveOrCopyElement(prbxs_cdomnodeset->nodeset->nodeTab[i],argv[0],argc == 1 ? Qnil : argv[1],prbxs_domelement,where,0);
+        rbxs_dom_change_handlers_execute(prbxs_dom,RBXS_DOM_SIGNAL_ADD,ret);
       }
       return(argv[0]);
   }  

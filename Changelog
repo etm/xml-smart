@@ -1,3 +1,10 @@
+0.2.1
+  * XML::Smart::DOM::Element#add(XML::Smart::DOM::NodeSet) now copys or moves
+    also textnodes
+
+0.2.0.2 "Grml 2"
+  * updated XSDtoRNG	
+
 0.2.0.1 "Grml"
 	* relaxng validation fix
 
