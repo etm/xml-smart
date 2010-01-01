@@ -1,3 +1,9 @@
+0.2.2
+  * XML::Smart::DOM::Text#dump
+  * XML::Smart::DOM::Namespaces#add(nil, "...")
+    XML::Smart::DOM::Namespaces#[nil] = "..."
+    add/modify the default namespace
+
 0.2.1
   * XML::Smart::DOM::Element#add(XML::Smart::DOM::NodeSet) now copys or moves
     also textnodes

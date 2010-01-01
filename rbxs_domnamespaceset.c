@@ -157,7 +157,6 @@ VALUE rbxs_domnamespaceset_set(VALUE self, VALUE prefix, VALUE href)
   unsigned short int type;
   VALUE ret,str;
 
-  Check_Type(prefix, T_STRING);
   Data_Get_Struct(self, rbxs_domnamespaceset, prbxs_domnamespaceset);
   Data_Get_Struct(prbxs_domnamespaceset->node, rbxs_domelement, prbxs_domelement);
   Data_Get_Struct(prbxs_domelement->doc, rbxs_dom, prbxs_dom);
@@ -169,12 +168,18 @@ VALUE rbxs_domnamespaceset_set(VALUE self, VALUE prefix, VALUE href)
   if (!xmlCheckUTF8(t_href))
     rb_raise(rb_eArgError, "href must be utf8 encoded");
   
-  str = rb_obj_as_string(prefix);
-  if (NIL_P(str) || TYPE(str) != T_STRING)
-    rb_raise(rb_eTypeError, "cannot convert prefix to string");
-  t_prefix = (unsigned char *)StringValuePtr(str);
-  if (!xmlCheckUTF8(t_prefix))
-    rb_raise(rb_eArgError, "prefix must be utf8 encoded");
+  str = prefix;
+  if (NIL_P(str) || TYPE(str) == T_STRING) {
+    if (TYPE(str) == T_STRING) {
+      t_prefix = (unsigned char *)StringValuePtr(str);
+      if (!xmlCheckUTF8(t_prefix))
+        rb_raise(rb_eArgError, "prefix must be utf8 encoded");
+    } else {
+      t_prefix = NULL;
+    }  
+  } else {  
+    rb_raise(rb_eTypeError, "prefix not string or nil");
+  }  
 
   type = RBXS_DOM_SIGNAL_CHANGE;
   if (t_href == NULL ||

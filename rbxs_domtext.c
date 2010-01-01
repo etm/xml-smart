@@ -155,6 +155,7 @@ void init_rbxs_domtext(void) {
   cSmartDomText = rb_define_class_under( cSmartDom, "Text", rb_cObject );
 
   rb_define_method(cSmartDomText, "inspect", (VALUE(*)(ANYARGS))rbxs_domtext_inspect,   0);
+  rb_define_method(cSmartDomText, "dump",    (VALUE(*)(ANYARGS))rbxs_domtext_text_get,  0);
   rb_define_method(cSmartDomText, "to_s",    (VALUE(*)(ANYARGS))rbxs_domtext_text_get,  0);
   rb_define_method(cSmartDomText, "to_i",    (VALUE(*)(ANYARGS))rbxs_domtext_to_i,     -1);
   rb_define_method(cSmartDomText, "to_f",    (VALUE(*)(ANYARGS))rbxs_domtext_to_f,      0);
