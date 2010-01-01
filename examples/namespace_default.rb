@@ -11,6 +11,12 @@ nsnode = doc.root.add("hallo")
 nsnode.namespaces.add("test","http://heise")
 nsnode.namespaces.add(nil,"http://heise")
 nsnode.namespaces[nil] = "http://heiser"
+p nsnode.namespaces[nil]
+
+nsnode.namespaces.each do |n|
+  p n.prefix
+  p n.href
+end
 
 # print document
 puts doc

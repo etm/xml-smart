@@ -1,3 +1,6 @@
+0.2.2.1
+  * XML::Smart::DOM::Namespaces#[nil] should work too
+
 0.2.2
   * XML::Smart::DOM::Text#dump
   * XML::Smart::DOM::Namespaces#add(nil, "...")

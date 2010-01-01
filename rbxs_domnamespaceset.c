@@ -130,12 +130,18 @@ VALUE rbxs_domnamespaceset_get(VALUE self, VALUE prefix)
   xmlNsPtr ns;
   unsigned char *cmp;
 
-  Check_Type(prefix, T_STRING);
+  if (NIL_P(prefix) || TYPE(prefix) == T_STRING) {
+    if (TYPE(prefix) == T_STRING)
+      cmp = (unsigned char *)StringValuePtr(prefix);
+    else
+      cmp = NULL;
+  } else {  
+    rb_raise(rb_eTypeError, "prefix not string or nil");
+  }  
   Data_Get_Struct(self, rbxs_domnamespaceset, prbxs_domnamespaceset);
   Data_Get_Struct(prbxs_domnamespaceset->node, rbxs_domelement, prbxs_domelement);
 
   ns = prbxs_domelement->node->nsDef;
-  cmp = (unsigned char *)StringValuePtr(prefix);
   while (ns != NULL) {
     if (xmlStrEqual(ns->prefix,cmp))
       return(rb_str_new2((char *)ns->href));
