@@ -22,7 +22,7 @@
 #if (RUBY_VERSION_MAJOR == 1 &&  RUBY_VERSION_MINOR == 8 && RUBY_VERSION_TEENY < 7)
 #define RB_IO_T_FD(o) o->fd
 #else
-#define RB_IO_T_FD(o) fileno(o->f)
+#define RB_IO_T_FD(o) fileno(o->stdio_file)
 #endif
 #else
 #define RB_IO_T OpenFile
@@ -50,7 +50,7 @@
 #include <libxslt/xsltutils.h>
 #include <libxslt/imports.h>
 
-#define RBXS_VERSION  "0.2.2.1"
+#define RBXS_VERSION  "0.2.3"
 
 #define RBXS_PARSER_TYPE_DOM    0
 #define RBXS_PARSER_TYPE_READER 1

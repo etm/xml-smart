@@ -68,14 +68,13 @@ end
 spec = Gem::Specification.new do |s| 
   s.name = PKG_FILE
   s.version = PKG_VERSION
-  s.author = "Jürgen Mangler"
+  s.author = "Juergen Mangler"
   s.email = "juergen.mangler@univie.ac.at"
   s.homepage = "http://raa.ruby-lang.org/project/ruby-xml-smart/"
   s.platform = Gem::Platform::RUBY
   s.summary = 'easy to use and stable libxml2 binding'
   s.description = File.read('README')
   s.files = PKG_FILES
-  s.test_files = FileList["{test}/*_test.rb"].to_a
   s.require_path = '.'
   s.has_rdoc = true
   s.extensions = 'extconf.rb'

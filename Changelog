@@ -1,3 +1,6 @@
+0.2.3
+  * ruby 1.9.2 support, rb_io_t->stdio_file instead of rb_io_t->f
+
 0.2.2.1
   * XML::Smart::DOM::Namespaces#[nil] should work too
 
