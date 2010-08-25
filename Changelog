@@ -1,3 +1,6 @@
+0.2.3.1
+  * ruby 1.9.2 support, set NOBLANKS and ctxt option, as it is forgotten in ruby 1.9.2 otherwise
+
 0.2.3
   * ruby 1.9.2 support, rb_io_t->stdio_file instead of rb_io_t->f
 

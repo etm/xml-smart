@@ -588,6 +588,7 @@ VALUE rbxs_dom_string(VALUE string) {
   xmlInitParser();
 
   ctxt = xmlCreateMemoryParserCtxt(StringValuePtr(string),strlen(StringValuePtr(string)));
+  xmlCtxtUseOptions(ctxt, XML_PARSE_NOBLANKS|XML_PARSE_NSCLEAN);
   if (ctxt == NULL)
    rb_sys_fail(StringValuePtr(string));
 
@@ -677,6 +678,7 @@ VALUE rbxs_dom_open(VALUE name, char *root, unsigned short int lock, unsigned sh
 
   xmlInitParser();
   ctxt = xmlCreateFileParserCtxt(StringValuePtr(name));
+  xmlCtxtUseOptions(ctxt, XML_PARSE_NOBLANKS|XML_PARSE_NSCLEAN);
 
   prbxs_dom->type = RBXS_DOM_TYPE_FILE;
   prbxs_dom->encodeEntities = 1;

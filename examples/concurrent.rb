@@ -2,7 +2,7 @@
 require "#{File.dirname($0)}/../smart"
 require 'time'
 
-nums = 100000
+nums = 1000
 # Watch the power
 
 id      = 16
