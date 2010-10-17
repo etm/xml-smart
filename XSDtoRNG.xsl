@@ -53,10 +53,10 @@ knowledge of the CeCILL license and that you accept its terms.
 		</rng:grammar>
 	</xsl:template>
 	
-	<!-- in order to manage occurrences (and defaut) attributes goes there
+	<!-- in order to manage occurencies (and defaut) attributes goes there
 		 before going to mode="content" templates -->
 	<xsl:template match="xs:*">
-		<xsl:call-template name="occurrences"/>
+		<xsl:call-template name="occurencies"/>
 	</xsl:template>
 	
 	<xsl:template match="comment()">
@@ -133,7 +133,7 @@ knowledge of the CeCILL license and that you accept its terms.
 		<!-- case of root element -->
 		<xsl:choose>
 			<xsl:when test="parent::xs:schema">
-				<rng:start combine="choice">
+				<rng:start>
 					<rng:ref name="{@name}"/>
 				</rng:start>
 				<rng:define name="{@name}">
@@ -141,7 +141,7 @@ knowledge of the CeCILL license and that you accept its terms.
 				</rng:define>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:call-template name="occurrences"/>
+				<xsl:call-template name="occurencies"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -168,11 +168,7 @@ knowledge of the CeCILL license and that you accept its terms.
 		<xsl:apply-templates/>
 	</xsl:template>
 	
-    <!--
- support for fractionDigits, length, maxExclusive, maxInclusive, maxLength, minExclusive, minInclusive, minLength, pattern, totalDigits, whiteSpace
-explicit removal of enumeration as not all the XSLT processor respect templates priority
- -->
-	<xsl:template match="xs:*[not(self::xs:enumeration)][@value]">
+	<xsl:template match="xs:minInclusive[@value]|xs:minExclusive[@value]|xs:maxInclusive[@value]|xs:maxExclusive[@value]|xs:pattern[@value]">
 		<rng:param name="{local-name()}">
 			<xsl:value-of select="@value"/>
 		</rng:param>
@@ -204,21 +200,6 @@ explicit removal of enumeration as not all the XSLT processor respect templates 
 		<a:documentation>
             default value is : <xsl:value-of select="."/>
 		</a:documentation>
-	</xsl:template>
-    
-    <xsl:template match="xs:attribute[@name]">
-		<xsl:choose>
-			<xsl:when test="@use and @use='prohibited'"/>
-			<xsl:when test="@use and @use='required'">
-				<xsl:apply-templates select="current()" mode="content"/>
-			</xsl:when>
-			<!-- by default, attributes are optional -->
-			<xsl:otherwise>
-				<rng:optional>
-					<xsl:apply-templates select="current()" mode="content"/>
-				</rng:optional>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
     
 	<xsl:template match="xs:attribute[@name]" mode="content">
@@ -280,9 +261,14 @@ explicit removal of enumeration as not all the XSLT processor respect templates 
 		</rng:element>
 	</xsl:template>
 	
-	<xsl:template name="occurrences">
+	<xsl:template name="occurencies">
 		<xsl:apply-templates select="@default"/>
 		<xsl:choose>
+			<xsl:when test="@use and @use='optional'">
+				<rng:optional>
+					<xsl:apply-templates select="current()" mode="content"/>
+				</rng:optional>
+			</xsl:when>
 			<xsl:when test="@maxOccurs and @maxOccurs='unbounded'">
 				<xsl:choose>
 					<xsl:when test="@minOccurs and @minOccurs='0'">
@@ -337,25 +323,6 @@ explicit removal of enumeration as not all the XSLT processor respect templates 
 				<rng:data type="{substring-after($type, ':')}">
 					<xsl:apply-templates/>
 				</rng:data>
-			</xsl:when>
-			<xsl:when test="starts-with($type, 'xml:')">
-				<xsl:variable name="localName" select="substring-after($type, ':')"/>
-				<rng:attribute name="{$localName}" ns="http://www.w3.org/XML/1998/namespace">
-					<xsl:choose>
-						<xsl:when test="$localName='lang'">
-							<rng:value type="language"/>
-						</xsl:when>
-						<xsl:when test="$localName='space'">
-							<rng:choice>
-						        <rng:value>default</rng:value>
-						        <rng:value>preserve</rng:value>
-					      	</rng:choice>
-						</xsl:when>
-						<xsl:otherwise>
-							<rng:text/>
-						</xsl:otherwise>
-					</xsl:choose>
-			  	</rng:attribute>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:choose>
