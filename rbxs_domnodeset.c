@@ -11,7 +11,8 @@
 //***********************************************************************************
 void rbxs_domnodeset_free(rbxs_domnodeset *prbxs_domnodeset) {
   if (prbxs_domnodeset != NULL) {
-    xmlXPathFreeObject(prbxs_domnodeset->obj);
+    if (prbxs_domnodeset->obj != NULL)
+      xmlXPathFreeObject(prbxs_domnodeset->obj);
     prbxs_domnodeset->obj = NULL;
     prbxs_domnodeset->nodeset = NULL;
     free(prbxs_domnodeset);

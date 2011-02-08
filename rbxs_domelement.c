@@ -458,20 +458,20 @@ static VALUE rbxs_domelement_add_worker(int argc, VALUE *argv, VALUE self, int w
           str = rb_obj_as_string(argv[0]);
           if (NIL_P(str) || TYPE(str) != T_STRING)
             rb_raise(rb_eTypeError, "cannot convert obj to string");
-          new_domelement = xmlNewChild(prbxs_domelement->node, NULL, (unsigned char *)StringValuePtr(str), c);
+          new_domelement = xmlNewChild(prbxs_domelement->node, prbxs_domelement->node->ns, (unsigned char *)StringValuePtr(str), c);
           break;
         case 2:
           str = rb_obj_as_string(argv[0]);
           if (NIL_P(str) || TYPE(str) != T_STRING)
             rb_raise(rb_eTypeError, "cannot convert obj to string");
-          new_domelement = xmlNewDocNode(prbxs_domelement->node->doc, NULL, (unsigned char *)StringValuePtr(argv[0]), c);
+          new_domelement = xmlNewDocNode(prbxs_domelement->node->doc, prbxs_domelement->node->ns, (unsigned char *)StringValuePtr(argv[0]), c);
           new_domelement = xmlAddPrevSibling(prbxs_domelement->node,new_domelement);
           break;
         case 3:
           str = rb_obj_as_string(argv[0]);
           if (NIL_P(str) || TYPE(str) != T_STRING)
             rb_raise(rb_eTypeError, "cannot convert obj to string");
-          new_domelement = xmlNewDocNode(prbxs_domelement->node->doc, NULL, (unsigned char *)StringValuePtr(argv[0]), c);
+          new_domelement = xmlNewDocNode(prbxs_domelement->node->doc, prbxs_domelement->node->ns, (unsigned char *)StringValuePtr(argv[0]), c);
           new_domelement = xmlAddNextSibling(prbxs_domelement->node,new_domelement);
           break;
       }    
