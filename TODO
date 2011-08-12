@@ -33,3 +33,6 @@ Todo + Ideas:
 
 * create detailed documention, not only examples
 * create unit test
+
+Unit Tests
+* valgrind --partial-loads-ok=yes --undef-value-errors=no ruby xxx.rb

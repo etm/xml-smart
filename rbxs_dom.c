@@ -226,9 +226,110 @@ VALUE rbxs_dom_root(VALUE self)
   else
     return(Qnil);
 }
-/*}}}*/
+ /*}}}*/
 
 /* -- */
+static void rbxs_dom_xmlfree(xmlNodePtr node) {       
+  if(node) { 
+    switch (node->type) {
+      case XML_ATTRIBUTE_NODE:
+        xmlFreeProp((xmlAttrPtr) node);
+        break;
+      case XML_ENTITY_DECL:
+      case XML_ELEMENT_DECL:
+      case XML_ATTRIBUTE_DECL:
+        break;
+      case XML_NOTATION_NODE:
+        /* These require special handling */
+        if (node->name != NULL) {
+          xmlFree((char *) node->name);
+        }
+        if (((xmlEntityPtr) node)->ExternalID != NULL) {
+          xmlFree((char *) ((xmlEntityPtr) node)->ExternalID);
+        }
+        if (((xmlEntityPtr) node)->SystemID != NULL) {
+          xmlFree((char *) ((xmlEntityPtr) node)->SystemID);
+        }
+        xmlFree(node);
+        break;
+      case XML_NAMESPACE_DECL:
+        if (node->ns) {
+          xmlFreeNs(node->ns);
+          node->ns = NULL;
+        }
+        node->type = XML_ELEMENT_NODE;
+      default:
+        xmlFreeNode(node);
+    }
+  }
+}
+
+static void rbxs_dom_xmlfree_list(xmlNodePtr node) {
+  xmlNodePtr curnode;
+
+  if (node != NULL) {
+    curnode = node;
+    while (curnode != NULL) {
+      node = curnode;
+      switch (node->type) {
+        /* Skip property freeing for the following types */
+        case XML_NOTATION_NODE:
+          break;
+        case XML_ENTITY_REF_NODE:
+          rbxs_dom_xmlfree_list((xmlNodePtr) node->properties);
+          break;
+        case XML_ATTRIBUTE_NODE:
+          if ((node->doc != NULL) && (((xmlAttrPtr) node)->atype == XML_ATTRIBUTE_ID)) {
+            xmlRemoveID(node->doc, (xmlAttrPtr) node);
+          }
+        case XML_ATTRIBUTE_DECL:
+        case XML_DTD_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_ENTITY_DECL:
+        case XML_NAMESPACE_DECL:
+        case XML_TEXT_NODE:
+          rbxs_dom_xmlfree_list(node->children);
+          break;
+        default:
+          rbxs_dom_xmlfree_list(node->children);
+          rbxs_dom_xmlfree_list((xmlNodePtr) node->properties);
+      }
+
+      curnode = node->next;
+      xmlUnlinkNode(node);
+      rbxs_dom_xmlfree(node);
+    }
+  }
+}
+
+static void rbxs_dom_xmlfree_resource(xmlNodePtr node) {
+  if (!node) { return; }
+
+  switch (node->type) {
+    case XML_DOCUMENT_NODE:
+    case XML_HTML_DOCUMENT_NODE:
+      break;
+    default:
+      if (node->parent == NULL || node->type == XML_NAMESPACE_DECL) {
+        rbxs_dom_xmlfree_list((xmlNodePtr) node->children);
+        switch (node->type) {
+            /* Skip property freeing for the following types */
+            case XML_ATTRIBUTE_DECL:
+            case XML_DTD_NODE:
+            case XML_DOCUMENT_TYPE_NODE:
+            case XML_ENTITY_DECL:
+            case XML_ATTRIBUTE_NODE:
+            case XML_NAMESPACE_DECL:
+            case XML_TEXT_NODE:
+                break;
+            default:
+                rbxs_dom_xmlfree_list((xmlNodePtr) node->properties);
+        }
+        rbxs_dom_xmlfree(node);
+      }
+  }
+}
+
 static xmlDocPtr transform(xmlDocPtr doc, xmlDocPtr style, xsltStylesheetPtr  sheetp) {
   xmlNodePtr nodep = NULL;
 
@@ -565,18 +666,18 @@ xmlNodePtr rbxs_dom_free_xinclude_node(xmlNodePtr cur) {
   xincnode = cur;
   cur = cur->next;
   xmlUnlinkNode(xincnode);
-  xmlFreeNode(xincnode);
+  rbxs_dom_xmlfree_resource(xincnode);
   return cur;
 }
 
 void rbxs_dom_remove_xinclude_nodes(xmlNodePtr cur) {
   while(cur) {
     if (cur->type == XML_XINCLUDE_START) {
-      rbxs_dom_free_xinclude_node(cur);
+      cur = rbxs_dom_free_xinclude_node(cur);
 
       while(cur && cur->type != XML_XINCLUDE_END) {
         if (cur->type == XML_ELEMENT_NODE) {
-           rbxs_dom_remove_xinclude_nodes(cur->children);
+          rbxs_dom_remove_xinclude_nodes(cur->children);
         }
         cur = cur->next;
       }
