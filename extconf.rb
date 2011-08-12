@@ -4,11 +4,11 @@ require 'pp'
 
 PKG_NAME = 'xml/smart'
 
-include Config
+include RbConfig
 
 unless File.exists?('extconf.h')
   $CFLAGS  = '-g -Wall ' + $CFLAGS
-  $LIBPATH.push(Config::CONFIG['libdir'])
+  $LIBPATH.push(RbConfig::CONFIG['libdir'])
   unless have_library("z", "inflate")
     puts "Error: zlib is needed"
     exit 1

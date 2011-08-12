@@ -1,8 +1,8 @@
 require 'rubygems'
+require 'rubygems/package_task'
 require 'rake/clean'
 require 'rake/rdoctask'
 require 'rake/testtask'
-require 'rake/gempackagetask'
 require 'rdoc/rdoc'
 
 temp = `git ls-files`.split(/\r?\n/).collect{ |i| i unless i=~/^\.git/ }.compact
@@ -76,17 +76,16 @@ spec = Gem::Specification.new do |s|
   s.description = File.read('README')
   s.files = PKG_FILES
   s.require_path = '.'
-  s.has_rdoc = true
   s.extensions = 'extconf.rb'
   s.rdoc_options  << '--charset=utf8' << '--line-numbers' << '--inline'
   s.extra_rdoc_files = ["README"]
   s.rubyforge_project = 'ruby-xml-smart'
-  s.date = DateTime.now
+  s.date = Time.now
   s.required_ruby_version = '>= 1.8.6'
 end
  
-Rake::GemPackageTask.new(spec) do |pkg| 
-  pkg.need_tar = true 
+Gem::PackageTask.new(spec) do |pkg|
+  pkg.need_tar = true
 end
 
 desc "Generating RDoc documentation"

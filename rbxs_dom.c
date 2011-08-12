@@ -271,7 +271,7 @@ static xmlDocPtr transform(xmlDocPtr doc, xmlDocPtr style, xsltStylesheetPtr  sh
  */
 VALUE rbxs_dom_validate_against(VALUE self, VALUE rdoc)
 {
-	xmlRelaxNGParserCtxtPtr parser;
+	xmlRelaxNGParserCtxtPtr parser = NULL;
 	xmlRelaxNGPtr           sptr;
 	xmlRelaxNGValidCtxtPtr  vptr;
 	int                     is_valid;
@@ -282,6 +282,11 @@ VALUE rbxs_dom_validate_against(VALUE self, VALUE rdoc)
   xmlParserCtxtPtr        ctxt;
   xmlDocPtr               style;
   xsltStylesheetPtr       sheetp;
+        
+  // // dump helper for mem ctxt init
+  // xmlChar *strdoc;
+  // xmlParserCtxtPtr strctxt=NULL;
+  // int len;
 
   rbxs_dom *prbxs_dom;
   rbxs_dom *prbxs_rdom;
@@ -317,15 +322,25 @@ VALUE rbxs_dom_validate_against(VALUE self, VALUE rdoc)
         sheetp = xsltParseStylesheetDoc(style);
         doc = transform(doc,style,sheetp);
         xsltFreeStylesheet(sheetp);
+        parser = xmlRelaxNGNewDocParserCtxt(doc);
       }
       else if (nodep->type == XML_ELEMENT_NODE && (xmlStrEqual(nodep->name, (xmlChar *)"element") || xmlStrEqual(nodep->name, (xmlChar *)"grammar")) && xmlStrEqual(nodep->ns->href, RNG_NAMESPACE)) {
-        // nothing to do :-)
+        // // compensate for BUG in libxml? dump doc to string before initializing parser
+        // // it is not possible to use xmlRelaxNGNewMemParserCtxt, cause then relativ pathes do not resolve
+        // if (doc->encoding != NULL) {
+        //   xmlDocDumpMemoryEnc(doc, &strdoc, &len, (char *)doc->encoding);
+        // } else {
+        //   xmlDocDumpMemory(doc, &strdoc, &len);
+        // }
+        // strctxt = xmlCreateMemoryParserCtxt((char *)strdoc,len);
+        // xmlCtxtUseOptions(strctxt, XML_PARSE_NOBLANKS|XML_PARSE_NSCLEAN);
+        // xmlParseDocument(strctxt);
+        // parser = xmlRelaxNGNewDocParserCtxt(strctxt->myDoc);
+        parser = xmlRelaxNGNewDocParserCtxt(doc);
       } else {
         rb_raise(rb_eRuntimeError, "Neither a XSD nor a RNG document");
       }  
     }
-
-    parser = xmlRelaxNGNewDocParserCtxt(doc);
 
     xmlRelaxNGSetParserErrors(parser,
       (xmlRelaxNGValidityErrorFunc) fprintf,
@@ -352,6 +367,12 @@ VALUE rbxs_dom_validate_against(VALUE self, VALUE rdoc)
 
     if (is_xsd)
       xmlFreeDoc(doc);
+    else {
+      // xmlFreeDoc(strctxt->myDoc);
+      // xmlFreeParserCtxt(strctxt);
+      // strctxt = NULL;
+      // xmlFree(strdoc);
+    }  
 
     if (is_valid == 0)
       return(Qtrue);

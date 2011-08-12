@@ -103,20 +103,23 @@ VALUE rbxs_domnamespaceset_get_ns(VALUE self, VALUE prefix)
   rbxs_domnamespaceset *prbxs_domnamespaceset;
   rbxs_domelement *prbxs_domelement;
   xmlNsPtr ns;
-  unsigned char *cmp;
+  unsigned char *cmp = NULL;
 
-  Check_Type(prefix, T_STRING);
-  Data_Get_Struct(self, rbxs_domnamespaceset, prbxs_domnamespaceset);
-  Data_Get_Struct(prbxs_domnamespaceset->node, rbxs_domelement, prbxs_domelement);
+  if (NIL_P(prefix) || TYPE(prefix) == T_STRING) {
+    if (TYPE(prefix) == T_STRING)
+      cmp = (unsigned char *)StringValuePtr(prefix);
 
-  ns = prbxs_domelement->node->nsDef;
-  cmp = (unsigned char *)StringValuePtr(prefix);
-  while (ns != NULL) {
-    if (xmlStrEqual(ns->prefix,cmp)) {
-      return rbxs_domnamespace_new(cSmartDomNamespace, prbxs_domnamespaceset->node, ns);
-    } 
-    ns = ns->next;  
-  }  
+    Data_Get_Struct(self, rbxs_domnamespaceset, prbxs_domnamespaceset);
+    Data_Get_Struct(prbxs_domnamespaceset->node, rbxs_domelement, prbxs_domelement);
+
+    ns = prbxs_domelement->node->nsDef;
+    while (ns != NULL) {
+      if (xmlStrEqual(ns->prefix,cmp)) {
+        return rbxs_domnamespace_new(cSmartDomNamespace, prbxs_domnamespaceset->node, ns);
+      } 
+      ns = ns->next;  
+    }  
+  }
   return(Qnil);
 }
 

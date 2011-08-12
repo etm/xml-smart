@@ -6,7 +6,7 @@ doc.xinclude!
 rng = XML::Smart.open(File.dirname($0) + "/HELLO.rng")
 
 stime = Time.now.to_f
-nums = 1000
+nums = 100000
 # Watch the power
 nums.times do
   doc.validate_against(rng)

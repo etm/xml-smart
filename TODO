@@ -22,5 +22,14 @@ Todo + Ideas:
 * add apply_style to dom (apply xslts) - keep in touch with Ken Wronkiewicz <wh at wirewd dot com> 
   who is interessted in this (I don't like the API's from Gregoire Lejeune but they are usable)
   (DONE)
+
+* Namespaces:
+** By default XML::Smart::DOM#namespaces is populated with the namespace available in the whole document
+** XML::Smart::DOM#namespaces not changeable
+** adding namespaces to nodes update XML::Smart::DOM#namespaces
+** XML::Smart::DOM::Element#add has to respect namespaces as prefixes in the string name (#add "ex:name")
+** adding namespaces to nodes update XML::Smart::DOM#namespace_shortcuts exits
+** XML::Smart::DOM::Element#add translates namespace shortcuts (#add "shortcut:name")
+
 * create detailed documention, not only examples
 * create unit test
