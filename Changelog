@@ -1,9 +1,10 @@
-0.3.0 "Namespace mangler"
+0.2.5  
+  * fixed xinclude memleak (which sometimes caused a segfault)
   * compensate for libxml bug (maybe not a bug, but definitely an
   inconvenience). When a root not has a default namespace, children have no
   accessible namespace, adding a node with no namespaces means that it not
-  formally belongs to the root namespace. When this doc as an RNG document to
-  validate_against, the newly added nodes are just ignored. Bummer.
+  formally belongs to the root namespace. When this doc is used as an RNG document to
+  #validate_against, the newly added nodes are just ignored. Bummer.
 
   Optimal solution, whenever adding something with no namespace, move up in
   hierarchy until node with default namespace is found, and add the default
