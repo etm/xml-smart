@@ -1,5 +1,14 @@
+0.2.7
+  * save to any IO (e.g. tempfiles) for XML::Smart::DOM::save_as
+
+0.2.6
+  * fixed XML::Smart::DOM#transform_with memleak
+
+0.2.5.1
+  * Tried to fix README, but rubygems.org shows rdoc somehow strange (bullet points)
+
 0.2.5  
-  * fixed xinclude memleak (which sometimes caused a segfault)
+  * fixed XML::Smart::DOM#xinclude! memleak (which sometimes caused a segfault)
   * compensate for libxml bug (maybe not a bug, but definitely an
   inconvenience). When a root not has a default namespace, children have no
   accessible namespace, adding a node with no namespaces means that it not
