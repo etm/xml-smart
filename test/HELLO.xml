@@ -1,0 +1,8 @@
+<hellos xmlns:xi="http://www.w3.org/2001/XInclude">
+  <hello>hello world</hello>
+  <hello>hello obama</hello>
+  <hello>hella china</hello>
+  <hello>hello austria</hello>
+  <hello>hello me</hello>
+  <xi:include href="HELLO-MORE.xml"/>
+</hellos>

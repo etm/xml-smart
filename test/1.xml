@@ -1,0 +1,6 @@
+<root>
+  <node id="1">
+    <text>I am a text</text>
+  </node>
+  <node id="1000"/>
+</root>

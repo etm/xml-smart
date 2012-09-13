@@ -1,0 +1,23 @@
+Installation
+============
+
+Just type into the command line as root:
+
+# ruby install.rb
+
+Documentation
+=============
+
+Look into examples/example.rb to get an idea how this library is used.
+
+
+Author
+======
+
+Florian Frank <flori@ping.de>
+
+License
+=======
+
+GNU General Public License (GPL)
+

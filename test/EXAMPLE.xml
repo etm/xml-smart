@@ -1,0 +1,17 @@
+<test xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xml:lang="de">
+  <names>
+    <name team="0" a="3">Thu Sep 13 03:07:28 +0200 2012</name>
+    <name team="1">Jürgen</name>
+    <name team="1">Michel</name>
+    <name team="1">Raphi</name>
+    <name team="2">Kathrin <b>Fiedler</b></name>
+    <name team="2">Egon</name>
+    <test_node>a<b/>c<!-- argh --><![CDATA[ deity ]]></test_node>
+  </names>
+  <colors>
+    <blue taint="true">Yeah</blue>
+    <red taint="true"/>
+    <green taint="true"/>
+  </colors>
+  <soap:hallo/>
+</test>
