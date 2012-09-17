@@ -1,3 +1,7 @@
+0.3.0
+  qname.namespace renamed to qname.href
+  signals removed
+
 0.2.7
   * save to any IO (e.g. tempfiles) for XML::Smart::DOM::save_as
 
