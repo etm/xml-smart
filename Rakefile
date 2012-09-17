@@ -1,6 +1,7 @@
 require 'rake'
 require 'rubygems/package_task'
 require 'rake/testtask'
+require 'pp'
 
 Rake::TestTask.new do |t|
   t.libs << "test"
@@ -10,6 +11,7 @@ end
 
 spec = eval(File.read('xml-smart.gemspec'))
 Gem::PackageTask.new(spec) do |pkg|
+  pp pkg
   pkg.need_zip = true
   pkg.need_tar = true
 end

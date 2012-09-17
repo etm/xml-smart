@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
-require "#{File.dirname($0)}/term-ansicolor-0.0.4/lib/term/ansicolor.rb"
-require "#{File.dirname($0)}/../lib/smart"
+require 'rubygems'
+require 'term/ansicolor'
+require "#{File.dirname($0)}/../lib/xml/smart"
 include Term::ANSIColor
 
 def rememberPath(path,output)
