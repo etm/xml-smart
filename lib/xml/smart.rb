@@ -16,11 +16,28 @@ require File.expand_path(File.dirname(__FILE__) + '/smart_domnamespace')
 module Nokogiri
   module XML
     class Document
-      def custom_namespace_prefixes
-        @custom_namespace_prefixes ||= self.root.xpath_fast('//namespace::*').inject({}){|x,y| x[y.prefix] = y.href if y.prefix != 'xml'; x }
+      def ns_counter
+        @ns_counter ||= 1
       end
-      def custom_namespace_prefixes=(h)
-        @custom_namespace_prefixes = h
+      def ns_update
+        @ns_counter += 1
+        self
+      end
+
+      def custom_namespace_prefixes_update
+        @custom_namespace_prefixes = self.root.xpath_plain('//namespace::*').inject({}) do |x,y| 
+          case y.prefix
+            when nil
+              x['xmlns'] = y.href
+            when 'xml'
+            else
+              x[y.prefix] = y.href
+          end
+          x 
+        end  
+      end
+      def custom_namespace_prefixes
+        @custom_namespace_prefixes || custom_namespace_prefixes_update
       end
       def user_custom_namespace_prefixes
         @user_custom_namespace_prefixes ||= {}
@@ -31,14 +48,15 @@ module Nokogiri
     end
 
     class Node
-      def xpath_fast(path,ns={})
-        @oldns ||= {}
-        if @oldns == ns
+      def xpath_plain(path)
+        XPathContext.new(self).evaluate(path)
+      end
+      def xpath_fast(path)
+        @nsc ||= 0
+        if @nsc != self.document.ns_counter
           @ctx ||= XPathContext.new(self)
-        else  
-          @ctx = XPathContext.new(self)
-          @ctx.register_namespaces(ns)
-          @oldns = ns
+          @ctx.register_namespaces(self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
+          @nsc = self.document.ns_counter
         end
         path = path.gsub(/xmlns:/, ' :') unless Nokogiri.uses_libxml?
         @ctx.evaluate(path)

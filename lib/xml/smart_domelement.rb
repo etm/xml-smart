@@ -5,14 +5,12 @@ module XML
       class Element
         def initialize(element)
           @element = element
-          #@ctx = Nokogiri::XML::XPathContext.new(@element)
-          #@ns = {}
         end
 
         def ===(cls); self.is_a? cls; end
 
         def find(xpath)
-          Dom::smart_helper(@element.xpath_fast(xpath,@element.document.custom_namespace_prefixes))
+          Dom::smart_helper(@element.xpath_fast(xpath))
         end
 
         def add_helper(attrs)
@@ -85,7 +83,7 @@ module XML
         def to_f; @element.content.to_f; end
 
         def namespace?; !@element.namespace.nil?; end
-        def namespace; Namespace.new(@element.namespace); end
+        def namespace; namespace? ? Namespace.new(@element.namespace) : nil; end
         def namespace=(n)
           n = case n
             when Namespace
@@ -95,7 +93,7 @@ module XML
             else
               return
           end  
-          tmp = @element.document.custom_namespace_prefixes[n]
+          tmp = @element.document.custom_namespace_prefixes[n] || @element.document.user_custom_namespace_prefixes[n]
           unless tmp.nil?
             @element.namespace_scopes.each do |nss|
               @element.namespace = nss if nss.href == tmp

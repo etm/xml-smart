@@ -12,7 +12,7 @@ module XML
         def href; @ns.href; end
         alias :to_s :href
 
-        def prefix; @ns.prefix; end
+        def prefix; @ns.prefix || "xmlns"; end
 
         def ==(other)
           return false unless other

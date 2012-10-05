@@ -38,7 +38,8 @@ module XML
             nold.replace_by(nnew)
             @node = nnod
             @parent.instance_variable_set(:@element,@node) 
-            update_namespace_prefixes
+            @node.document.custom_namespace_prefixes_update
+            @node.document.ns_update
             Namespace.new(ns)
           end  
         end
@@ -56,7 +57,8 @@ module XML
           nold.replace_by(nnew)
           @node = nnod
           @parent.instance_variable_set(:@element,@node)
-          update_namespace_prefixes
+          @node.document.custom_namespace_prefixes_update
+          @node.document.ns_update
           nil
         end
 
@@ -83,7 +85,8 @@ module XML
             nold.replace_by(nnew)
             @node = nnod
             @parent.instance_variable_set(:@element,@node)
-            update_namespace_prefixes
+            @node.document.custom_namespace_prefixes_update
+            @node.document.ns_update
             true
           else
             false
@@ -104,14 +107,10 @@ module XML
           nold.replace_by(nnew)
           @node = nnod
           @parent.instance_variable_set(:@element,@node)
-          update_namespace_prefixes
+          @node.document.custom_namespace_prefixes_update
+          @node.document.ns_update
           self
         end
-
-        def update_namespace_prefixes
-          @node.document.custom_namespace_prefixes = Hash[*@node.document.collect_namespaces.map{ |k,v| [k.sub(/^xmlns:/,''),v] }.flatten].merge(@node.document.user_custom_namespace_prefixes)
-        end
-        private :update_namespace_prefixes
       end  
     
     end

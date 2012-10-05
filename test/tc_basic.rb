@@ -1,6 +1,6 @@
 require 'test/unit'
-require File.expand_path(::File.dirname(__FILE__) + '/../lib/smart')
-require File.expand_path(::File.dirname(__FILE__) + '/testmixin')
+require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
+require File.expand_path(::File.dirname(__FILE__) + '/mixin.rb')
 
 class TestChoose < Test::Unit::TestCase
   include TestMixin
@@ -101,5 +101,9 @@ class TestChoose < Test::Unit::TestCase
     assert(doc.root.namespaces.length == 3)
     node.namespace = 'xmlns'
     assert(node.dump == "<hallo/>");
+
+    node = doc.find("/xmlns:test")[0]
+    assert(node.qname.prefix == "xmlns")
+    assert(node.qname.href   == "http://default.org")
   end
 end

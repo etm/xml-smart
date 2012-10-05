@@ -24,18 +24,18 @@ module XML
       end
 
       def namespaces
-        @dom.custom_namespace_prefixes
+        @dom.custom_namespace_prefixes.merge @dom.user_custom_namespace_prefixes
       end
       def register_namespace(a,b)
         if a.respond_to?(:to_s) && b.respond_to?(:to_s) && !@dom.custom_namespace_prefixes.key?(a.to_s)
-          @dom.custom_namespace_prefixes[a.to_s] = b.to_s 
           @dom.user_custom_namespace_prefixes[a.to_s] = b.to_s
+          @dom.ns_update
         end
       end
       def unregister_namespace(a)
         if a.respond_to?(:to_s) && @dom.user_custom_namespace_prefixes.key?(a.to_s)
-          @dom.custom_namespace_prefixes.delete(a.to_s) 
           @dom.user_custom_namespace_prefixes.delete(a.to_s)
+          @dom.ns_update
         end
       end
 

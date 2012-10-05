@@ -12,7 +12,7 @@ module XML
       def name; @element.name; end
       def name=(n); @element.name = n; end
 
-      def prefix; @elementmespace && @element.namespace.prefix ? @element.namespace.prefix + ":" : ""; end
+      def prefix; @element.namespace && @element.namespace.prefix ? @element.namespace.prefix : "xmlns"; end
       def href; @element.namespace.href; end
     end
     
