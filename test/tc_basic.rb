@@ -1,11 +1,9 @@
 require 'test/unit'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
-require File.expand_path(::File.dirname(__FILE__) + '/mixin.rb')
+require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestChoose < Test::Unit::TestCase
-  include TestMixin
-
-  def test_add_children
+class TestBasic < Test::Unit::TestCase
+  def test_criss_cross
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
     node = doc.root.find("/test/names").first
 

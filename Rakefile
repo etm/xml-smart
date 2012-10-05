@@ -1,7 +1,6 @@
 require 'rake'
 require 'rubygems/package_task'
 require 'rake/testtask'
-require 'pp'
 
 Rake::TestTask.new do |t|
   t.libs << "test"
