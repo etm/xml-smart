@@ -7,8 +7,8 @@ class TestXSL < Test::Unit::TestCase
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/XSL_BASE.xml")
     style = XML::Smart.open(::File.dirname(__FILE__) + "/XSL_DOCUMENT.xml")
 
-    stime = Time.now.to_f
     nums = 1000
+
     # Watch the power
     start_timing "Transformation (#{nums} times)"
     nums.times do
