@@ -82,7 +82,7 @@ module XML
         end  
       end
 
-      def validate_against(doc)
+      def validate_against(doc,&errbl)
         raise Error, 'first parameter has to XML::Smart::Dom document' unless doc.instance_of? Dom
         res = if doc.root.namespaces.has_ns?("http://relaxng.org/ns/structure/1.0")
           Nokogiri::XML::RelaxNG.from_document(doc.instance_variable_get(:@dom)).validate(@dom)
@@ -91,7 +91,7 @@ module XML
           rdoc = tdoc.transform(doc.instance_variable_get(:@dom))
           Nokogiri::XML::RelaxNG.from_document(rdoc).validate(@dom)
         end
-        res.each { |err| $stderr.puts "#{err.file} line #{err.line}: #{err.to_s}" }
+        res.each { |err| errbl.call err } if block_given?
         res.empty?
       end
 

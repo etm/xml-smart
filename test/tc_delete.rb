@@ -2,8 +2,8 @@ require 'test/unit'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestBasic < Test::Unit::TestCase
-  def test_criss_cross
+class TestDelete < Test::Unit::TestCase
+  def test_delete
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
 
     nodes = doc.root.find("/test/names/name")

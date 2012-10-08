@@ -2,8 +2,8 @@ require 'test/unit'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestBasic < Test::Unit::TestCase
-  def test_criss_cross
+class TestCreate < Test::Unit::TestCase
+  def test_create
     # When a string as second paramter is provided, then a empty
     # xml file is created if it not exists. A block has to be supplied
     #
@@ -26,7 +26,6 @@ class TestBasic < Test::Unit::TestCase
     t1.join
     t2.join
 
-    # Print the document
-    assert(XML::Smart.open(File.dirname($0) + "/EXAMPLE.tmp.xml").root.to_s == XML::Smart.open(File.dirname($0) + "/EXAMPLE.tmp.xml.test").root.to_s)
+    assert(XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.tmp.xml").root.to_s == XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.tmp.xml.test").root.to_s)
   end
 end
