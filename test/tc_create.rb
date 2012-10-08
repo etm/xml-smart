@@ -10,7 +10,7 @@ class TestCreate < Test::Unit::TestCase
     # XML::Smart.modify(FILE,STRING) {}             ... create file if !exists?
     # XML::Smart.modify(FILE) {}                    ... just open file change and write back (LOCKTIMEOUT defaults to 7)
     
-    File.delete ::File.dirname(__FILE__) + "/EXAMPLE.tmp.xml"
+    File.unlink ::File.dirname(__FILE__) + "/EXAMPLE.tmp.xml" rescue nil
     t1 = Thread.new do
       XML::Smart.modify(::File.dirname(__FILE__) + "/EXAMPLE.tmp.xml","<elements/>") { |doc|
         node = doc.root.add("element","Thread 1")

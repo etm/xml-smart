@@ -16,7 +16,7 @@ module XML
         def add_helper(attrs)
           if attrs.length>0 && attrs[0].is_a?(String)
             pfx = ''
-            if attrs.sub! /([^:]+):/
+            if attrs[0].sub!(/([^:]+):/, '')
               pfx = $1
               if @element.document.user_custom_namespace_prefixes.has_key?(pfx)
                 @element.document.custom_namespace_prefixes.each do |k,v|
@@ -44,8 +44,6 @@ module XML
                 end
               end
             end
-            
-
             return tmp
           end
           if attrs.length == 1 && attrs[0].is_a?(XML::Smart::Dom::Element)
