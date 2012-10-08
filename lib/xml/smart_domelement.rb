@@ -15,6 +15,18 @@ module XML
 
         def add_helper(attrs)
           if attrs.length>0 && attrs[0].is_a?(String)
+            pfx = ''
+            if attrs.sub! /([^:]+):/
+              pfx = $1
+              if @element.document.user_custom_namespace_prefixes.has_key?(pfx)
+                @element.document.custom_namespace_prefixes.each do |k,v|
+                  if @element.document.user_custom_namespace_prefixes[pfx] == v
+                    pfx = k
+                  end
+                end  
+              end
+              raise Error, 'No valid namespace' if !@element.document.custom_namespace_prefixes.has_key?(pfx)
+            end  
             tmp = Nokogiri::XML::Node.new attrs[0], @element.document
             [1,2].each do |i|
               if attrs.length > i
@@ -32,6 +44,8 @@ module XML
                 end
               end
             end
+            
+
             return tmp
           end
           if attrs.length == 1 && attrs[0].is_a?(XML::Smart::Dom::Element)
