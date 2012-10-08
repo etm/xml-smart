@@ -20,6 +20,7 @@ module Nokogiri
         @ns_counter ||= 1
       end
       def ns_update
+        @ns_counter ||= 1
         @ns_counter += 1
         self
       end
