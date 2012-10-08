@@ -2,8 +2,8 @@ require 'test/unit'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestBasic < Test::Unit::TestCase
-  def test_criss_cross
+class TestWrite < Test::Unit::TestCase
+  def test_write
     tim = Time.now
 
     # When a closure is used, then the changes are written back to the disk

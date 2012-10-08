@@ -23,7 +23,6 @@ class TestCopy < Test::Unit::TestCase
     # copy all elements in nodeset
     doc.root.add(nodeS)
 
-    assert(doc.find("/test/names/name[1]").first.dump == "<name team=\"0\" a=\"3\">Thu Sep 13 03:07:28 +0200 2012</name>")
     assert(doc.find("/test/names/name[2]").first.dump == "<name team=\"1\">J&#xFC;rgen</name>")
     assert(doc.find("/test/names/name[3]").first.dump == "<name team=\"1\">Michel</name>")
     assert(doc.find("/test/names/name[4]").first.dump == "<name team=\"1\">Raphi</name>")
