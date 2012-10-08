@@ -16,7 +16,7 @@ class TestConcurrent < Test::Unit::TestCase
 
     result = ""
     p = []
-    start_timing 'Concurrent - unformatted'
+    start_timing "Concurrent - unformatted (#{nums} times)"
     0.upto(nums) do |i|
       p[i] = Thread.new do
         XML::Smart.modify(::File.dirname(__FILE__) + "/concurrent.xml","<solutions/>") do |xml|
@@ -50,7 +50,7 @@ class TestConcurrent < Test::Unit::TestCase
     exam    = true
 
     p = []
-    start_timing 'Concurrent - formatted'
+    start_timing "Concurrent - formatted (#{nums} times)"
     0.upto(nums) do |i|
       p[i] = Thread.new do
         XML::Smart.modify(::File.dirname(__FILE__) + "/concurrent.xml","<solutions/>") do |xml|
