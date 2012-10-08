@@ -1,43 +1,50 @@
-#!/usr/bin/ruby
-require "#{File.dirname($0)}/../lib/smart"
-require 'pp'
+require 'test/unit'
+require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
+require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-doc = XML::Smart.open(File.dirname($0) + "/EXAMPLE.xml")
-nodes = doc.root.find("/test/names/name")
+class TestBasic < Test::Unit::TestCase
+  def test_criss_cross
+    doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
 
-#puts "Original       : #{nodes.to_a.inspect}"
-puts "#length        : #{nodes.length}"
+    nodes = doc.root.find("/test/names/name")
+    assert(nodes.length == 6)
+    
+    nodes.delete_if{ |n| n.text == "Egon"; }
+    assert(nodes.length == 5)
+    
+    nodes.delete_at(2)
+    assert(nodes.length == 4)
+    
+    nodes.delete_at(-2)
+    assert(nodes.length == 3)
+    
+    nodes = doc.root.find("/test/names/*")
+    assert(nodes[0].qname.name == 'name')
+    assert(nodes[0].attributes['team'] == '0')
+    assert(nodes[0].attributes['a'] == '3')
 
-nodes.delete_if{ |n| n.text == "Egon"; }
-#puts "#delete_if    : #{nodes.to_a.inspect}"
-puts "#length        : #{nodes.length}"
+    assert(nodes[1].qname.name == 'name')
+    assert(nodes[1].attributes['team'] == '1')
+    assert(nodes[1].text == 'Jürgen')
 
-nodes.delete_at(2)
-#puts "#delete_at(2) : #{nodes.to_a.inspect}"
-puts "#length        : #{nodes.length}"
+    assert(nodes[2].qname.name == 'name')
+    assert(nodes[2].attributes['team'] == '2')
+    assert(nodes[2].text == 'Kathrin ')
 
-nodes.delete_at(-2)
-#puts "#delete_at(-2): #{nodes.to_a.inspect}"
-puts "#length        : #{nodes.length}"
-
-puts doc.to_s
-puts "\n"
-
-nodes = doc.root.find("/test/names/name/@team")
-puts "Before #delete_if:"
-pp nodes.to_a
-puts "-" * 40
-
-nodes.delete_if{ |n| n.to_i % 2  != 0 }
-puts "After #delete_if:"
-pp nodes.to_a
-puts "-" * 40
-
-puts doc
-
-nodes.delete_all!
-puts "After #delete_all!:"
-pp nodes.to_a
-puts "-" * 40
-
-puts doc
+    nodes = doc.root.find("/test/names/name/@team")
+    nodes.delete_if{ |n| n.to_i % 2  != 0 }
+    assert(nodes[0].value == '0')
+    assert(nodes[1].value == '2')
+    assert(nodes[2].nil?)
+    
+    nodes = doc.root.find("/test/names/name/@team")
+    assert(nodes[0].value == '0')
+    assert(nodes[1].value == '2')
+    
+    nodes.delete_all!
+    assert(nodes.empty?)
+    
+    nodes = doc.root.find("/test/names/name/@team")
+    assert(nodes.empty?)
+  end
+end

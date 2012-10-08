@@ -75,6 +75,8 @@ module XML
           Text.new(node)
         elsif node.instance_of? Nokogiri::XML::Namespace  
           Namespace.new(node)
+        elsif node.nil?
+          nil
         else
           Other.new(node)
         end  
