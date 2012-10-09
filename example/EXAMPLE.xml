@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <test xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" attr1="a" attr2="b">
-       <names>
+  <names>
     <name team="0">Sun Apr 03 14:53:20 CEST 2005</name>
     <name team="1">Jürgen</name>
     <name team="1">Michel</name>
