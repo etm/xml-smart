@@ -17,7 +17,14 @@ module XML
         alias :ns? :has_ns?
         alias :member? :has_ns?
 
-        def [](name); name.respond_to?(:to_s) && @node.namespace_definitions.find{|n| n.prefix == name.to_s} ? Namespace.new(@node.namespace_definitions.find{|n| n.prefix == name.to_s}) : nil; end;
+        def [](name)
+          if name.nil? || name.respond_to?(:to_s)
+            name = name.to_s unless name.nil?
+            name = nil if name =~ /^xmlns\d*$/
+            nd = @node.namespace_definitions.find{|n| n.prefix == name}
+            (name.respond_to?(:to_s) || name.nil?) && nd ? Namespace.new(nd) : nil; 
+          end  
+        end
         def []=(name,value) 
           self.add(name,value)
         end

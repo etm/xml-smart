@@ -21,9 +21,9 @@ class TestQname < Test::Unit::TestCase
 
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE-NS.xml")
 
-    node = doc.root.find("/xmlns:test").first
+    node = doc.root.find("/xmlns0:test").first
     assert(!node.nil?)
     assert(node.qname == "test")
-    assert(node.qname.to_s == "xmlns:test")
+    assert(node.qname.to_s == "test")
   end  
 end  

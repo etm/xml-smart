@@ -12,7 +12,13 @@ module XML
         def href; @ns.href; end
         alias :to_s :href
 
-        def prefix; @ns.prefix || "xmlns"; end
+        def prefix
+          if @ns.prefix
+            @ns.prefix
+          else
+            @ns.document.custom_namespace_prefixes.find{|k,v| v == @ns.href}[0]
+          end
+        end
 
         def ==(other)
           return false unless other

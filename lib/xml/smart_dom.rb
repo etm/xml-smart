@@ -27,15 +27,21 @@ module XML
         @dom.custom_namespace_prefixes.merge @dom.user_custom_namespace_prefixes
       end
       def register_namespace(a,b)
-        if a.respond_to?(:to_s) && b.respond_to?(:to_s) && !@dom.custom_namespace_prefixes.key?(a.to_s)
+        if a.respond_to?(:to_s) && b.respond_to?(:to_s) && !@dom.custom_namespace_prefixes.key?(a.to_s) && @dom.custom_namespace_prefixes.value?(b.to_s)
           @dom.user_custom_namespace_prefixes[a.to_s] = b.to_s
           @dom.ns_update
+          true
+        else
+          false
         end
       end
       def unregister_namespace(a)
         if a.respond_to?(:to_s) && @dom.user_custom_namespace_prefixes.key?(a.to_s)
           @dom.user_custom_namespace_prefixes.delete(a.to_s)
           @dom.ns_update
+          true
+        else
+          false
         end
       end
 

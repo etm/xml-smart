@@ -8,19 +8,25 @@ module XML
       def ===(cls); self.is_a? cls; end
       def +(str); @element.name + str; end
 
-      def to_s; (prefix == '' ? '' : prefix + ':') + @element.name; end
+      def to_s; (prefix.nil? || prefix == '' ? '' : prefix + ':') + @element.name; end
       def name; @element.name; end
       def name=(n); @element.name = n; end
 
       def prefix
         if @element.namespace 
-          @element.namespace.prefix ? @element.namespace.prefix : "xmlns"
+          if @element.namespace.prefix.nil?
+            ''
+          else  
+            @element.namespace.prefix
+          end  
         else
-          ''
+          nil
         end
       end
 
-      def href; @element.namespace.href; end
+      def href
+        @element.namespace ? @element.namespace.href : nil
+      end  
     end
     
   end

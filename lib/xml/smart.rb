@@ -28,33 +28,34 @@ module Nokogiri
       def custom_namespace_prefixes_update
         result = {}
 
-        ns = self.xpath_plain('//namespace::*')
-        de = ns.find{|n| n.prefix.nil?}
+        diffs = []
+        ns = self.xpath_plain('//namespace::*').to_a.delete_if do |n| 
+          if diffs.include? n.href
+            true
+          else  
+            diffs.push(n.href).uniq!
+            false
+          end  
+        end 
+
+        de = ns.find_all{|n| n.prefix.nil?}
         if de.length == 1
           result['xmlns'] = de[0].href
         end
         if de.length > 1
-          de.each_with_index do |n,i|
-            result["xmlns#{i}"] = n.href
+          i = 0
+          de.each do |n|
+            unless result.has_value? n.href
+              result["xmlns#{i}"] = n.href
+              i += 1
+            end  
           end
         end
 
-        ns.find{|n| n.prefix.nil?}
-
-        @custom_namespace_prefixes = self.root.xpath_plain('//namespace::*').inject({}) do |x,y| 
-          case y.prefix
-            when nil
-              start = ''
-              if x.has_key?('xmlns' + start) && x['xmlns' + start'xmlns
-              x['xmlns'] = y.href
-
-            when 'xml'
-            else
-              x[y.prefix] = y.href
-          end
-          x 
-        end  
-        exit
+        ns.find_all{|n| !n.prefix.nil? && !(n.prefix == 'xml')}.each do |n|
+          result[n.prefix] = n.href
+        end
+        result
       end
       def custom_namespace_prefixes
         @custom_namespace_prefixes || custom_namespace_prefixes_update
