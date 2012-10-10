@@ -1,8 +1,9 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestXSL < Test::Unit::TestCase
+class TestXSL < MiniTest::Unit::TestCase
   def test_xsl
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/XSL_BASE.xml")
     style = XML::Smart.open(::File.dirname(__FILE__) + "/XSL_DOCUMENT.xml")

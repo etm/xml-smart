@@ -1,9 +1,10 @@
 # coding: utf-8
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestMoveElements < Test::Unit::TestCase
+class TestMoveElements < MiniTest::Unit::TestCase
   def test_move_elements
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
     node = doc.find("/test/names/name[@team='1']").first

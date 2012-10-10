@@ -1,9 +1,10 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require 'pp'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestXinclude < Test::Unit::TestCase
+class TestXinclude < MiniTest::Unit::TestCase
   def test_xinclude
     nums = 10000
 

@@ -1,8 +1,9 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestXpathAttrs < Test::Unit::TestCase
+class TestXpathAttrs < MiniTest::Unit::TestCase
   def test_xpath_attrs
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
     node = doc.root.find("/test/names/name[2]/@team").first

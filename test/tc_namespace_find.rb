@@ -1,8 +1,9 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestNamespaceFind < Test::Unit::TestCase
+class TestNamespaceFind < MiniTest::Unit::TestCase
   def test_namespace_find
     # No closure, so changes are temporary
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")

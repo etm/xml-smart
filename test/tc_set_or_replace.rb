@@ -1,9 +1,10 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require 'time'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestSetOrReplace < Test::Unit::TestCase
+class TestSetOrReplace < MiniTest::Unit::TestCase
   def test_set_or_replace
     nums  = 1000
 

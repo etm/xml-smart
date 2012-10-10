@@ -13,7 +13,7 @@ EOF
   s.files            = Dir['{lib/**/*,example/**/*}'] + %w(COPYING Rakefile xml-smart.gemspec README.rdoc AUTHORS)
   s.require_path     = 'lib'
   s.extra_rdoc_files = ['README.rdoc']
-  s.test_files       = Dir['test/tc_*.rb','test/*.xml','test/*.rng','test/*.xsd','test/mixin.rb']
+  s.test_files       = Dir['test/tc_*.rb','test/*.xml','test/*.rng','test/*.xsd','test/smartrunner.rb']
 
   s.authors          = ['Juergen eTM Mangler']
   s.email            = 'juergen.mangler@gmail.com'

@@ -1,9 +1,10 @@
 # coding: utf-8
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestSort < Test::Unit::TestCase
+class TestSort < MiniTest::Unit::TestCase
   def test_sort
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
     nodes = doc.find("//names/name[@team>0]").sort{|a,b| a.to_s <=> b.to_s}

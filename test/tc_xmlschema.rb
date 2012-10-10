@@ -1,8 +1,9 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestXmlSchema < Test::Unit::TestCase
+class TestXmlSchema < MiniTest::Unit::TestCase
   def test_xmlschema
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/HELLO.xml")
     doc.xinclude!

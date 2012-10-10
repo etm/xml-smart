@@ -1,8 +1,9 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestWrite < Test::Unit::TestCase
+class TestWrite < MiniTest::Unit::TestCase
   def test_write
     tim = Time.now
 

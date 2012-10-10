@@ -1,9 +1,10 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require 'time'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestConcurrent < Test::Unit::TestCase
+class TestConcurrent < MiniTest::Unit::TestCase
   def test_unformated
     # Watch the power
     nums = 100

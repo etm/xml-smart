@@ -1,8 +1,9 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestCreate < Test::Unit::TestCase
+class TestCreate < MiniTest::Unit::TestCase
   def test_create
     # When a string as second paramter is provided, then a empty
     # xml file is created if it not exists. A block has to be supplied

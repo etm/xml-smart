@@ -1,9 +1,10 @@
-require 'test/unit'
+require 'rubygems'
+require 'minitest/autorun'
 require 'time'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestNested < Test::Unit::TestCase
+class TestNested < MiniTest::Unit::TestCase
   def test_nested
     nums  = 5000
     soc = XML::Smart.string("<?xml version='1.0'?><root><node id='1'><text>I am a text</text></node><node id='2'/></root>")
