@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'test/unit'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
@@ -21,10 +22,10 @@ class TestString < Test::Unit::TestCase
     # output all guys with a nickname (the ü is a UTF-8 character in the output)
     # cause (always) everything that is returned is UTF-8
     nodes = doc.root.find("/contributors/guy[@nick]")
-    assert("#{nodes[0]} (#{nodes[0].attributes.include?("nick")})" == 'Jürgen (true)')
-    assert("#{nodes[0]} (#{nodes[0].attributes["nick"]})" ==          'Jürgen (eTM)')
-    assert("#{nodes[1]} (#{nodes[1].attributes.include?("nick")})" == 'Christian (true)')
-    assert("#{nodes[1]} (#{nodes[1].attributes["nick"]})" ==          'Christian (chris2)')
+    assert("#{nodes[0]} (#{nodes[0].attributes.include?("nick")})" == "Jürgen (true)")
+    assert("#{nodes[0]} (#{nodes[0].attributes["nick"]})" ==          "Jürgen (eTM)")
+    assert("#{nodes[1]} (#{nodes[1].attributes.include?("nick")})" == "Christian (true)")
+    assert("#{nodes[1]} (#{nodes[1].attributes["nick"]})" ==          "Christian (chris2)")
     assert(nodes[2].nil?)
 
     # query arthur dent

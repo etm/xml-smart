@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'test/unit'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
@@ -25,7 +26,7 @@ class TestDelete < Test::Unit::TestCase
 
     assert(nodes[1].qname.name == 'name')
     assert(nodes[1].attributes['team'] == '1')
-    assert(nodes[1].text == 'Jürgen')
+    assert(nodes[1].text == "Jürgen")
 
     assert(nodes[2].qname.name == 'name')
     assert(nodes[2].attributes['team'] == '2')

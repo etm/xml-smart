@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'test/unit'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
@@ -14,7 +15,7 @@ class TestMoveElements < Test::Unit::TestCase
     nodes = doc.find("/test/names/name[@team>0]")
     assert(nodes[0].text == "Kathrin ")
     assert(nodes[1].text == "Egon")
-    assert(nodes[2].text == "J\303\274rgen")
+    assert(nodes[2].text == "Jürgen")
     assert(nodes[3].text == "Michel")
     assert(nodes[4].text == "Raphi")
     assert(nodes[5].nil?)
