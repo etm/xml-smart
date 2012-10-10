@@ -1,3 +1,4 @@
+# coding: utf-8
 = XML::Smart - A Ruby class for fast and simple XML access
 
 Copyright (C) 2004-2012 Jürgen Mangler <juergen.mangler@univie.ac.at>

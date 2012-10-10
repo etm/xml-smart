@@ -16,7 +16,13 @@ module XML
         alias :attr? :has_attr?
         alias :member? :has_attr?
 
-        def [](name,attr=false); attr == false ? @set[name].value : Attribute.new(@set[name]); end;
+        def [](name,attr=false)
+          if attr == false 
+            @set[name] ? @set[name].value : nil
+          else  
+            Attribute.new(@set[name])
+          end 
+        end
         def []=(name,value); @set[name] = value; end;
 
         def length;      @set.length; end
