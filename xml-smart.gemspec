@@ -22,4 +22,5 @@ EOF
   s.add_runtime_dependency 'nokogiri'
   s.add_runtime_dependency 'lockfile'
   s.add_runtime_dependency 'term-ansicolor'
+  s.add_runtime_dependency 'minitest' if RUBY_VERSION.split('.').join.to_i < 190
 end
