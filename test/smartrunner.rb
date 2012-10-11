@@ -14,11 +14,12 @@ class MiniTest::Unit
 
   def _run_anything type
     OLD_run_anything.bind(self).call(type)
-
-    puts
-    puts "PERFORMANCE:"
-    $timings.each do |tim|
-      puts "  * #{tim[0]}: #{'%f' % tim[2]} seconds" if tim[1]
+    if $timings.length > 0
+      puts
+      puts "PERFORMANCE:"
+      $timings.each do |tim|
+        puts "  * #{tim[0]}: #{'%f' % tim[2]} seconds" if tim[1]
+      end
     end
   end
 end

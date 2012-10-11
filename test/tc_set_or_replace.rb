@@ -8,7 +8,7 @@ class TestSetOrReplace < MiniTest::Unit::TestCase
   def test_set_or_replace
     nums  = 1000
 
-    start_timing "set_or_replace (#{nums} times)"
+    start_timing "#replace_by, #root= (#{nums} times)"
     1.upto(nums) { |i|
       # create a XML document and copy the elements for each node to a file
       soc = XML::Smart.string("<?xml version='1.0'?><root><node id='1'><text>I am a text</text></node><node id='2'/></root>")

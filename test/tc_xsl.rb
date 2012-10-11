@@ -11,7 +11,7 @@ class TestXSL < MiniTest::Unit::TestCase
     nums = 1000
 
     # Watch the power
-    start_timing "Transformation (#{nums} times)"
+    start_timing "#transform_with (#{nums} times)"
     nums.times do
       doc.transform_with(style)
     end  

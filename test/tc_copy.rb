@@ -7,7 +7,7 @@ class TestCopy < MiniTest::Unit::TestCase
   def test_copy
     # No closure, so changes are temporary
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
-    soc = XML::Smart.string("<?xml version='1.0'?><root><node id='1'><text>I am a text</text></node><node id='2'/></root>")
+    soc = XML::Smart.string("<?xml version='1.0'?><root xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'><node id='1'><text xmlns='http://aaa'>I am a text</text></node><soap:node id='2'/></root>")
 
     # copy a node
     nodeA = doc.root.find("/test/names/name[5]").first
@@ -29,13 +29,13 @@ class TestCopy < MiniTest::Unit::TestCase
     assert(doc.find("/test/names/name[5]").first.dump == "<name team=\"2\">Egon</name>")
 
     assert(doc.find("/test/*[4]").first.dump          == "<name team=\"2\">Kathrin <b>Fiedler</b></name>")
-    assert(doc.find("/test/*[5]").first.dump          == "<node id=\"1\">\n  <text>I am a text</text>\n</node>")
+    assert(doc.find("/test/*[5]").first.dump          == "<node id=\"1\">\n  <text xmlns=\"http://aaa\">I am a text</text>\n</node>")
     assert(doc.find("/test/*[6]").first.dump          == "<name team=\"2\">Kathrin <b>Fiedler</b></name>")
     assert(doc.find("/test/*[7]").first.dump          == "<name team=\"2\">Kathrin <b>Fiedler</b></name>")
     assert(doc.find("/test/*[8]").first.dump          == "<name team=\"2\">Kathrin <b>Fiedler</b></name>")
-    assert(doc.find("/test/*[9]").first.dump          == "<node id=\"1\">\n  <text>I am a text</text>\n</node>")
-    assert(doc.find("/test/*[10]").first.dump         == "<node id=\"2\"/>")
+    assert(doc.find("/test/*[9]").first.dump          == "<node id=\"1\">\n  <text xmlns=\"http://aaa\">I am a text</text>\n</node>")
+    assert(doc.find("/test/*[10]").first.dump         == "<soap:node id=\"2\"/>")
 
-    assert(soc.root.dump                              == "<root>\n  <node id=\"1\">\n    <text>I am a text</text>\n  </node>\n  <node id=\"2\"/>\n</root>")
+    assert(soc.root.dump                              == "<root xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\">\n  <node id=\"1\">\n    <text xmlns=\"http://aaa\">I am a text</text>\n  </node>\n  <soap:node id=\"2\"/>\n</root>")
   end
 end
