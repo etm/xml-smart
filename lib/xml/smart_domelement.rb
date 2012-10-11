@@ -126,7 +126,12 @@ module XML
         end
         def namespaces; NamespaceSet.new(self,@element); end
 
-        def xinclude!; @element.do_xinclude; true; end
+        def xinclude!
+          @element.do_xinclude
+          @element.document.custom_namespace_prefixes_update
+          @element.document.ns_update
+          true
+        end
 
         def replace_by(n)
           case n
@@ -171,7 +176,7 @@ module XML
         def to_doc
           doc = Nokogiri::XML::Document.new
           doc.root = @element
-          Dom.new(doc)
+          dom = Dom.new(doc)
         end
       end
 
