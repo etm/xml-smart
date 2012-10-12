@@ -143,7 +143,7 @@ module XML
         end
 
         def qname; QName.new @element; end
-        def attributes; AttributeSet.new @element.attributes; end
+        def attributes; AttributeSet.new @element; end
 
         def text; @element.xpath_fast("string(text())"); end
         def text=(t); @element.content = t.to_s if t.respond_to? :to_s; end

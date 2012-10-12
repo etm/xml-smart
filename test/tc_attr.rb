@@ -17,6 +17,13 @@ class TestAttr < MiniTest::Unit::TestCase
     end
     assert(attrs.include?("attr2") == false)
 
+    doc.root.attributes['name'] = 'hallo'
+    node = doc.find('/test/colors/blue').first
+    node.attributes['taint'] = 'xxx'
+
+    assert(doc.root.attributes['name'] == 'hallo')
+    assert(node.attributes['taint'] == 'xxx')
+
     doc.find("//@xml:lang").each do |attr|
       attr.value = "en"
     end

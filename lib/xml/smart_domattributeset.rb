@@ -5,8 +5,9 @@ module XML
       class AttributeSet
         include Enumerable
 
-        def initialize(set)
-          @set = set
+        def initialize(element)
+          @element = element
+          @set = @element.attributes
         end
 
         def ===(cls); self.is_a? cls; end
@@ -17,13 +18,16 @@ module XML
         alias :member? :has_attr?
 
         def [](name,attr=false)
+          return nil unless @set[name]
           if attr == false 
-            @set[name] ? @set[name].value : nil
+            @element[name]
           else  
             Attribute.new(@set[name])
           end 
         end
-        def []=(name,value); @set[name] = value; end;
+        def []=(name,value);
+          @element[name] = value
+        end
 
         def length;      @set.length; end
         def empty?;      @set.empty?; end

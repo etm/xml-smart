@@ -17,7 +17,7 @@ module XML
         def path; @attr.path; end
 
         def value;  @attr.content; end;
-        def value=(val); @attr.content = (val); end;
+        def value=(val); @attr.content = val; end;
 
         def ==(other)
           return false unless other
