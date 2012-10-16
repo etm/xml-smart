@@ -56,50 +56,80 @@ module XML
                 end
               end
             end
-            return tmp
+            return [tmp,false]
           end
           if attrs.length == 1 && attrs[0].is_a?(XML::Smart::Dom::Element)
             ele = attrs[0].instance_variable_get(:@element)
-            return ele.document.root.pointer_id == @element.document.root.pointer_id ? ele : ele.dup
+            same = ele.document.root.pointer_id == @element.document.root.pointer_id
+            return [same ? ele : ele.dup, !same]
           end
           if attrs.length == 1 && attrs[0].is_a?(XML::Smart::Dom::NodeSet)
             nos = attrs[0].instance_variable_get(:@nodeset)
             if nos.length > 0
-              if nos.first.document.root.pointer_id == @element.document.root.pointer_id
-                return nos
+              same = nos.first.document.root.pointer_id == @element.document.root.pointer_id
+              if same
+                return [nos, false]
               else
                 xnos = nos.to_a
                 tnos = nos.map{|e|e.dup}
                 xnos.each{|e|nos.delete(e)}
                 tnos.each{|e|nos.push(e)}
-                return nos
+                return [nos, true]
               end
             else
-              return nos
+              return [nos, false]
             end
           end
           if attrs.length == 2 && attrs[0].is_a?(XML::Smart::Dom::Element) && (attrs[1] == XML::Smart::COPY || attrs[1] == XML::Smart::MOVE)
             ele = attrs[0].instance_variable_get(:@element)
-            return attrs[1] == XML::Smart::COPY ? ele.dup : ele
+            same = ele.document.root.pointer_id == @element.document.root.pointer_id
+            return [attrs[1] == XML::Smart::COPY ? ele.dup : ele, !same]
           end
           if attrs.length == 2 && attrs[0].is_a?(XML::Smart::Dom::NodeSet) && (attrs[1] == XML::Smart::COPY || attrs[1] == XML::Smart::MOVE)
             nos = attrs[0].instance_variable_get(:@nodeset)
-            if attrs[1] == XML::Smart::COPY
-              xnos = nos.to_a
-              tnos = nos.map{|e|e.dup}
-              xnos.each{|e|nos.delete(e)}
-              tnos.each{|e|nos.push(e)}
-              return nos
-            else
-              return nos
+            if nos.length > 0
+              same = nos.first.document.root.pointer_id == @element.document.root.pointer_id
+              if attrs[1] == XML::Smart::COPY
+                xnos = nos.to_a
+                tnos = nos.map{|e|e.dup}
+                xnos.each{|e|nos.delete(e)}
+                tnos.each{|e|nos.push(e)}
+              end  
+              return [nos, !same]
+            else  
+              return [nos, false]
             end
           end
-          nil
+          return [nil, false]
         end
-        def add(*attrs);        Element.new(@element.add_child add_helper(attrs));            end
-        def add_before(*attrs); Element.new(@element.add_previous_sibling add_helper(attrs)); end
-        def add_after(*attrs);  Element.new(@element.add_next_sibling add_helper(attrs));     end
         private :add_helper
+        def add(*attrs)
+          tmp, update = add_helper(attrs)
+          res = Dom::smart_helper(@element.add_child tmp)
+          if update
+            @element.document.custom_namespace_prefixes_update
+            @element.document.ns_update
+          end  
+          res
+        end
+        def add_before(*attrs)
+          tmp, update = add_helper(attrs)
+          res = Dom::smart_helper(@element.add_previous_sibling tmp)
+          if update
+            @element.document.custom_namespace_prefixes_update
+            @element.document.ns_update
+          end  
+          res
+        end
+        def add_after(*attrs)
+          tmp, update = add_helper(attrs)
+          res = Dom::smart_helper(@element.add_next_sibling tmp)
+          if update
+            @element.document.custom_namespace_prefixes_update
+            @element.document.ns_update
+          end  
+          res
+        end
 
         def dump; @element.to_s; end
         def to_s; @element.content; end
@@ -150,7 +180,9 @@ module XML
 
         def children; NodeSet.new(@element.children); end
         def children?; NodeSet.new(@element.children).length > 0 end
-        def parent; Element.new(@element.parent); end
+        def parent
+          Dom::smart_helper(@element.parent)
+        end
         def parent?; !@element.parent.nil?; end
 
         def empty?; @element.blank?; end

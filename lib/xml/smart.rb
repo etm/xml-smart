@@ -29,7 +29,7 @@ module Nokogiri
         result = {}
 
         diffs = []
-        ns = self.xpath_plain('//namespace::*').to_a.delete_if do |n| 
+        ns = self.xpath('//namespace::*').to_a.delete_if do |n| 
           if diffs.include? n.href
             true
           else  
@@ -55,7 +55,7 @@ module Nokogiri
         ns.find_all{|n| !n.prefix.nil? && !(n.prefix == 'xml')}.each do |n|
           result[n.prefix] = n.href
         end
-        result
+        @custom_namespace_prefixes = result
       end
       def custom_namespace_prefixes
         @custom_namespace_prefixes || custom_namespace_prefixes_update
@@ -73,9 +73,11 @@ module Nokogiri
         XPathContext.new(self).evaluate(path)
       end
       def xpath_fast(path)
+        return xpath(path,self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
+        return NodeSet.new(document) unless document
         @nsc ||= 0
         if @nsc != self.document.ns_counter
-          @ctx ||= XPathContext.new(self)
+          @ctx = XPathContext.new(self)
           @ctx.register_namespaces(self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
           @nsc = self.document.ns_counter
         end
