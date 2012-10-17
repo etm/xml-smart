@@ -70,11 +70,8 @@ module XML
               if same
                 return [nos, false]
               else
-                xnos = nos.to_a
                 tnos = nos.map{|e|e.dup}
-                xnos.each{|e|nos.delete(e)}
-                tnos.each{|e|nos.push(e)}
-                return [nos, true]
+                return [Nokogiri::XML::NodeSet.new(nos.first.document,tnos), true]
               end
             else
               return [nos, false]
@@ -90,11 +87,10 @@ module XML
             if nos.length > 0
               same = nos.first.document.root.pointer_id == @element.document.root.pointer_id
               if attrs[1] == XML::Smart::COPY
-                xnos = nos.to_a
                 tnos = nos.map{|e|e.dup}
-                xnos.each{|e|nos.delete(e)}
-                tnos.each{|e|nos.push(e)}
+                nos = Nokogiri::XML::NodeSet.new(nos.first.document,tnos)
               end  
+                return [Nokogiri::XML::NodeSet.new(nos.first.document,tnos), true]
               return [nos, !same]
             else  
               return [nos, false]
@@ -178,8 +174,8 @@ module XML
         def text; @element.xpath_fast("string(text())"); end
         def text=(t); @element.content = t.to_s if t.respond_to? :to_s; end
 
-        def children; NodeSet.new(@element.children); end
-        def children?; NodeSet.new(@element.children).length > 0 end
+        def children; find('*'); end
+        def children?; find('*').length > 0 end
         def parent
           Dom::smart_helper(@element.parent)
         end

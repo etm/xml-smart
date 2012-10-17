@@ -9,6 +9,7 @@ module XML
       def +(str); @element.name + str; end
 
       def to_s; (prefix.nil? || prefix == '' ? '' : prefix + ':') + @element.name; end
+      def to_sym; to_s.to_sym; end
       def name; @element.name; end
       def name=(n); @element.name = n; end
 

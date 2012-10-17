@@ -81,6 +81,8 @@ module XML
           Text.new(node)
         elsif node.instance_of? Nokogiri::XML::Namespace  
           Namespace.new(node)
+        elsif node.instance_of? Nokogiri::XML::Document
+          Dom.new(node)
         elsif node.nil?
           nil
         else
@@ -103,7 +105,12 @@ module XML
 
       def transform_with(doc,params=nil)
         raise Error, 'first parameter has to XML::Smart::Dom document' unless doc.instance_of? Dom
-        Dom.new Nokogiri::XSLT::Stylesheet.parse_stylesheet_doc(doc.instance_variable_get(:@dom)).transform(@dom,params)
+        res = Nokogiri::XSLT::Stylesheet.parse_stylesheet_doc(doc.instance_variable_get(:@dom)).transform(@dom,params)
+        if res.children.length != 0 && res.children.first.class == Nokogiri::XML::Text
+          Text.new(res.children.first).text
+        else 
+          Dom::smart_helper(res)
+        end  
       end
 
     end

@@ -11,7 +11,7 @@ class TestXinclude < MiniTest::Unit::TestCase
     # Watch the power
     start_timing "#xinclude! (#{nums} times)"
     nums.times do
-      doc = XML::Smart.open(::File.dirname(__FILE__) + "/HELLO.xml")
+      doc = XML::Smart.open_unprotected(::File.dirname(__FILE__) + "/HELLO.xml")
       doc.xinclude!
     end 
     end_timing

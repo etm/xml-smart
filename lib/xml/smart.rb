@@ -94,7 +94,8 @@ module XML
   LOCKFILE = {
     :min_sleep => 0.25,
     :max_sleep => 5,
-    :sleep_inc => 0.25
+    :sleep_inc => 0.25,
+    :max_age => 5
   }
 
   module Smart
@@ -106,32 +107,69 @@ module XML
     def self::modify(name,default=nil,&block)
       raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO)
       raise Error, 'a block is mandatory' unless block_given?
-      lfname = name.is_a?(String) ? name : name.fileno
-      Lockfile.new(lfname + '.lock',LOCKFILE) do
-        so = Smart::open(name,default)
+      lfname = name.is_a?(String) ? name : name.fileno.to_s
+      lockfile = Lockfile.new(lfname + '.lock',LOCKFILE)
+      begin
+        lockfile.lock
+        so = Smart::open_unprotected(name,default)
         block.call(so)
         so.save_as(name)
+      ensure
+        lockfile.unlock
       end
+      nil
     end
 
     def self::open(name,default=nil)
-      raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO)
-      raise Error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
+      raise error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO)
+      raise error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
+      lfname = name.is_a?(String) ? name : name.fileno.to_s
+      lockfile = Lockfile.new(lfname + '.lock',LOCKFILE)
+      dom = nil
       begin
+        lockfile.lock
+        dom = Smart::open_unprotected(name,default)
+      ensure  
+        lockfile.unlock
+      end
+      if dom && block_given?
+        yield dom
+        nil
+      else  
+        dom
+      end
+    end
+
+    def self::open_unprotected(name,default=nil)
+      raise error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO)
+      raise error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
+      dom = begin
         io =  name.is_a?(String) ? ::Kernel::open(name) : name
         Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }
       rescue
         if default.nil?
-          raise Error, "could not open #{name}"
+          raise error, "could not open #{name}"
         else
-          Smart::string(default) unless default.nil?
+          Smart::string(default)
         end
+      end
+      if block_given?
+        yield dom
+        nil
+      else  
+        dom
       end
     end
 
     def self::string(str)
-      raise Error, 'first parameter has to be an xml string' unless name.is_a?(String)
-      Dom.new Nokogiri::XML::parse(str){|config| config.noblanks.noent.nsclean.strict }
+      raise Error, 'first parameter has to be stringable (:to_s)' unless str.is_a?(String)
+      dom = Dom.new Nokogiri::XML::parse(str.to_s){|config| config.noblanks.noent.nsclean.strict }
+      if block_given?
+        yield dom
+        nil
+      else  
+        dom
+      end
     end
 
     class Error < RuntimeError; end
