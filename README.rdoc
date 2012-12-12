@@ -1,4 +1,3 @@
-# coding: utf-8
 = XML::Smart - A Ruby class for fast and simple XML access
 
 Copyright (C) 2004-2012 Jürgen Mangler <juergen.mangler@univie.ac.at>
@@ -11,34 +10,46 @@ This program is distributed without any warranty. See the file
 
 == Installation
 
-* You need a least ruby 1.8.7 (1.9 is fine also)
-* You need a least libxml version 1.6.8 (with headers)
-* You need a least libxslt version 1.1.10 (with headers)
+* Based on Nokogiri 1.5.5
+* Thus works for MRI ruby 1.8.7, 1.9.x, JRuby (basically everything that
+  is Nokogiri ready)
+* Works on Linux, OSX, Windows  
+
+== Features
+
+[Principle of least surprise]
+  * Nokogiri is messy - violence always is
+  * libxml smells like old-school C-Binding ;-)
+  * rex is ... strange
+[Inherits Nokogiris GREAT compatibility for platforms and Ruby interpreters]
+[XML only] - sorry, no css selectors, html, ... go to Nokogiri if you 
+  look for these 
+[Great and convenient namespace support, compared to everything else out there]
+  * use namespaces in xpaths without any additional work
+     doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
+     doc.find('string(aaa:test)')
+     doc.close
+  * register your own shortcusts to be available in all XPaths   
+     doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
+     doc.register_namespace :a, 'uri:aaa'
+     doc.find('string(aaa:test)')
+     doc.close
+[NFS safe file locking while editing / reading from an XML fileA]
+
+  XML::Smart.modify("EXAMPLE.xml","<test><names/></test>") { |doc|
+   doc.root.add("test_node")
+  }  
+
+Changes since 0.2.x (see Changelog):
+* qname instead of name
+* #register_namespace instead of #namespaces= to register shortcuts
+* no more namespaces for #find necessary, all namespaces in document
+  are automatically available.
+* signals removed
+* pull parser removed
 
 == Documentation
 
-View the examples in the ./examples subdirectory. In the ./examples/Visualise subdirectory
-you can find a simple XPath visualiser. Never try to mix this module with other libxml
-bindings, or you will get nasty segfaults.
+Sorry, no inline code documentation yet. We have an extensive test suite, look
+for examples there for now.
 
-== Synopsis to Change a File on Disk
-
-  require 'xml/smart'
-
-  XML::Smart.modify(File.dirname($0) + "/EXAMPLE.xml") { |doc|
-    node = doc.find("/test/names").first
-    node.add("test_node",{"attr" => 12}, "Muahaha")
-    node.add("test_node", "Muahaha", "attr" => 13)
-    node.add("test_node", "attr" => 14)
-    node.add("test_node", "Muahaha")
-    node.add("test_node")
-  }  
-
-== Synopsis to Query A File
-
-  require 'xml/smart'
-
-  doc = XML::Smart.open(File.dirname($0) + "/EXAMPLE.xml")
-
-  node = doc.find("/test/names").first
-  puts node.find("string(name)")

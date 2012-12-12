@@ -1,5 +1,7 @@
 0.3.0
 	* XML::SMART::QNAME#namespace rename to XML::SMART::QNAME#href
+  * XML::SMART::DOM::Element#name renamed XML::SMART::DOM::Element#qname
+  * XML::SMART::DOM::Attribute#name renamed XML::SMART::DOM::Attribute#qname
   * signals removed
     -> XML::Smart::Dom#on_change removed
     -> XML::Smart::Dom#change_handlers removed
@@ -9,6 +11,16 @@
     but also nodeset).
     ->  XML::Smart::DOM::Element::MOVE to XML::Smart::MOVE
     ->  XML::Smart::DOM::Element::COPY to XML::Smart::COPY
+  * Namespace handling  
+    -> XML::SMART::DOM::Element#find no longer accepts namespace defs as second parameters
+    -> XML::SMART::DOM::register_namespace is used to define namespace shortcuts
+    -> For namespaces defined in the document no shortcuts have to be defined
+    -> adding elements or attributes with namespaces always checks for EITHER
+       shortcuts or existing namespaces.
+    -> adding elements or attributes with namespaces works as expected:
+       XML::SMART::DOM::Element#add(prefix:name,...)
+       XML::SMART::DOM::AttributeSet#[prefix:name]=''
+  * Pull parser removed
 
 0.2.7
   * save to any IO (e.g. tempfiles) for XML::Smart::DOM::save_as
