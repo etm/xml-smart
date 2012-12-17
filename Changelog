@@ -1,3 +1,7 @@
+0.3.1
+  * Small documentation fix
+  * XML::Smart::Dom::Element#children returns text nodes again
+
 0.3.0
 	* XML::SMART::QNAME#namespace rename to XML::SMART::QNAME#href
   * XML::SMART::DOM::Element#name renamed XML::SMART::DOM::Element#qname

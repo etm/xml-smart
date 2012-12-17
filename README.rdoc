@@ -38,14 +38,14 @@ Register your own shortcusts to be available in all XPaths:
 
   doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
   doc.register_namespace :a, 'uri:aaa'
-  doc.find('string(aaa:test)')
+  doc.find('string(a:test)')
   doc.close
 
 === NFS safe file locking while editing / reading from an XML file
 
-  XML::Smart.modify("EXAMPLE.xml","<test><names/></test>") { |doc|
-   doc.root.add("test_node")
-  }  
+  XML::Smart.modify("EXAMPLE.xml","<test><names/></test>") do |doc|
+    doc.root.add "test_node"
+  end
 
 == Changes since 0.2.x (see Changelog)
 

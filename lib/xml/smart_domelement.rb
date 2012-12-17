@@ -174,8 +174,8 @@ module XML
         def text; @element.xpath_fast("string(text())"); end
         def text=(t); @element.content = t.to_s if t.respond_to? :to_s; end
 
-        def children; find('*'); end
-        def children?; find('*').length > 0 end
+        def children; find('*|text()'); end
+        def children?; find('*|text()').length > 0 end
         def parent
           Dom::smart_helper(@element.parent)
         end
