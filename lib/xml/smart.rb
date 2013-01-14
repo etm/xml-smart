@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'nokogiri'
 require 'lockfile'
+require 'tempfile'
 
 require File.expand_path(File.dirname(__FILE__) + '/smart_qname')
 require File.expand_path(File.dirname(__FILE__) + '/smart_dom')
@@ -89,7 +90,7 @@ module Nokogiri
 end
 
 module XML
-  VERSION        = '0.3.0'
+  VERSION        = '0.3.2'
   LIBXML_VERSION = Nokogiri::VERSION_INFO['libxml']['loaded']
   LOCKFILE = {
     :min_sleep => 0.25,
@@ -105,7 +106,7 @@ module XML
     def initialize(name,default=nil); open(name,default); end
 
     def self::modify(name,default=nil,&block)
-      raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO)
+      raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
       raise Error, 'a block is mandatory' unless block_given?
       lfname = name.is_a?(String) ? name : name.fileno.to_s
       lockfile = Lockfile.new(lfname + '.lock',LOCKFILE)

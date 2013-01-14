@@ -1,3 +1,6 @@
+0.3.2
+  * Allow for open Tempfile's
+
 0.3.1
   * Small documentation fix
   * XML::Smart::Dom::Element#children returns text nodes again
