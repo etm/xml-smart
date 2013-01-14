@@ -122,7 +122,7 @@ module XML
     end
 
     def self::open(name,default=nil)
-      raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO)
+      raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
       raise Error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
       lfname = name.is_a?(String) ? name : name.fileno.to_s
       lockfile = Lockfile.new(lfname + '.lock',LOCKFILE)
@@ -142,7 +142,7 @@ module XML
     end
 
     def self::open_unprotected(name,default=nil)
-      raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO)
+      raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
       raise Error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
       dom = begin
         io =  name.is_a?(String) ? ::Kernel::open(name) : name
