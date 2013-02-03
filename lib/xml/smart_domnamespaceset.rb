@@ -37,7 +37,7 @@ module XML
             nold.attributes.each do |attr|
               nnew.attributes[attr.qname.name] = attr.value
             end
-            ns = nnod.add_namespace_definition(name,value)
+            ns = nnod.add_namespace_definition(name.to_s,value.to_s)
             @node.namespace_definitions.each do |ns|
               nnod.add_namespace_definition(ns.prefix,ns.href)
             end

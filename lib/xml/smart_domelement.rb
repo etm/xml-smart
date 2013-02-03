@@ -17,6 +17,7 @@ module XML
           if attrs.length>0 && attrs[0].is_a?(String)
             pfx = ''
             ns = nil
+            attrs[0] = attrs[0].dup
             if attrs[0].sub!(/([^:]+):/, '')
               pfx = $1
               if @element.document.user_custom_namespace_prefixes.has_key?(pfx)
