@@ -16,7 +16,7 @@ module XML
       end
 
       def find(path)
-        Element.new(@dom.root).find(path)
+        Dom::smart_helper(@dom.xpath_fast(path))
       end
 
       def to_s

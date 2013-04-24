@@ -50,8 +50,13 @@ class TestNamespaceDefault < MiniTest::Unit::TestCase
     # add a namespace to the element
     nsnode.namespaces.add("test","http://heise1")
     nsnode.namespaces.add("aaa","http://heise2")
+
+    assert(nsnode.namespaces[nil] == nil)
+    
     nsnode.namespaces.add(nil,"http://heise")
     nsnode.namespaces[nil] = "http://heiser"
+
+    assert(nsnode.namespaces[nil] != nil)
 
     assert(nsnode.namespaces[nil].prefix == 'xmlns')
     assert(nsnode.namespaces[nil].href == "http://heiser")

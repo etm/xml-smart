@@ -1,3 +1,7 @@
+0.3.3
+  * XML::SMART::DOM#find allows for search "root/element" (without leading '/')
+  * fixed error with defaut namespace (nil, 'xmlns') and nokogiri 1.5.9
+
 0.3.2
   * Allow for open Tempfile's
 

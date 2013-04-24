@@ -26,6 +26,14 @@ module Nokogiri
         self
       end
 
+      def xpath_fast(path)
+        ns = self.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes)
+        ctx = XPathContext.new(self)
+        ctx.register_namespaces(self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
+        path = path.gsub(/xmlns:/, ' :') unless Nokogiri.uses_libxml?
+        ctx.evaluate(path)
+      end
+
       def custom_namespace_prefixes_update
         result = {}
 
@@ -74,7 +82,17 @@ module Nokogiri
         XPathContext.new(self).evaluate(path)
       end
       def xpath_fast(path)
-        return xpath(path,self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
+        # return xpath(path,self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
+        return NodeSet.new(document) unless document
+
+        ns = self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes)
+        ctx = XPathContext.new(self)
+        ctx.register_namespaces(self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
+        path = path.gsub(/xmlns:/, ' :') unless Nokogiri.uses_libxml?
+        ctx.evaluate(path)
+      end
+
+      def xpath_experimental
         return NodeSet.new(document) unless document
         @nsc ||= 0
         if @nsc != self.document.ns_counter
@@ -90,7 +108,7 @@ module Nokogiri
 end
 
 module XML
-  VERSION        = '0.3.2'
+  VERSION        = '0.3.3'
   LIBXML_VERSION = Nokogiri::VERSION_INFO['libxml']['loaded']
   LOCKFILE = {
     :min_sleep => 0.25,

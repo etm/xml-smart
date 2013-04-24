@@ -26,6 +26,7 @@ module XML
           end  
         end
         def []=(name,value) 
+          name = nil if name == 'xmlns'
           self.add(name,value)
         end
 
@@ -37,7 +38,7 @@ module XML
             nold.attributes.each do |attr|
               nnew.attributes[attr.qname.name] = attr.value
             end
-            ns = nnod.add_namespace_definition(name.to_s,value.to_s)
+            ns = nnod.add_namespace_definition(name.nil? ? nil : name.to_s,value.to_s)
             @node.namespace_definitions.each do |ns|
               nnod.add_namespace_definition(ns.prefix,ns.href)
             end
