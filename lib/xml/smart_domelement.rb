@@ -14,7 +14,7 @@ module XML
         end
 
         def add_helper(attrs)
-          if attrs.length>0 && attrs[0].is_a?(String)
+          if attrs.length>0 && attrs[0].is_a?(String) && attrs[0][0] != '?'
             pfx = ''
             ns = nil
             attrs[0] = attrs[0].dup
@@ -58,13 +58,11 @@ module XML
               end
             end
             return [tmp,false]
-          end
-          if attrs.length == 1 && attrs[0].is_a?(XML::Smart::Dom::Element)
+          elsif attrs.length == 1 && attrs[0].is_a?(XML::Smart::Dom::Element)
             ele = attrs[0].instance_variable_get(:@element)
             same = ele.document.root.pointer_id == @element.document.root.pointer_id
             return [same ? ele : ele.dup, !same]
-          end
-          if attrs.length == 1 && attrs[0].is_a?(XML::Smart::Dom::NodeSet)
+          elsif attrs.length == 1 && attrs[0].is_a?(XML::Smart::Dom::NodeSet)
             nos = attrs[0].instance_variable_get(:@nodeset)
             if nos.length > 0
               same = nos.first.document.root.pointer_id == @element.document.root.pointer_id
@@ -77,13 +75,11 @@ module XML
             else
               return [nos, false]
             end
-          end
-          if attrs.length == 2 && attrs[0].is_a?(XML::Smart::Dom::Element) && (attrs[1] == XML::Smart::COPY || attrs[1] == XML::Smart::MOVE)
+          elsif attrs.length == 2 && attrs[0].is_a?(XML::Smart::Dom::Element) && (attrs[1] == XML::Smart::COPY || attrs[1] == XML::Smart::MOVE)
             ele = attrs[0].instance_variable_get(:@element)
             same = ele.document.root.pointer_id == @element.document.root.pointer_id
             return [attrs[1] == XML::Smart::COPY ? ele.dup : ele, !same]
-          end
-          if attrs.length == 2 && attrs[0].is_a?(XML::Smart::Dom::NodeSet) && (attrs[1] == XML::Smart::COPY || attrs[1] == XML::Smart::MOVE)
+          elsif attrs.length == 2 && attrs[0].is_a?(XML::Smart::Dom::NodeSet) && (attrs[1] == XML::Smart::COPY || attrs[1] == XML::Smart::MOVE)
             nos = attrs[0].instance_variable_get(:@nodeset)
             if nos.length > 0
               same = nos.first.document.root.pointer_id == @element.document.root.pointer_id
@@ -96,6 +92,9 @@ module XML
             else  
               return [nos, false]
             end
+          elsif attrs.length == 2 && attrs[0].is_a?(String) && attrs[1].is_a?(String) && attrs[0][0] == '?'
+            tmp = Nokogiri::XML::ProcessingInstruction.new @element.document, attrs[0].sub(/./,''), attrs[1]
+            return [tmp,false]
           end
           return [nil, false]
         end

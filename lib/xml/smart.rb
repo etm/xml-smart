@@ -13,6 +13,7 @@ require File.expand_path(File.dirname(__FILE__) + '/smart_domattributeset')
 require File.expand_path(File.dirname(__FILE__) + '/smart_domattribute')
 require File.expand_path(File.dirname(__FILE__) + '/smart_domnamespaceset')
 require File.expand_path(File.dirname(__FILE__) + '/smart_domnamespace')
+require File.expand_path(File.dirname(__FILE__) + '/smart_processinginstruction')
 
 module Nokogiri
   module XML
@@ -108,7 +109,7 @@ module Nokogiri
 end
 
 module XML
-  VERSION        = '0.3.3'
+  VERSION        = '0.3.4'
   LIBXML_VERSION = Nokogiri::VERSION_INFO['libxml']['loaded']
   LOCKFILE = {
     :min_sleep => 0.25,

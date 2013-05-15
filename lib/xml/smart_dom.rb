@@ -70,23 +70,25 @@ module XML
 
       def self::smart_helper(node)
         if node.instance_of? Nokogiri::XML::Element
-          Element.new(node)
+          XML::Smart::Dom::Element.new(node)
         elsif node.instance_of? Nokogiri::XML::Attr
-          Attribute.new(node)
+          XML::Smart::Dom::Attribute.new(node)
         elsif node.instance_of? Nokogiri::XML::NodeSet  
-          NodeSet.new(node)
+          XML::Smart::Dom::NodeSet.new(node)
         elsif node.instance_of?(String) || node.instance_of?(TrueClass) || node.instance_of?(FalseClass) || node.instance_of?(Float)  
           node
         elsif node.instance_of? Nokogiri::XML::Text  
-          Text.new(node)
+          XML::Smart::Dom::Text.new(node)
         elsif node.instance_of? Nokogiri::XML::Namespace  
-          Namespace.new(node)
+          XML::Smart::Dom::Namespace.new(node)
         elsif node.instance_of? Nokogiri::XML::Document
-          Dom.new(node)
+          XML::Smart::Dom.new(node)
+        elsif node.instance_of? Nokogiri::XML::ProcessingInstruction
+          XML::Smart::ProcessingInstruction.new(node)
         elsif node.nil?
           nil
         else
-          Other.new(node)
+          XML::Smart::Dom::Other.new(node)
         end  
       end
 
