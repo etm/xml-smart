@@ -109,7 +109,7 @@ module Nokogiri
 end
 
 module XML
-  VERSION        = '0.3.4'
+  VERSION        = '0.3.4.1'
   LIBXML_VERSION = Nokogiri::VERSION_INFO['libxml']['loaded']
   LOCKFILE = {
     :min_sleep => 0.25,

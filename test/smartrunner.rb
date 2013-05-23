@@ -1,3 +1,8 @@
+require 'rubygems'
+gem 'minitest', '=4.7.4'
+require 'minitest/autorun'
+require 'time'
+
 $timings = []
 
 def start_timing(name)

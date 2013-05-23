@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'minitest/autorun'
-require 'time'
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 

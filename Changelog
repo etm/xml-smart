@@ -1,3 +1,7 @@
+0.3.4.1
+  * Fixed minitest version 4.7.4 for now
+  * gemspec improvements
+
 0.3.4
   * XML::SMART::DOM::Element#add allows to insert processing instruction 
     e.g. #add("?xml-stylesheet", "href='xxx' test='3'")
