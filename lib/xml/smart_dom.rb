@@ -64,8 +64,8 @@ module XML
       def save_unformated=(val); @save_unformated = (val.is_a?(TrueClass) ? true : false); end
       def save_unformated?; @save_unformated; end
 
-      def xinclude!
-        Element.new(@dom.root).xinclude!
+      def xinclude!(basedir=nil)
+        Element.new(@dom.root).xinclude!(basedir)
       end  
 
       def self::smart_helper(node)

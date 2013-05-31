@@ -109,16 +109,15 @@ module Nokogiri
 end
 
 module XML
-  VERSION        = '0.3.4.1'
-  LIBXML_VERSION = Nokogiri::VERSION_INFO['libxml']['loaded']
-  LOCKFILE = {
-    :min_sleep => 0.25,
-    :max_sleep => 5,
-    :sleep_inc => 0.25,
-    :max_age => 5
-  }
-
   module Smart
+    VERSION        = File.read(File.expand_path(File.dirname(__FILE__) + '/../../xml-smart.gemspec')).match(/\.version\s*=[^\n]+?([\d\.]+)[^\n]+\n/)[1]
+    LIBXML_VERSION = Nokogiri::VERSION_INFO['libxml']['loaded']
+    LOCKFILE = {
+      :min_sleep => 0.25,
+      :max_sleep => 5,
+      :sleep_inc => 0.25,
+      :max_age => 5
+    }
     COPY = 0
     MOVE = 1
 

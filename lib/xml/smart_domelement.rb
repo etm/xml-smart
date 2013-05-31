@@ -152,8 +152,12 @@ module XML
         end
         def namespaces; NamespaceSet.new(self,@element); end
 
-        def xinclude!
-          @element.do_xinclude
+        def xinclude!(basedir=nil)
+          if basedir.is_a?(String) && File.directory?(basedir)
+            Dir.chdir(basedir) { @element.do_xinclude }
+          else
+            @element.do_xinclude
+          end  
           @element.document.custom_namespace_prefixes_update
           @element.document.ns_update
           true
