@@ -154,9 +154,9 @@ module XML
 
         def xinclude!(basedir=nil)
           if basedir.is_a?(String) && File.directory?(basedir)
-            Dir.chdir(basedir) { @element.do_xinclude }
+            Dir.chdir(basedir) { @element.do_xinclude Nokogiri::XML::ParseOptions::STRICT }
           else
-            @element.do_xinclude
+            @element.do_xinclude Nokogiri::XML::ParseOptions::STRICT
           end  
           @element.document.custom_namespace_prefixes_update
           @element.document.ns_update

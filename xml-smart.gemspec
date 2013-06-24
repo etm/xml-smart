@@ -1,8 +1,8 @@
 Gem::Specification.new do |s|
   s.name                  = "xml-smart"
-  s.version               = "0.3.5"
+  s.version               = "0.3.5.1"
   s.platform              = Gem::Platform::RUBY
-  s.license               = "LGPL-2"
+  s.license               = "LGPL-3"
   s.summary               = "An xml library that doesn't suck - since 2004."
 
   s.description           = "An xml library that doesn't suck (since 2004). Based on Nokogiri since 2012. For more info check out the Documentation link below."
