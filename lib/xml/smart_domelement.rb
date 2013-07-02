@@ -108,6 +108,13 @@ module XML
           end  
           res
         end
+        def append(*attrs)
+          add(*attrs)
+        end
+        def prepend(*attrs)
+          c = children
+          c.empty? ? add(*attrs) : c.first.add_before(*attrs)
+        end
         def add_before(*attrs)
           tmp, update = add_helper(attrs)
           res = Dom::smart_helper(@element.add_previous_sibling tmp)

@@ -12,17 +12,21 @@ module XML
 
         def ===(cls); self.is_a? cls; end
 
+        def names
+          @set.keys 
+        end
+
         def has_attr?(a); @set.has_key?(a) end
         alias :include? :has_attr?
         alias :attr? :has_attr?
         alias :member? :has_attr?
 
         def [](name,attr=false)
-          return nil unless @set[name]
+          return nil unless has_attr?(name)
           if attr == false 
-            @element[name]
+            @element.attribute(name).value
           else  
-            Attribute.new(@set[name])
+            Attribute.new(@element.attribute(name))
           end 
         end
         def []=(name,value);

@@ -102,5 +102,12 @@ class TestBasic < MiniTest::Unit::TestCase
     node = doc.find("/xmlns:test")[0]
     assert(node.qname.prefix == "")
     assert(node.qname.href   == "http://default.org")
+
+    doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
+    node = doc.root.find("/test/names").first
+    node.append("test_node", {"attr" => 12}, "Test2")
+    node.prepend("test_node", {"attr" => 12}, "Test3")
+    assert(node.children.first.to_s == "Test3")
+    assert(node.children.last.to_s == "Test2")
   end
 end
