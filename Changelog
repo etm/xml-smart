@@ -1,3 +1,8 @@
+0.3.6
+  * XML::SMART::DOM::Element#append is identical to XML::SMART::DOM::Element#add
+  * XML::SMART::DOM::Element#prepend always inserts as first child
+  * nokogiri changed behaviour in setting / getting attributes?!
+
 0.3.5.1
   * LGPL-3 to achive Apache 2 compatibility
 
