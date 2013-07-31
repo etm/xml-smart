@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name                  = "xml-smart"
-  s.version               = "0.3.6"
+  s.version               = "0.3.7"
   s.platform              = Gem::Platform::RUBY
   s.license               = "LGPL-3"
   s.summary               = "An xml library that doesn't suck - since 2004."
@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>=1.9.3'
 
   s.add_runtime_dependency 'nokogiri'
-  s.add_runtime_dependency 'lockfile'
   s.add_runtime_dependency 'term-ansicolor'
   s.add_runtime_dependency 'minitest', '=4.7.4'
 end

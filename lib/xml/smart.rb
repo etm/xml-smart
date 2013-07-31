@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'nokogiri'
-require 'lockfile'
 require 'tempfile'
 
 require File.expand_path(File.dirname(__FILE__) + '/smart_qname')
@@ -112,12 +111,7 @@ module XML
   module Smart
     VERSION        = File.read(File.expand_path(File.dirname(__FILE__) + '/../../xml-smart.gemspec')).match(/\.version\s*=[^\n]+?([\d\.]+)[^\n]+\n/)[1]
     LIBXML_VERSION = Nokogiri::VERSION_INFO['libxml']['loaded']
-    LOCKFILE = {
-      :min_sleep => 0.25,
-      :max_sleep => 5,
-      :sleep_inc => 0.25,
-      :max_age => 5
-    }
+    MUTEX = Mutex.new
     COPY = 0
     MOVE = 1
 
@@ -126,15 +120,35 @@ module XML
     def self::modify(name,default=nil,&block)
       raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
       raise Error, 'a block is mandatory' unless block_given?
-      lfname = name.is_a?(String) ? name : name.fileno.to_s
-      lockfile = Lockfile.new(lfname + '.lock',LOCKFILE)
+      dom = io = nil
       begin
-        lockfile.lock
-        so = Smart::open_unprotected(name,default)
-        block.call(so)
-        so.save_as(name)
+        if name.is_a?(String) && File.exists?(name)
+          MUTEX.synchronize do
+            io = ::Kernel::open(name,'r+')
+            io.flock(File::LOCK_EX)
+          end  
+          dom = Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }
+          io.rewind
+        elsif name.is_a?(String) && !File.exists?(name)
+          MUTEX.synchronize do
+            io = ::Kernel::open(name,'w')
+            io.flock(File::LOCK_EX)
+          end  
+          dom = Smart::string(default)
+        elsif name.is_a?(IO) || name.is_a?(Tempfile)  
+          MUTEX.synchronize do
+            io = name
+            io.flock(File::LOCK_EX)
+          end
+          dom = Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }
+        end
+        block.call(dom)
+        dom.save_as(io)
+      rescue => e
+        puts e.message
+        raise Error, "could not open #{name}"
       ensure
-        lockfile.unlock
+        io.flock(File::LOCK_UN) if io
       end
       nil
     end
@@ -142,15 +156,7 @@ module XML
     def self::open(name,default=nil)
       raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
       raise Error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
-      lfname = name.is_a?(String) ? name : name.fileno.to_s
-      lockfile = Lockfile.new(lfname + '.lock',LOCKFILE)
-      dom = nil
-      begin
-        lockfile.lock
-        dom = Smart::open_unprotected(name,default)
-      ensure  
-        lockfile.unlock
-      end
+      dom = Smart::open_unprotected(name,default,true)
       if dom && block_given?
         yield dom
         nil
@@ -159,14 +165,20 @@ module XML
       end
     end
 
-    def self::open_unprotected(name,default=nil)
+    def self::open_unprotected(name,default=nil,lock=false)
       raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
       raise Error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
       dom = begin
-        io =  name.is_a?(String) ? ::Kernel::open(name) : name
-        Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }
-      rescue
+        io = name.is_a?(String) ? ::Kernel::open(name) : name
+        begin
+          io.flock(File::LOCK_EX) if lock
+          Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }
+        ensure
+          io.flock(File::LOCK_UN)
+        end
+      rescue => e
         if default.nil?
+          puts e.message
           raise Error, "could not open #{name}"
         else
           Smart::string(default)

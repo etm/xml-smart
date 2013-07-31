@@ -46,7 +46,7 @@ module XML
       end
 
       def save_as(name)
-        raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO)
+        raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
         begin
           io = name.is_a?(String) ? ::Kernel::open(name,'w') : name
         rescue
@@ -58,7 +58,7 @@ module XML
           @dom.root.serialize(:encoding => 'UTF-8', :save_with => Nokogiri::XML::Node::SaveOptions::FORMAT | Nokogiri::XML::Node::SaveOptions::AS_XML)
         end
         io.write ftext
-        io.close
+        io.close unless name == io
       end
 
       def save_unformated=(val); @save_unformated = (val.is_a?(TrueClass) ? true : false); end

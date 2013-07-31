@@ -1,3 +1,6 @@
+0.3.7
+  * no API changes, removed Lockfile dependency, now plain old flock is used
+
 0.3.6
   * XML::SMART::DOM::Element#append is identical to XML::SMART::DOM::Element#add
   * XML::SMART::DOM::Element#prepend always inserts as first child

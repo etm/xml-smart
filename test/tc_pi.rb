@@ -16,7 +16,6 @@ class TestPi < MiniTest::Unit::TestCase
 
     doc.root.add_before('?xsl-stylesheet', 'a="3" b="7"')
     doc.root.children.delete_all!
-    puts doc.to_s
     assert doc.to_s == "<?xml version=\"1.0\"?>\n<?xsl-stylesheet a=\"3\" b=\"7\"?>\n<test xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\" xml:lang=\"de\">\n  <?tobias vj?>\n</test>\n"
   end   
 end  
