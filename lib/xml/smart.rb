@@ -141,6 +141,7 @@ module XML
             io.flock(File::LOCK_EX)
           end
           dom = Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }
+          io.rewind
         end
         block.call(dom)
         dom.save_as(io)
@@ -148,7 +149,12 @@ module XML
         puts e.message
         raise Error, "could not open #{name}"
       ensure
-        io.flock(File::LOCK_UN) if io
+        if io
+          io.flush
+          io.truncate(io.pos)
+          io.flock(File::LOCK_UN)
+          io.close if name.is_a?(String)
+        end
       end
       nil
     end

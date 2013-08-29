@@ -192,7 +192,7 @@ module XML
         end
         def parent?; !@element.parent.nil?; end
 
-        def empty?; @element.blank?; end
+        def empty?; children?; end
         def mixed?;
           @element.xpath_fast('*').length > 0 &&  @element.xpath_fast("string(text())") != '';
         end

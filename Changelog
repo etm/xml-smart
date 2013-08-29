@@ -1,3 +1,6 @@
+0.3.7.1
+  * flushing and truncating for concurrent use of modify's
+
 0.3.7
   * no API changes, removed Lockfile dependency, now plain old flock is used
 

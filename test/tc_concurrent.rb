@@ -4,7 +4,7 @@ require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 class TestConcurrent < MiniTest::Unit::TestCase
   def test_unformated
     # Watch the power
-    nums = 100
+    nums = 1000
 
     id      = 16
     e_matnr = "9906264"
@@ -39,7 +39,7 @@ class TestConcurrent < MiniTest::Unit::TestCase
 
   def test_formated
     # Watch the power
-    nums = 100
+    nums = 1000
 
     id      = 16
     e_matnr = "9906264"
