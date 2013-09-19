@@ -1,3 +1,8 @@
+0.3.8
+  *  XML::SMART::DOM#save_unformated= -> XML::SMART::DOM#unformated=
+  *  XML::SMART::DOM#save_unformated -> XML::SMART::DOM#unformated
+  *  Added XML::SMART::DOM#serialize
+
 0.3.7.2
   * fixed XML::SMART::DOM::Element#empty?
 
