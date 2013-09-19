@@ -203,7 +203,7 @@ module XML
           @element.xpath_fast('*').length > 0 &&  @element.xpath_fast("string(text())") == '';
         end
 
-        def path; @element.path; end
+        def path; @element.path[-1] != ']' ? @element.path + '[1]' : @element.path; end
 
         def ==(other)
           return false unless other

@@ -18,7 +18,7 @@ class TestConcurrent < MiniTest::Unit::TestCase
     0.upto(nums) do |i|
       p[i] = Thread.new do
         XML::Smart.modify(::File.dirname(__FILE__) + "/concurrent.xml","<solutions/>") do |xml|
-          xml.save_unformated = true
+          xml.unformated = true
           res = xml.find("/solutions/solution[@matnr=\"#{e_matnr}\" or @secid=\"#{e_secid}\"]").delete_all! if exam
           node = xml.root.add("solution",{:matnr => e_matnr, :name => e_name, :secid => e_secid, :assessment => id})
           1.upto(3) do |qbi|

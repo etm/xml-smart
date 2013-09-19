@@ -2,6 +2,9 @@
   *  XML::SMART::DOM#save_unformated= -> XML::SMART::DOM#unformated=
   *  XML::SMART::DOM#save_unformated -> XML::SMART::DOM#unformated
   *  Added XML::SMART::DOM#serialize
+  *  XML::SMART::DOM::Element#path always shows [1] when only one element 
+     exists
+  * fixed some tests   
 
 0.3.7.2
   * fixed XML::SMART::DOM::Element#empty?
