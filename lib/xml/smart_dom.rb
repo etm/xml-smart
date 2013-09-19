@@ -3,7 +3,7 @@ module XML
     class Dom
       def initialize(dom)
         @dom = dom
-        @save_unformated = false
+        @unformated = false
       end
 
       def ===(cls); self.is_a? cls; end
@@ -52,17 +52,20 @@ module XML
         rescue
           raise Error, "could not open #{name}"
         end
-        ftext = if @save_unformated
+        io.write serialize
+        io.close unless name == io
+      end
+
+      def serialize
+        if @unformated
           @dom.root.serialize(:encoding => 'UTF-8', :save_with => Nokogiri::XML::Node::SaveOptions::NO_DECLARATION | Nokogiri::XML::Node::SaveOptions::AS_XML)
         else
           @dom.root.serialize(:encoding => 'UTF-8', :save_with => Nokogiri::XML::Node::SaveOptions::FORMAT | Nokogiri::XML::Node::SaveOptions::AS_XML)
         end
-        io.write ftext
-        io.close unless name == io
       end
 
-      def save_unformated=(val); @save_unformated = (val.is_a?(TrueClass) ? true : false); end
-      def save_unformated?; @save_unformated; end
+      def unformated=(val); @unformated = (val.is_a?(TrueClass) ? true : false); end
+      def unformated?; @unformated; end
 
       def xinclude!(basedir=nil)
         Element.new(@dom.root).xinclude!(basedir)
