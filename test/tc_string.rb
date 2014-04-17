@@ -2,7 +2,7 @@
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestString < MiniTest::Unit::TestCase
+class TestString < Minitest::Test
   def test_String
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
 

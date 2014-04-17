@@ -1,7 +1,7 @@
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestQname < MiniTest::Unit::TestCase
+class TestQname < Minitest::Test
   def test_qname
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
     doc.register_namespace("s","http://schemas.xmlsoap.org/wsdl/soap/")

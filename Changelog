@@ -1,3 +1,6 @@
+0.3.9
+  * bump to minitest 5.x
+
 0.3.8
   *  XML::SMART::DOM#save_unformated= -> XML::SMART::DOM#unformated=
   *  XML::SMART::DOM#save_unformated -> XML::SMART::DOM#unformated

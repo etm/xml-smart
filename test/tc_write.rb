@@ -1,7 +1,7 @@
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestWrite < MiniTest::Unit::TestCase
+class TestWrite < Minitest::Test
   def test_write
     tim = Time.now
 

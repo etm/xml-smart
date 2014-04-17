@@ -1,11 +1,11 @@
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestSetOrReplace < MiniTest::Unit::TestCase
+class TestSetOrReplace < Minitest::Test
   def test_set_or_replace
     nums  = 1000
 
-    start_timing "#replace_by, #root= (#{nums} times)"
+    Minitest::PerformanceReporter::start_timing "#replace_by, #root= (#{nums} times)"
     1.upto(nums) { |i|
       # create a XML document and copy the elements for each node to a file
       soc = XML::Smart.string("<?xml version='1.0'?><root><node id='1'><text>I am a text</text></node><node id='2'/></root>")
@@ -25,7 +25,7 @@ class TestSetOrReplace < MiniTest::Unit::TestCase
       cdoc = XML::Smart.open(::File.dirname(__FILE__) + "/3.xml")
       cdoc.root = XML::Smart.string("<root><node id='1'><text>I am a text</text></node><node id='#{i}'/></root>").root
     }
-    end_timing
+    Minitest::PerformanceReporter::end_timing
 
     soc = XML::Smart.string("<?xml version='1.0'?><root><node id='1'><text>I am a text</text></node><node id='2'/></root>")
     eles = soc.root.find("/root/node")

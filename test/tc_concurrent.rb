@@ -1,7 +1,7 @@
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestConcurrent < MiniTest::Unit::TestCase
+class TestConcurrent < Minitest::Test
   def test_unformated
     # Watch the power
     nums = 1000
@@ -14,7 +14,7 @@ class TestConcurrent < MiniTest::Unit::TestCase
 
     result = ""
     p = []
-    start_timing "Concurrent - unformatted (#{nums} times)"
+    Minitest::PerformanceReporter::start_timing "Concurrent - unformatted (#{nums} times)"
     0.upto(nums) do |i|
       p[i] = Thread.new do
         XML::Smart.modify(::File.dirname(__FILE__) + "/concurrent.xml","<solutions/>") do |xml|
@@ -34,7 +34,7 @@ class TestConcurrent < MiniTest::Unit::TestCase
     p.each do |t|
       t.join
     end
-    end_timing
+    Minitest::PerformanceReporter::end_timing
   end
 
   def test_formated
@@ -48,7 +48,7 @@ class TestConcurrent < MiniTest::Unit::TestCase
     exam    = true
 
     p = []
-    start_timing "Concurrent - formatted (#{nums} times)"
+    Minitest::PerformanceReporter::start_timing "Concurrent - formatted (#{nums} times)"
     0.upto(nums) do |i|
       p[i] = Thread.new do
         XML::Smart.modify(::File.dirname(__FILE__) + "/concurrent.xml","<solutions/>") do |xml|
@@ -65,6 +65,6 @@ class TestConcurrent < MiniTest::Unit::TestCase
     p.each do |t|
       t.join
     end  
-    end_timing
+    Minitest::PerformanceReporter::end_timing
   end
 end

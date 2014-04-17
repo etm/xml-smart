@@ -1,7 +1,7 @@
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestXpathFunctions < MiniTest::Unit::TestCase
+class TestXpathFunctions < Minitest::Test
   def test_xpath_functions
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE.xml")
     assert(doc.root.find("count(/test/names/name)") == 6.0)

@@ -1,7 +1,7 @@
 require File.expand_path(::File.dirname(__FILE__) + '/../lib/xml/smart')
 require File.expand_path(::File.dirname(__FILE__) + '/smartrunner.rb')
 
-class TestRelaxng < MiniTest::Unit::TestCase
+class TestRelaxng < Minitest::Test
   def test_relaxng
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/HELLO.xml")
     doc.xinclude!
@@ -9,12 +9,12 @@ class TestRelaxng < MiniTest::Unit::TestCase
 
     nums = 10000
     # Watch the power
-    start_timing "RelaxNG #validate_against (#{nums} times)"
+    Minitest::PerformanceReporter::start_timing "RelaxNG #validate_against (#{nums} times)"
     nums.times do
       doc.validate_against(xsd)
     end
     assert(doc.validate_against(xsd) == true)
-    end_timing
+    Minitest::PerformanceReporter::end_timing
 
     doc.find('/hellos/hello[3]').each do |h|
       h.qname.name = 'test'
