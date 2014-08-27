@@ -45,7 +45,7 @@ module XML
 
         def delete_at!(name)
           tmp = @set[name]
-          if tmp === Nokogiri::XML::Attr
+          if tmp.is_a?(Nokogiri::XML::Attr)
             tmp.remove
             true
           else

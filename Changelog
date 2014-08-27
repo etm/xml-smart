@@ -1,3 +1,6 @@
+0.3.10
+  * fixed XML::SMART::DOM::AttributeSet.delete_at! not finding attributes
+
 0.3.9
   * bump to minitest 5.x
 
