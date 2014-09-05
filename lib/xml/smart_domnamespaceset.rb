@@ -102,6 +102,7 @@ module XML
         end
 
         def delete_if(&block)
+          return self if block.nil?
           nnod = Nokogiri::XML::Node.new(@node.name,@node.document)
           nnew = Element.new(nnod)
           nold = Element.new(@node)

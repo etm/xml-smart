@@ -38,9 +38,11 @@ module XML
         def delete_all!; @set.each { |k,a| a.remove }; end
 
         def each(&block)
+          return self if block.nil?
           @set.each do |k,node|
             block.call Dom::smart_helper(node)
           end
+          self
         end
 
         def delete_at!(name)
@@ -54,9 +56,11 @@ module XML
         end
 
         def delete_if!(&block)
+          return self if block.nil?
           @set.each do |k,node|
             node.remove if block.call(Dom::smart_helper(node))
           end
+          self
         end
       end  
     

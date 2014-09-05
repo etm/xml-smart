@@ -1,3 +1,8 @@
+0.3.11
+  * handle operator precedence problem for #each in a less confusing way
+    (thanks Triarier)
+  * ugly duplication to circumvent //namespace::* bug
+
 0.3.10
   * fixed XML::SMART::DOM::AttributeSet.delete_at! not finding attributes
 

@@ -38,6 +38,7 @@ module Nokogiri
         result = {}
 
         diffs = []
+        self.xpath('//namespace::*')
         ns = self.xpath('//namespace::*').to_a.delete_if do |n| 
           if diffs.include? n.href
             true
