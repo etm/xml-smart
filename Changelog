@@ -1,3 +1,8 @@
+0.3.12
+  * removed ugly duplication because namespace bug is fixed (see 0.3.11)
+  * slightly improved performance through better namespace determination
+  * fixed tc_create to always work
+
 0.3.11
   * handle operator precedence problem for #each in a less confusing way
     (thanks Triarier)

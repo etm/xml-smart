@@ -13,11 +13,11 @@ class TestCreate < Minitest::Test
     t1 = Thread.new do
       XML::Smart.modify(::File.dirname(__FILE__) + "/EXAMPLE.tmp.xml","<elements/>") { |doc|
         node = doc.root.add("element","Thread 1")
+        sleep 1
       }
-      sleep 1
     end
     t2 = Thread.new do
-      Thread.pass
+      sleep 0.5
       XML::Smart.modify(::File.dirname(__FILE__) + "/EXAMPLE.tmp.xml","<elements/>") { |doc|
         node = doc.root.add("element","Thread 2")
       }  
