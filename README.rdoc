@@ -47,6 +47,32 @@ Register your own shortcusts to be available in all XPaths:
     doc.root.add "test_node"
   end
 
+=== check against relaxng and xml schema
+
+Libxml2, the basis for nokogiri has only partial xml-schema support, but full
+relaxng support. Thus checking against xml-schema with nokogiri may return
+positive results, although it is a lie. XML::Smart internally converts
+xml-schema to relaxng, thus allowing for seamless schema usage:
+
+  doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
+  doc.validate_against(XML::Smart.open_unprotected('xmlschema.xml'))
+  doc.validate_against(XML::Smart.open_unprotected('xmlschema.xml'))
+  doc.find('string(a:test)')
+  doc.close
+
+=== xinclude
+
+Libxml2, the basis for nokogiri does not support https xincludes. Nokogiri may
+impelement this in the future (issue
+https://github.com/sparklemotion/nokogiri/issues/1321), but for now we do
+support it:
+
+  doc.xinclude!
+
+or
+  
+  doc.find('//someelement').first.xinclude!
+
 == Changes since 0.2.x (see Changelog)
 
 - qname instead of name

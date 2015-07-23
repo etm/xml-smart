@@ -5,7 +5,7 @@
     <name team="1">Jürgen</name>
     <name team="1">Michel</name>
     <name team="1">Raphi</name>
-    <name team="2">Kathrin <b>Fiedler</b> MBA</name>
+    <name xmlns:doc="arrra" soap:team="2">Kathrin <b>Fiedler</b> MBA</name>
     <name team="5">egon</name>
   </names>
   <colors>

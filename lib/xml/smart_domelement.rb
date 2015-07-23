@@ -160,11 +160,7 @@ module XML
         def namespaces; NamespaceSet.new(self,@element); end
 
         def xinclude!(basedir=nil)
-          if basedir.is_a?(String) && File.directory?(basedir)
-            Dir.chdir(basedir) { @element.do_xinclude Nokogiri::XML::ParseOptions::STRICT }
-          else
-            @element.do_xinclude Nokogiri::XML::ParseOptions::STRICT
-          end  
+          @element.do_xinclude_manual(basedir)
           @element.document.custom_namespace_prefixes_update
           @element.document.ns_update
           true

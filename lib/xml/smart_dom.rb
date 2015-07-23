@@ -1,8 +1,9 @@
 module XML
   module Smart
     class Dom
-      def initialize(dom)
+      def initialize(dom,basepath=nil)
         @dom = dom
+        @dom.basepath = basepath
         @unformated = false
       end
 

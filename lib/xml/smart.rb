@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'nokogiri'
 require 'tempfile'
+require 'open-uri'
+require 'openssl'
 
 require File.expand_path(File.dirname(__FILE__) + '/smart_qname')
 require File.expand_path(File.dirname(__FILE__) + '/smart_dom')
@@ -26,6 +28,13 @@ module Nokogiri
         self
       end
 
+      def basepath=(path)
+        @basepath = File.dirname(path.to_s)
+      end
+      def basepath
+        @basepath || ''
+      end
+      
       def xpath_fast(path)
         ns = self.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes)
         ctx = XPathContext.new(self)
@@ -84,6 +93,26 @@ module Nokogiri
         ctx.evaluate(path)
       end
 
+      def do_xinclude_manual(relative_to=nil)
+        path = ((relative_to || self.document.basepath.to_s) + '/').sub(/\/+$/,'/')
+        ctx = XPathContext.new(self)
+        ctx.register_namespaces "xi"=>"http://www.w3.org/2001/XInclude"
+        ctx.evaluate('//xi:include').each do |ele|
+          name = ele.attributes['href'].value
+          name = path + name if name !~ /^(https?:|ftp:)/
+          content = open(name,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read
+          insert = begin 
+            Nokogiri::XML::parse(content){|config| config.noblanks.noent.nsclean.strict }.root
+          rescue
+            content
+          end
+          x = ele.replace insert
+          x.each do |n|
+            n.do_xinclude_manual if n.is_a? Nokogiri::XML::Element
+          end
+        end
+      end
+
       def xpath_experimental
         return NodeSet.new(document) unless document
         @nsc ||= 0
@@ -119,15 +148,15 @@ module XML
             io = ::Kernel::open(name,'r+')
             io.flock(File::LOCK_EX)
           end  
-          dom = Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }
+          dom = Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }, name
           io.rewind
         elsif name.is_a?(String) && !File.exists?(name)
           MUTEX.synchronize do
             io = ::Kernel::open(name,'w')
             io.flock(File::LOCK_EX)
           end  
-          dom = Smart::string(default)
-        elsif name.is_a?(IO) || name.is_a?(Tempfile)  
+          dom = Smart::string(default,name)
+        elsif name.is_a?(IO) || name.is_a?(Tempfile)
           MUTEX.synchronize do
             io = name
             io.flock(File::LOCK_EX)
@@ -167,10 +196,17 @@ module XML
       raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
       raise Error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
       dom = begin
-        io = name.is_a?(String) ? ::Kernel::open(name) : name
+        filename = nil
+        io = if name.is_a?(String) 
+          filename = name
+          ::Kernel::open(name) 
+        else
+          filename = name.path
+          name
+        end
         begin
           io.flock(File::LOCK_EX) if lock
-          Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }
+          Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }, filename
         ensure
           io.flock(File::LOCK_UN)
         end
@@ -190,9 +226,9 @@ module XML
       end
     end
 
-    def self::string(str)
+    def self::string(str,basepath=nil)
       raise Error, 'first parameter has to be stringable (:to_s)' unless str.is_a?(String)
-      dom = Dom.new Nokogiri::XML::parse(str.to_s){|config| config.noblanks.noent.nsclean.strict }
+      dom = Dom.new Nokogiri::XML::parse(str.to_s){|config| config.noblanks.noent.nsclean.strict }, basepath
       if block_given?
         yield dom
         nil
