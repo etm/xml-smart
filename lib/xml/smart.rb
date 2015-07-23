@@ -97,7 +97,7 @@ module Nokogiri
         path = ((relative_to || self.document.basepath.to_s) + '/').sub(/\/+$/,'/')
         ctx = XPathContext.new(self)
         ctx.register_namespaces "xi"=>"http://www.w3.org/2001/XInclude"
-        ctx.evaluate('//xi:include').each do |ele|
+        ctx.evaluate('.//xi:include').each do |ele|
           name = ele.attributes['href'].value
           name = path + name if name !~ /^(https?:|ftp:)/
           content = open(name,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read
@@ -107,8 +107,12 @@ module Nokogiri
             content
           end
           x = ele.replace insert
-          x.each do |n|
-            n.do_xinclude_manual if n.is_a? Nokogiri::XML::Element
+          if x.is_a? Nokogiri::XML::Element
+            x.do_xinclude_manual(relative_to)
+          else
+            x.each do |n|
+              n.do_xinclude_manual(relative_to) if n.is_a? Nokogiri::XML::Element
+            end
           end
         end
       end
