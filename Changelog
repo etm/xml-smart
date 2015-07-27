@@ -1,3 +1,7 @@
+0.3.17
+  * #dump always includes relevant namespaces for fragment
+  * xinclude! can do https
+
 0.3.12
   * removed ugly duplication because namespace bug is fixed (see 0.3.11)
   * slightly improved performance through better namespace determination

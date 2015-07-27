@@ -106,6 +106,7 @@ module Nokogiri
           rescue
             content
           end
+          insert['xml:base'] = name unless File.dirname(ele.attributes['href'].value) == '.'
           x = ele.replace insert
           if x.is_a? Nokogiri::XML::Element
             x.do_xinclude_manual(relative_to)
