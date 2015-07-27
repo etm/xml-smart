@@ -25,13 +25,13 @@ module XML
                   if @element.document.user_custom_namespace_prefixes[pfx] == v
                     ns = @element.document.user_custom_namespace_prefixes[pfx]
                   end
-                end  
+                end
               end
-              if ns.nil? 
+              if ns.nil?
                 if @element.document.custom_namespace_prefixes.has_key?(pfx)
                   ns = @element.document.custom_namespace_prefixes[pfx]
                 else
-                  raise Error, 'No valid namespace' 
+                  raise Error, 'No valid namespace'
                 end
               end
             end
@@ -86,10 +86,10 @@ module XML
               if attrs[1] == XML::Smart::COPY
                 tnos = nos.map{|e|e.dup}
                 nos = Nokogiri::XML::NodeSet.new(nos.first.document,tnos)
-              end  
+              end
                 return [Nokogiri::XML::NodeSet.new(nos.first.document,tnos), true]
               return [nos, !same]
-            else  
+            else
               return [nos, false]
             end
           elsif attrs.length == 2 && attrs[0].is_a?(String) && attrs[1].is_a?(String) && attrs[0][0] == '?'
@@ -105,7 +105,7 @@ module XML
           if update
             @element.document.custom_namespace_prefixes_update
             @element.document.ns_update
-          end  
+          end
           res
         end
         def append(*attrs)
@@ -121,7 +121,7 @@ module XML
           if update
             @element.document.custom_namespace_prefixes_update
             @element.document.ns_update
-          end  
+          end
           res
         end
         def add_after(*attrs)
@@ -130,11 +130,16 @@ module XML
           if update
             @element.document.custom_namespace_prefixes_update
             @element.document.ns_update
-          end  
+          end
           res
         end
 
-        def dump; @element.to_s; end
+        def dump
+          doc = Nokogiri::XML::Document.new
+          doc.root = @element
+          doc.root.to_s
+        end
+
         def to_s; @element.content; end
         def to_i; @element.content.to_i; end
         def to_f; @element.content.to_f; end
@@ -149,7 +154,7 @@ module XML
               n
             else
               return
-          end  
+          end
           tmp = @element.document.custom_namespace_prefixes[n] || @element.document.user_custom_namespace_prefixes[n]
           unless tmp.nil?
             @element.namespace_scopes.each do |nss|

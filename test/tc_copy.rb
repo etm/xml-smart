@@ -32,7 +32,9 @@ class TestCopy < Minitest::Test
     assert(doc.find("/test/*[7]").first.dump          == "<name team=\"2\">Kathrin <b>Fiedler</b></name>")
     assert(doc.find("/test/*[8]").first.dump          == "<name team=\"2\">Kathrin <b>Fiedler</b></name>")
     assert(doc.find("/test/*[9]").first.dump          == "<node id=\"1\">\n  <text xmlns=\"http://aaa\">I am a text</text>\n</node>")
-    assert(doc.find("/test/*[10]").first.dump         == "<soap:node id=\"2\"/>")
+
+
+    assert(doc.find("/test/*[10]").first.dump         == "<soap:node xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\" id=\"2\"/>")
 
     assert(soc.root.dump                              == "<root xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\">\n  <node id=\"1\">\n    <text xmlns=\"http://aaa\">I am a text</text>\n  </node>\n  <soap:node id=\"2\"/>\n</root>")
   end

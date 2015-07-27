@@ -102,7 +102,7 @@ module Nokogiri
           name = path + name if name !~ /^(https?:|ftp:)/
           content = open(name,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read
           insert = begin 
-            Nokogiri::XML::parse(content){|config| config.noblanks.noent.nsclean.strict }.root
+            Nokogiri::XML::parse(content).root # {|config| config.noblanks.noent.strict }.root
           rescue
             content
           end
@@ -115,6 +115,17 @@ module Nokogiri
             end
           end
         end
+      end
+
+      alias __replace replace
+      def replace(node_or_tags)
+        x = __replace(node_or_tags)
+        x.xpath('.|.//*|.//@*').each do |rns|
+          x.namespace_scopes.each do |nss|
+            rns.namespace = nss if rns.namespace && rns.namespace.href == nss.href
+          end
+        end
+        x
       end
 
       def xpath_experimental

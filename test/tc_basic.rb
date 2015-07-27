@@ -82,7 +82,7 @@ class TestBasic < MiniTest::Test
 
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE-NS.xml")
     assert(doc.namespaces == {"xmlns0"=>"http://example.org", "xmlns1"=>"http://example1.org", "soap"=>"http://schemas.xmlsoap.org/wsdl/soap/"})
-    assert(doc.find('//xmlns0:names/xmlns0:name')[2].dump == "<name team=\"1\">Michel</name>")
+    assert(doc.find('//xmlns0:names/xmlns0:name')[2].dump == "<name xmlns=\"http://example.org\" team=\"1\">Michel</name>")
 
     doc = XML::Smart.open(::File.dirname(__FILE__) + "/EXAMPLE-NSE.xml")
     node = doc.find("//soap:hallo")[0]
@@ -94,10 +94,10 @@ class TestBasic < MiniTest::Test
     assert(node.qname.href       == "http://schemas.xmlsoap.org/wsdl/soap/")
 
     node.namespace = 'x'
-    assert(node.dump == "<test:hallo/>")
+    assert(node.dump == "<test:hallo xmlns:test=\"http://xxx.org\"/>")
     assert(doc.root.namespaces.length == 3)
     node.namespace = 'xmlns'
-    assert(node.dump == "<hallo/>");
+    assert(node.dump == "<hallo xmlns=\"http://default.org\"/>")
 
     node = doc.find("/xmlns:test")[0]
     assert(node.qname.prefix == "")

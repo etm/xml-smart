@@ -27,7 +27,7 @@ class TestNamespaceDefault < Minitest::Test
     n = nsnode.add('x:test') rescue success = false
     assert(success)
 
-    assert(nsnode.dump == "<hallo>\n  <soap:test/>\n</hallo>")
+    assert(nsnode.dump == "<hallo xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\">\n  <soap:test/>\n</hallo>")
 
     assert(nsnode.qname.name                                    == "hallo")
     assert(nsnode.qname.to_s                                    == "hallo")
