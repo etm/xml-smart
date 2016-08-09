@@ -12,8 +12,8 @@ class TestNested < Minitest::Test
       soc.find("/root/node").each do |ele|
         ts = ele.find('text')
         if ts.any?
-          a = ts.first.to_doc
-        end  
+          ts.first.to_doc
+        end
       end
       ts = soc.find("/root/node").first
       ts.add('text','Haller')

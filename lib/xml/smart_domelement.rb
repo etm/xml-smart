@@ -87,7 +87,6 @@ module XML
                 tnos = nos.map{|e|e.dup}
                 nos = Nokogiri::XML::NodeSet.new(nos.first.document,tnos)
               end
-                return [Nokogiri::XML::NodeSet.new(nos.first.document,tnos), true]
               return [nos, !same]
             else
               return [nos, false]
@@ -216,7 +215,7 @@ module XML
         def to_doc
           doc = Nokogiri::XML::Document.new
           doc.root = @element
-          dom = Dom.new(doc)
+          Dom.new(doc)
         end
       end
 

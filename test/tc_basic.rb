@@ -44,8 +44,8 @@ class TestBasic < MiniTest::Test
 
     tmp = doc.find("/test/names/test_node")[3].dump
     assert(tmp == "<test_node second=\"a\" attr=\"14\"/>" || tmp == "<test_node attr=\"14\" second=\"a\"/>")
-                                                            
-    nodes = doc.find("/test/names/test_node")                
+
+    nodes = doc.find("/test/names/test_node")
     assert(nodes.length                                      == 9)
     assert(nodes.empty?                                      == false)
     assert(nodes.delete_all!                                 == true)
@@ -57,10 +57,10 @@ class TestBasic < MiniTest::Test
     count = 0
     nodes = doc.find("/test/colors/*")
     assert(nodes.length == 3)
-    nodes.delete_if do |node|
+    nodes.delete_if do |tnode|
       count += 1
       count % 2 == 0
-    end  
+    end
     assert(nodes.length == 2)
     assert(doc.find("/test/colors/*")[0].dump == "<blue taint=\"true\">Yeah</blue>")
     assert(doc.find("/test/colors/*")[1].dump == "<green taint=\"true\"/>")

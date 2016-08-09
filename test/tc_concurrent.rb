@@ -19,16 +19,16 @@ class TestConcurrent < Minitest::Test
       p[i] = Thread.new do
         XML::Smart.modify(::File.dirname(__FILE__) + "/concurrent.xml","<solutions/>") do |xml|
           xml.unformated = true
-          res = xml.find("/solutions/solution[@matnr=\"#{e_matnr}\" or @secid=\"#{e_secid}\"]").delete_all! if exam
+          xml.find("/solutions/solution[@matnr=\"#{e_matnr}\" or @secid=\"#{e_secid}\"]").delete_all! if exam
           node = xml.root.add("solution",{:matnr => e_matnr, :name => e_name, :secid => e_secid, :assessment => id})
           1.upto(3) do |qbi|
             qid = qbi*2
-            ques = node.add("question", :block => qbi, :question => qid)
+            node.add("question", :block => qbi, :question => qid)
           end
 
-          result = xml.to_s 
-        end  
-      end  
+          result = xml.to_s
+        end
+      end
     end
 
     p.each do |t|
@@ -52,19 +52,19 @@ class TestConcurrent < Minitest::Test
     0.upto(nums) do |i|
       p[i] = Thread.new do
         XML::Smart.modify(::File.dirname(__FILE__) + "/concurrent.xml","<solutions/>") do |xml|
-          res = xml.find("/solutions/solution[@matnr=\"#{e_matnr}\" or @secid=\"#{e_secid}\"]").delete_all! if exam
+          xml.find("/solutions/solution[@matnr=\"#{e_matnr}\" or @secid=\"#{e_secid}\"]").delete_all! if exam
           node = xml.root.add("solution",{:matnr => e_matnr, :name => e_name, :secid => e_secid, :when => Time.now.xmlschema, :assessment => id})
           1.upto(3) do |qbi|
             qid = qbi*2
-            ques = node.add("question", :block => qbi, :question => qid)
+            node.add("question", :block => qbi, :question => qid)
           end
-        end  
-      end  
+        end
+      end
     end
 
     p.each do |t|
       t.join
-    end  
+    end
     Minitest::PerformanceReporter::end_timing
   end
 end

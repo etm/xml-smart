@@ -34,9 +34,8 @@ module Nokogiri
       def basepath
         @basepath || ''
       end
-      
+
       def xpath_fast(path)
-        ns = self.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes)
         ctx = XPathContext.new(self)
         ctx.register_namespaces(self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
         path = path.gsub(/xmlns:/, ' :') unless Nokogiri.uses_libxml?
@@ -47,13 +46,13 @@ module Nokogiri
         result = {}
         nsall = {}
         nsde = {}
-        
-        self.xpath('//namespace::*').each do |n| 
+
+        self.xpath('//namespace::*').each do |n|
           unless n.prefix == 'xml'
             nsde[n.href] = n.prefix if n.prefix.nil?
             nsall[n.href] = n.prefix
           end
-        end 
+        end
 
         count = -1
         nsall.each do |k,v|
@@ -68,6 +67,7 @@ module Nokogiri
         @custom_namespace_prefixes = result
       end
       def custom_namespace_prefixes
+        @custom_namespace_prefixes ||= nil
         @custom_namespace_prefixes || custom_namespace_prefixes_update
       end
       def user_custom_namespace_prefixes
@@ -86,7 +86,6 @@ module Nokogiri
         # return xpath(path,self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
         return NodeSet.new(document) unless document
 
-        ns = self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes)
         ctx = XPathContext.new(self)
         ctx.register_namespaces(self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
         path = path.gsub(/xmlns:/, ' :') unless Nokogiri.uses_libxml?
@@ -101,7 +100,7 @@ module Nokogiri
           name = ele.attributes['href'].value
           name = path + name if name !~ /^(https?:|ftp:|\/)/
           content = open(name,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read
-          insert = begin 
+          insert = begin
             Nokogiri::XML::parse(content).root # {|config| config.noblanks.noent.strict }.root
           rescue
             content
@@ -159,18 +158,18 @@ module XML
       raise Error, 'a block is mandatory' unless block_given?
       dom = io = nil
       begin
-        if name.is_a?(String) && File.exists?(name)
+        if name.is_a?(String) && File.exist?(name)
           MUTEX.synchronize do
             io = ::Kernel::open(name,'r+')
             io.flock(File::LOCK_EX)
-          end  
+          end
           dom = Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }, name
           io.rewind
-        elsif name.is_a?(String) && !File.exists?(name)
+        elsif name.is_a?(String) && !File.exist?(name)
           MUTEX.synchronize do
             io = ::Kernel::open(name,'w')
             io.flock(File::LOCK_EX)
-          end  
+          end
           dom = Smart::string(default,name)
         elsif name.is_a?(IO) || name.is_a?(Tempfile)
           MUTEX.synchronize do
@@ -203,7 +202,7 @@ module XML
       if dom && block_given?
         yield dom
         nil
-      else  
+      else
         dom
       end
     end
@@ -213,9 +212,9 @@ module XML
       raise Error, 'second parameter has to be an xml string' unless default.is_a?(String) || default.nil?
       dom = begin
         filename = nil
-        io = if name.is_a?(String) 
+        io = if name.is_a?(String)
           filename = name
-          ::Kernel::open(name) 
+          ::Kernel::open(name)
         else
           filename = name.path
           name
@@ -237,7 +236,7 @@ module XML
       if block_given?
         yield dom
         nil
-      else  
+      else
         dom
       end
     end
@@ -248,7 +247,7 @@ module XML
       if block_given?
         yield dom
         nil
-      else  
+      else
         dom
       end
     end
