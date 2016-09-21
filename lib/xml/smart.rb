@@ -201,7 +201,6 @@ module XML
       dom = Smart::open_unprotected(name,default,true)
       if dom && block_given?
         yield dom
-        nil
       else
         dom
       end
