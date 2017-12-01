@@ -36,7 +36,9 @@ module Nokogiri
       end
 
       def xpath_fast(path)
-        ctx = XPathContext.new(self)
+        @ctx = XPathContext.new(self) unless defined? @ctx
+        ctx = @ctx
+        #ctx = XPathContext.new(self)
         ctx.register_namespaces(self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
         path = path.gsub(/xmlns:/, ' :') unless Nokogiri.uses_libxml?
         ctx.evaluate(path)
@@ -86,7 +88,9 @@ module Nokogiri
         # return xpath(path,self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
         return NodeSet.new(document) unless document
 
-        ctx = XPathContext.new(self)
+        @ctx = XPathContext.new(self) unless defined? @ctx
+        ctx = @ctx
+        #ctx = XPathContext.new(self)
         ctx.register_namespaces(self.document.custom_namespace_prefixes.merge(self.document.user_custom_namespace_prefixes))
         path = path.gsub(/xmlns:/, ' :') unless Nokogiri.uses_libxml?
         ctx.evaluate(path)

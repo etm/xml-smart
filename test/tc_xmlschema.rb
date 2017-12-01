@@ -20,9 +20,9 @@ class TestXmlSchema < Minitest::Test
       h.qname.name = 'test'
     end
     assert(!doc.validate_against(xsd))
-    
+
     doc.validate_against(xsd) do |err|
-      assert("#{err.file} line #{err.line}: #{err.to_s}" =~ /HELLO.xml line 4: Did not expect element test there/)
+      assert("#{err.file} line #{err.line}: #{err.to_s}" =~ /HELLO.xml .* Did not expect element test there/)
     end
-  end    
-end  
+  end
+end

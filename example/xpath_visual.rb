@@ -21,11 +21,12 @@ def prnTree(node,depth,mixed)
   node.children.each { |n|
     case n
       when XML::Smart::Dom::Element; prnTree(n,depth+2,node.mixed? | mixed)
-      when XML::Smart::Dom::Text; print rememberPath(n.path,n.text)
-    end  
+      when XML::Smart::Dom::Text;
+        print rememberPath(n.path,n.text)
+    end
   }
   print " " * depth if node.element_only? && !mixed
-  print "</" + rememberPath(node.path,node.qname.to_s) + ">" 
+  print "</" + rememberPath(node.path,node.qname.to_s) + ">"
   print "\n" unless mixed
 end
 
@@ -43,7 +44,7 @@ begin
     @remember = doc.find(xpath).collect { |n| n.path }
   else
     message = tmp
-  end  
+  end
 rescue
   puts "Invalid XPath!"
 end
