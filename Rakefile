@@ -18,8 +18,8 @@ end
 
 task :push => :gem do |r|
   `gem push pkg/xml-smart.gem`
-end  
+end
 
 task :install => :gem do |r|
-  `sudo gem install pkg/xml-smart.gem`
-end  
+  `gem install pkg/xml-smart.gem`
+end
