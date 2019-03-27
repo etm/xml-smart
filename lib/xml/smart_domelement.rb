@@ -172,8 +172,8 @@ module XML
 
         def replace_by(n)
           case n
-            when Element; Element.new @element.replace(n.instance_variable_get(:@element))
-            when NodeSet; NodeSet.new @element.replace(n.instance_variable_get(:@nodeset))
+            when Element; Element.new @element.replace(n.instance_variable_get(:@element).dup)
+            when NodeSet; NodeSet.new @element.replace(n.instance_variable_get(:@nodeset).dup)
             else
               nil
           end
