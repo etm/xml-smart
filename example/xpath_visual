@@ -31,7 +31,7 @@ def prnTree(node,depth,mixed)
 end
 
 def help
-  puts "Usage: xpath_visual.rb FILE \"XPATH\""
+  puts "Usage: xpath_visual FILE \"XPATH\""
   exit
 end
 
