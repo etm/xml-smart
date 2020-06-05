@@ -172,6 +172,14 @@ module XML
 
         def replace_by(n)
           case n
+            when Element; Element.new @node.replace(n.instance_variable_get(:@node))
+            when NodeSet; NodeSet.new @node.replace(n.instance_variable_get(:@nodeset))
+            else
+              nil
+          end
+        end
+        def replace_by_copy(n)
+          case n
             when Element; Element.new @node.replace(n.instance_variable_get(:@node).dup)
             when NodeSet; NodeSet.new @node.replace(n.instance_variable_get(:@nodeset).dup)
             else
