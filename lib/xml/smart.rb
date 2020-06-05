@@ -257,4 +257,9 @@ module XML
 
     class Error < RuntimeError; end
   end
+
+  module Common
+    def self::pretty_path
+    end
+  end
 end
