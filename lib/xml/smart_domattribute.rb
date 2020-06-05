@@ -3,9 +3,6 @@ module XML
     class Dom
 
       class Attribute
-        alias :text :value
-        alias :text= :value=
-
         def initialize(attr)
           @node = attr
         end
@@ -30,6 +27,9 @@ module XML
         def unique_id; @node.pointer_id; end
 
         def parent; Dom::smart_helper(@node.parent); end
+
+        alias :text :value
+        alias :text= :value=
       end
 
     end

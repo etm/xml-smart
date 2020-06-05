@@ -11,6 +11,8 @@ Gem::Specification.new do |s|
   s.require_path          = 'lib'
   s.extra_rdoc_files      = ['README.rdoc']
   s.test_files            = Dir['test/tc_*.rb','test/*.xml','test/*.rng','test/*.xsd','test/smartrunner.rb','minitest/*']
+  s.bindir                = 'example'
+  s.executables           = ['xpath_visual']
 
   s.authors               = ['Juergen eTM Mangler']
   s.email                 = 'juergen.mangler@gmail.com'

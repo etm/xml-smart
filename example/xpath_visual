@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'rubygems'
 require 'term/ansicolor'
-require "#{File.dirname($0)}/../lib/xml/smart"
+require_relative "../lib/xml/smart"
 include Term::ANSIColor
 
 def rememberPath(path,output)
@@ -30,10 +30,21 @@ def prnTree(node,depth,mixed)
   print "\n" unless mixed
 end
 
-doc = XML::Smart.open(File.dirname($0) + "/EXAMPLE.xml")
+def help
+  puts "Usage: xpath_visual.rb FILE \"XPATH\""
+  exit
+end
 
-# xpath expression that should be visualised
-xpath = ARGV[0] || "/"
+if ARGV.length < 2
+  help
+else
+  # xpath expression that should be visualised
+  xpath = ARGV[1..-1].join(' ') || "/"
+  unless File.exists?(ARGV[0])
+    help
+  end
+  doc = XML::Smart.open_unprotected(ARGV[0])
+end
 
 # remember pathes, that an xpath expression selects
 @remember = []

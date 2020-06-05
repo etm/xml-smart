@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<hipster_kitchen>
+  <dish_of_the_day day="Mo" type="meat">
+    <name>QUICHE LORRAINE</name>
+    <alergens>
+      <alergen>a</alergen>
+      <alergen>c</alergen>
+      <alergen>g</alergen>
+      <alergen>l</alergen>
+    </alergens>
+  </dish_of_the_day>
+  <dish_of_the_day day="Di" type="vegetarian">
+    <name>MAROKKANISCHER COUSCOUS</name>
+    <alergens>
+      <alergen>a</alergen>
+      <alergen>gl</alergen>
+    </alergens>
+  </dish_of_the_day>
+  <dish_of_the_day day="Mi" type="meat">
+    <name>ASIATISCHE H&#xDC;HNERSPIESSE</name>
+    <alergens>
+      <alergen>gl</alergen>
+      <alergen>lf</alergen>
+      <alergen>f</alergen>
+      <alergen>m</alergen>
+      <alergen>o</alergen>
+    </alergens>
+  </dish_of_the_day>
+  <dish_of_the_day day="Fr" type="vegetarian">
+    <name>ITALIENISCHES ANTIPASTIPI</name>
+    <alergens>
+      <alergen maybe="true">a</alergen>
+      <alergen>g</alergen>
+      <alergen>h</alergen>
+      <alergen>l</alergen>
+    </alergens>
+  </dish_of_the_day>
+  <dish_of_the_day type="vegan">
+    <name>SOMMER-CURRY</name>
+    <alergens>
+      <alergen>gl</alergen>
+      <alergen>lf</alergen>
+      <alergen>l</alergen>
+    </alergens>
+  </dish_of_the_day>
+  <alergenes>
+    <alergene id="gl">glutenfrei</alergene>
+    <alergene id="lf">lactosefrei</alergene>
+    <alergene id="a">glutenhaltiges getreide</alergene>
+    <alergene id="b">krebstiere &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="c">ei von gefl&#xFC;gel &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="d">fisch &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="e">erdnuss &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="f">soja &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="g">milch von s&#xE4;ugetieren wie kuh, schaf, ziege, pferd &amp; esel &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="h">schalenfr&#xFC;chte</alergene>
+    <alergene id="l">sellerie</alergene>
+    <alergene id="m">senf &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="n">sesam &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="o">sulfit</alergene>
+    <alergene id="p">lupinen &amp; daraus gewonnene erzeugnisse</alergene>
+    <alergene id="r">weichtiere wie z.b.: muscheln, austern, schnecken &amp; daraus gewonnene erzeugnisse</alergene>
+  </alergenes>
+</hipster_kitchen>
