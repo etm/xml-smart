@@ -12,7 +12,7 @@ class TestNamespaceDefault < Minitest::Test
     assert(doc.namespaces.length == 2)
     assert(doc.namespaces.key? 'soap')
     assert(doc.namespaces.key? 'x')
-    
+
     # add an element hallo to root
     nsnode = doc.root.add("hallo")
 
@@ -50,7 +50,7 @@ class TestNamespaceDefault < Minitest::Test
     nsnode.namespaces.add("aaa","http://heise2")
 
     assert(nsnode.namespaces[nil] == nil)
-    
+
     nsnode.namespaces.add(nil,"http://heise")
     nsnode.namespaces[nil] = "http://heiser"
 
@@ -61,13 +61,13 @@ class TestNamespaceDefault < Minitest::Test
     assert(nsnode.namespaces['xmlns'].href == "http://heiser")
     assert(nsnode.namespaces['aaa'].href == "http://heise2")
     assert(nsnode.namespaces['test'].href == "http://heise1")
-    
+
     assert(doc.namespaces.length == 5)
     nsnode.namespaces.delete_at('aaa')
     assert(nsnode.namespaces['aaa'].nil?)
-    
+
     assert(doc.namespaces.length == 4)
     nsnode.namespaces.delete_all!
     assert(doc.namespaces.length == 2)
-  end  
-end  
+  end
+end

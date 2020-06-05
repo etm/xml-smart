@@ -45,7 +45,7 @@ module XML
             nnew.add(nold.children)
             nold.replace_by(nnew)
             @node = nnod
-            @parent.instance_variable_set(:@element,@node)
+            @parent.instance_variable_set(:@node,@node)
             @node.document.custom_namespace_prefixes_update
             @node.document.ns_update
             Namespace.new(ns)
@@ -64,7 +64,7 @@ module XML
           nnew.add(nold.children)
           nold.replace_by(nnew)
           @node = nnod
-          @parent.instance_variable_set(:@element,@node)
+          @parent.instance_variable_set(:@node,@node)
           @node.document.custom_namespace_prefixes_update
           @node.document.ns_update
           nil
@@ -92,7 +92,7 @@ module XML
             nnew.add(nold.children)
             nold.replace_by(nnew)
             @node = nnod
-            @parent.instance_variable_set(:@element,@node)
+            @parent.instance_variable_set(:@node,@node)
             @node.document.custom_namespace_prefixes_update
             @node.document.ns_update
             true
@@ -115,7 +115,7 @@ module XML
           nnew.add(nold.children)
           nold.replace_by(nnew)
           @node = nnod
-          @parent.instance_variable_set(:@element,@node)
+          @parent.instance_variable_set(:@node,@node)
           @node.document.custom_namespace_prefixes_update
           @node.document.ns_update
           self

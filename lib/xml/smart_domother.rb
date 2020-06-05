@@ -4,13 +4,13 @@ module XML
 
       class Other < Text
         def otype
-          case @text
+          case @node
             when Nokogiri::XML::Comment; :comment
             else; :unknown
           end
         end
       end
-    
+
     end
   end
-end  
+end

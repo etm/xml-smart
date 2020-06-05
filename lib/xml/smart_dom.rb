@@ -13,7 +13,7 @@ module XML
         Element.new(@dom.root)
       end
       def root=(nr)
-        @dom.root.replace(nr.instance_variable_get(:@element)) if nr.instance_of? Element
+        @dom.root.replace(nr.instance_variable_get(:@node)) if nr.instance_of? Element
       end
 
       def find(path)
@@ -70,20 +70,20 @@ module XML
 
       def xinclude!(basedir=nil)
         Element.new(@dom.root).xinclude!(basedir)
-      end  
+      end
 
       def self::smart_helper(node)
         if node.instance_of? Nokogiri::XML::Element
           XML::Smart::Dom::Element.new(node)
         elsif node.instance_of? Nokogiri::XML::Attr
           XML::Smart::Dom::Attribute.new(node)
-        elsif node.instance_of? Nokogiri::XML::NodeSet  
+        elsif node.instance_of? Nokogiri::XML::NodeSet
           XML::Smart::Dom::NodeSet.new(node)
-        elsif node.instance_of?(String) || node.instance_of?(TrueClass) || node.instance_of?(FalseClass) || node.instance_of?(Float)  
+        elsif node.instance_of?(String) || node.instance_of?(TrueClass) || node.instance_of?(FalseClass) || node.instance_of?(Float)
           node
-        elsif node.instance_of? Nokogiri::XML::Text  
+        elsif node.instance_of? Nokogiri::XML::Text
           XML::Smart::Dom::Text.new(node)
-        elsif node.instance_of? Nokogiri::XML::Namespace  
+        elsif node.instance_of? Nokogiri::XML::Namespace
           XML::Smart::Dom::Namespace.new(node)
         elsif node.instance_of? Nokogiri::XML::Document
           XML::Smart::Dom.new(node)
@@ -93,7 +93,7 @@ module XML
           nil
         else
           XML::Smart::Dom::Other.new(node)
-        end  
+        end
       end
 
       def validate_against(doc,&errbl)
@@ -114,9 +114,9 @@ module XML
         res = Nokogiri::XSLT::Stylesheet.parse_stylesheet_doc(doc.instance_variable_get(:@dom)).transform(@dom,params)
         if res.children.length != 0 && res.children.first.class == Nokogiri::XML::Text
           Text.new(res.children.first).text
-        else 
+        else
           Dom::smart_helper(res)
-        end  
+        end
       end
 
     end
