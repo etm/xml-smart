@@ -49,7 +49,7 @@ module XML
       def save_as(name)
         raise Error, 'first parameter has to be a filename or filehandle' unless name.is_a?(String) || name.is_a?(IO) || name.is_a?(Tempfile)
         begin
-          io = name.is_a?(String) ? ::Kernel::open(name,'w') : name
+          io = name.is_a?(String) ? ::URI::open(name,'w') : name
         rescue
           raise Error, "could not open #{name}"
         end
