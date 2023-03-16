@@ -1,4 +1,4 @@
-== XML::Smart - A Ruby class for fast and simple XML access
+## XML::Smart - A Ruby class for fast and simple XML access
 
 Copyright (C) 2004-2012 Jürgen Mangler <juergen.mangler@univie.ac.at>
 
@@ -6,27 +6,27 @@ Ruby/XML/Smart is freely distributable according to the terms of the GNU Lesser 
 
 This program is distributed without any warranty. See the file 'COPYING' for details.
 
-== Installation
+## Installation
 
 - Based on Nokogiri 1.5.5
 - Thus works for MRI ruby 1.8.7, 1.9.x, JRuby (basically everything that is Nokogiri ready)
 - Works on Linux, OSX, Windows
 
-== Features
+## Features
 
-=== Principle of least surprise
+### Principle of least surprise
 
 - Nokogiri is messy - violence always is
 - libxml smells like old-school C-Binding ;-)
 - rex is ... strange
 
-=== Inherits Nokogiris GREAT compatibility for platforms and Ruby interpreters
+### Inherits Nokogiris GREAT compatibility for platforms and Ruby interpreters
 
-=== XML only
+### XML only
 
 Sorry, no css selectors, html, ... go to Nokogiri if you look for these.
 
-=== Great and convenient namespace support, compared to everything else out there
+### Great and convenient namespace support, compared to everything else out there
 
 Use namespaces in xpaths without any additional work:
 
@@ -41,13 +41,13 @@ Register your own shortcusts to be available in all XPaths:
   doc.find('string(a:test)')
   doc.close
 
-=== NFS safe file locking while editing / reading from an XML file
+### NFS safe file locking while editing / reading from an XML file
 
   XML::Smart.modify("EXAMPLE.xml","<test><names/></test>") do |doc|
     doc.root.add "test_node"
   end
 
-=== check against relaxng and xml schema
+### check against relaxng and xml schema
 
 Libxml2, the basis for nokogiri has only partial xml-schema support, but full
 relaxng support. Thus checking against xml-schema with nokogiri may return
@@ -60,12 +60,10 @@ xml-schema to relaxng, thus allowing for seamless schema usage:
   doc.find('string(a:test)')
   doc.close
 
-=== xinclude
+### xinclude
 
-Libxml2, the basis for nokogiri does not support https xincludes. Nokogiri may
-impelement this in the future (issue
-https://github.com/sparklemotion/nokogiri/issues/1321), but for now we do
-support it:
+Libxml2, the basis for nokogiri does not support https xincludes. Nokogiri may impelement this in the future (issue
+https://github.com/sparklemotion/nokogiri/issues/1321), but for now we do support it:
 
   doc.xinclude!
 
@@ -73,7 +71,7 @@ or
   
   doc.find('//someelement').first.xinclude!
 
-== Changes since 0.2.x (see Changelog)
+## Changes since 0.2.x (see Changelog)
 
 - qname instead of name
 - #register_namespace instead of #namespaces= to register shortcuts
@@ -81,6 +79,6 @@ or
 - signals removed
 - pull parser removed
 
-== Documentation
+## Documentation
 
 Sorry, no inline code documentation yet. We have an extensive test suite, look for examples there for now.
