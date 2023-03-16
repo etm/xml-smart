@@ -3,7 +3,7 @@ Gem::Specification.new do |s|
   s.version               = "0.5.0"
   s.platform              = Gem::Platform::RUBY
   s.license               = "LGPL-3.0"
-  s.summary               = "An xml library that doesn't suck - since 2004."
+  s.summary               = "An xml library that doesn't suck (for me) - since 2004."
 
   s.description           = "An xml library that doesn't suck (since 2004). Based on Nokogiri since 2012. For more info check out the Documentation link below."
 
