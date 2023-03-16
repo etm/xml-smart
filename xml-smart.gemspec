@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.authors               = ['Juergen eTM Mangler']
   s.email                 = 'juergen.mangler@gmail.com'
-  s.homepage              = 'http://www.wst.univie.ac.at/~mangler/xml-smart/'
+  s.homepage              = 'https://github.com/etm/xml-smart/'
 
   s.required_ruby_version = '>=1.9.3'
 
