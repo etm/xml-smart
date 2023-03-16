@@ -30,22 +30,28 @@ Sorry, no css selectors, html, ... go to Nokogiri if you look for these.
 
 Use namespaces in xpaths without any additional work:
 
+```ruby
   doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
   doc.find('string(aaa:test)')
   doc.close
+```  
 
 Register your own shortcusts to be available in all XPaths:
 
+```ruby
   doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
   doc.register_namespace :a, 'uri:aaa'
   doc.find('string(a:test)')
   doc.close
+```  
 
 ### NFS safe file locking while editing / reading from an XML file
 
+```ruby
   XML::Smart.modify("EXAMPLE.xml","<test><names/></test>") do |doc|
     doc.root.add "test_node"
   end
+```  
 
 ### check against relaxng and xml schema
 
@@ -54,22 +60,28 @@ relaxng support. Thus checking against xml-schema with nokogiri may return
 positive results, although it is a lie. XML::Smart internally converts
 xml-schema to relaxng, thus allowing for seamless schema usage:
 
+```ruby
   doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
   doc.validate_against(XML::Smart.open_unprotected('xmlschema.xml'))
   doc.validate_against(XML::Smart.open_unprotected('xmlschema.xml'))
   doc.find('string(a:test)')
   doc.close
+```  
 
 ### xinclude
 
 Libxml2, the basis for nokogiri does not support https xincludes. Nokogiri may impelement this in the future (issue
 https://github.com/sparklemotion/nokogiri/issues/1321), but for now we do support it:
 
+```ruby
   doc.xinclude!
+```  
 
 or
-  
+ 
+```ruby  
   doc.find('//someelement').first.xinclude!
+```  
 
 ## Changes since 0.2.x (see Changelog)
 
