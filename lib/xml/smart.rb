@@ -164,14 +164,14 @@ module XML
       begin
         if name.is_a?(String) && File.exist?(name)
           MUTEX.synchronize do
-            io = ::Kernel::open(name,'r+')
+            io = ::URI::open(name,'r+')
             io.flock(File::LOCK_EX)
           end
           dom = Dom.new Nokogiri::XML::parse(io){|config| config.noblanks.noent.nsclean.strict }, name
           io.rewind
         elsif name.is_a?(String) && !File.exist?(name)
           MUTEX.synchronize do
-            io = ::Kernel::open(name,'w')
+            io = ::URI::open(name,'w')
             io.flock(File::LOCK_EX)
           end
           dom = Smart::string(default,name)
@@ -217,7 +217,7 @@ module XML
         filename = nil
         io = if name.is_a?(String)
           filename = name
-          ::Kernel::open(name)
+          ::URI::open(name)
         else
           filename = name.path
           name
