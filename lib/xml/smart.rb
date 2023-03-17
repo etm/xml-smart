@@ -102,8 +102,9 @@ module Nokogiri
         ctx.register_namespaces "xi"=>"http://www.w3.org/2001/XInclude"
         ctx.evaluate('.//xi:include').each do |ele|
           name = ele.attributes['href'].value
-          name = path + name if name !~ /^(https?:|ftp:|\/)/
-          content = open(name,:ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
+          is_path = name !~ %r{\A[A-Za-z][A-Za-z0-9+\-\.]*://}
+          name = path + name if is_path && !name.start_with?('/')
+          content = ::URI::open(name, is_path ? 'r' : {:ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE}).read
           insert = begin
             Nokogiri::XML::parse(content).root # {|config| config.noblanks.noent.strict }.root
           rescue
