@@ -6,7 +6,7 @@ class TestCreate < Minitest::Test
     # When a string as second paramter is provided, then a empty
     # xml file is created if it not exists. A block has to be supplied
     #
-    # XML::Smart.modify(FILE,STRING) {}             ... create file if !exists?
+    # XML::Smart.modify(FILE,STRING) {}             ... create file if !exist?
     # XML::Smart.modify(FILE) {}                    ... just open file change and write back (LOCKTIMEOUT defaults to 7)
 
     File.unlink ::File.dirname(__FILE__) + "/EXAMPLE.tmp.xml" rescue nil

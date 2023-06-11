@@ -40,7 +40,7 @@ if ARGV.length < 2
 else
   # xpath expression that should be visualised
   xpath = ARGV[1..-1].join(' ') || "/"
-  unless File.exists?(ARGV[0])
+  unless File.exist?(ARGV[0])
     help
   end
   doc = XML::Smart.open_unprotected(ARGV[0])

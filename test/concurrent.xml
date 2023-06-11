@@ -1,7 +1,1 @@
-<solutions>
-  <solution matnr="9906264" name="mangler" secid="1" when="2021-11-03T02:24:55+01:00" assessment="16">
-    <question block="1" question="2"/>
-    <question block="2" question="4"/>
-    <question block="3" question="6"/>
-  </solution>
-</solutions>
+<solutions><solution matnr="9906264" name="mangler" secid="1" assessment="16"><question block="1" question="2"/><question block="2" question="4"/><question block="3" question="6"/></solution></solutions>
