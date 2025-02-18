@@ -30,7 +30,14 @@ module XML
           self.add(name,value)
         end
 
-        def add(name,value)
+        def add(a,b=nil)
+          if b.nil?
+            name = nil
+            value = a
+          else
+            name = a
+            value = b
+          end
           if (name.respond_to?(:to_s) || name.nil?) && value.respond_to?(:to_s)
             nnod = Nokogiri::XML::Node.new(@node.name,@node.document)
             nnew = Element.new(nnod)
