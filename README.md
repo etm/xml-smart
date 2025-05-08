@@ -12,6 +12,22 @@ This program is distributed without any warranty. See the file 'COPYING' for det
 - Thus works for MRI ruby 1.8.7, 1.9.x, JRuby (basically everything that is Nokogiri ready)
 - Works on Linux, OSX, Windows
 
+
+Fedora:
+```bash
+  sudo dnf install @buildsys-build @development-tools @c-development ruby-devel libxml2-devel libxslt-devel zlib-devel libicu-devel libffi-devel
+```
+
+Ubuntu:
+```bash
+  sudo apt install build-essential ruby-dev libxml2-dev libxslt-dev libz-dev libssl-dev libicu-dev
+```
+
+Afterwards:
+```bash
+  gem install --user xml-smart
+```
+
 ## Features
 
 ### Principle of least surprise
@@ -31,19 +47,23 @@ Sorry, no css selectors, html, ... go to Nokogiri if you look for these.
 Use namespaces in xpaths without any additional work:
 
 ```ruby
+  require 'xml/smart'
+
   doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
   doc.find('string(aaa:test)')
   doc.close
-```  
+```
 
 Register your own shortcusts to be available in all XPaths:
 
 ```ruby
+  require 'xml/smart'
+
   doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
   doc.register_namespace :a, 'uri:aaa'
   doc.find('string(a:test)')
   doc.close
-```  
+```
 
 ### NFS safe file locking while editing / reading from an XML file
 
@@ -51,7 +71,7 @@ Register your own shortcusts to be available in all XPaths:
   XML::Smart.modify("EXAMPLE.xml","<test><names/></test>") do |doc|
     doc.root.add "test_node"
   end
-```  
+```
 
 ### check against relaxng and xml schema
 
@@ -61,12 +81,14 @@ positive results, although it is a lie. XML::Smart internally converts
 xml-schema to relaxng, thus allowing for seamless schema usage:
 
 ```ruby
+  require 'xml/smart'
+
   doc = XML::Smart.string('<test xmlns:aaa="uri:aaa"><aaa:test/></test>')
   doc.validate_against(XML::Smart.open_unprotected('xmlschema.xml'))
   doc.validate_against(XML::Smart.open_unprotected('xmlschema.xml'))
   doc.find('string(a:test)')
   doc.close
-```  
+```
 
 ### xinclude
 
@@ -75,13 +97,13 @@ https://github.com/sparklemotion/nokogiri/issues/1321), but for now we do suppor
 
 ```ruby
   doc.xinclude!
-```  
+```
 
 or
- 
-```ruby  
+
+```ruby
   doc.find('//someelement').first.xinclude!
-```  
+```
 
 ## Changes since 0.2.x (see Changelog)
 
