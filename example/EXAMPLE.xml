@@ -1,10 +1,10 @@
-<Customers>
+<Customers xmlns='httsp://ga-a' xmlns:ga-b='bbbb'>
   <Customer ID="1">
      Queen Falafel
-     <Address>Stollgasse</Address>
+     <ga-b:Address>Stollgasse</ga-b:Address>
   </Customer>
   <Customer ID="2">
      Queen Falafel
-     <Address>Wagramerstrasse</Address>
+     <ga-b:Address>Wagramerstrasse</ga-b:Address>
   </Customer>
 </Customers>

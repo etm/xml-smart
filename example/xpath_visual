@@ -31,7 +31,11 @@ def prnTree(node,depth,mixed)
 end
 
 def help
-  puts "Usage: xpath_visual FILE \"XPATH\""
+  puts "Usage: xpath_visual FILE[\"XPATH\" || --prefixes]"
+  puts
+  puts '       For default namespaces use the last word the namespace name'
+  puts '       as prefix, e.g., "//ga-a:*" and "//ga-b:*" for'
+  puts '       <Customers xmlns="httsp://ga-a" xmlns:ga-b="bbbb">'
   exit
 end
 
@@ -50,6 +54,28 @@ end
 @remember = []
 message = ''
 begin
+  prefixes = []
+  doc.find('//namespace::*').each do |e|
+    if e.prefix != 'xml'
+      if e.prefix == ''
+        prefixes << [e.href.match(/([a-zA-Z_-]*)[\/.0-9]*$/)[1], e.href]
+      else
+       prefixes << [e.prefix, e.href]
+      end
+    end
+  end
+
+  if xpath == '--prefixes'
+    prefixes.uniq.each do |p|
+      puts p[0] + ': ' + p[1]
+    end
+    exit
+  end
+
+  prefixes.uniq.each do |p|
+    doc.register_namespace *p
+  end
+
   tmp = doc.find(xpath)
   if tmp === XML::Smart::Dom::NodeSet
     @remember = doc.find(xpath).collect { |n| n.path }

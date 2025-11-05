@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name                  = "xml-smart"
-  s.version               = "0.5.3"
+  s.version               = "0.5.4"
   s.platform              = Gem::Platform::RUBY
   s.license               = "LGPL-3.0-or-later"
   s.summary               = "An xml library that doesn't suck (for me) - since 2004."

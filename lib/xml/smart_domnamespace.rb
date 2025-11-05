@@ -16,7 +16,7 @@ module XML
           if @ns.prefix
             @ns.prefix
           else
-            @ns.document.custom_namespace_prefixes.find{|k,v| v == @ns.href}[0]
+            @ns.document.custom_namespace_prefixes.find{|k,v| v == @ns.href}[0] rescue ''
           end
         end
 
@@ -26,7 +26,7 @@ module XML
           to_s == other.to_s
         end
       end
-   
+
     end
   end
 end
