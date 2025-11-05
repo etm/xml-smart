@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name                  = "xml-smart"
-  s.version               = "0.5.4"
+  s.version               = "0.5.5"
   s.platform              = Gem::Platform::RUBY
   s.license               = "LGPL-3.0-or-later"
   s.summary               = "An xml library that doesn't suck (for me) - since 2004."
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files      = ['README.md']
   s.test_files            = Dir['test/tc_*.rb','test/*.xml','test/*.rng','test/*.xsd','test/smartrunner.rb','minitest/*']
   s.bindir                = 'example'
-  s.executables           = ['xpath_visual']
+  s.executables           = ['xpath_visual','xpath_query']
 
   s.authors               = ['Juergen eTM Mangler']
   s.email                 = 'juergen.mangler@gmail.com'
